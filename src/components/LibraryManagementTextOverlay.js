@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import About from './About';
 
 const LibraryManagementTextOverlay = () => {
   const texts = [
@@ -26,7 +27,8 @@ const LibraryManagementTextOverlay = () => {
   }, [texts.length]);
 
   return (
-    <div className="relative w-full h-screen flex items-center justify-center bg-black">
+    <>
+      <div className="relative w-full h-screen flex items-center justify-center bg-black">
       {/* Background Video */}
       <video
         className="absolute top-0 left-0 w-full h-full object-cover"
@@ -65,7 +67,7 @@ const LibraryManagementTextOverlay = () => {
           {/* Desktop Menu */}
           <div className="hidden sm:flex space-x-8 text-white items-center">
             <a href="#" className="hover:text-brown-400 hover:underline text-lg">Home</a>
-            <a href="#" className="hover:text-brown-400 hover:underline text-lg">About</a>
+            <a href="#about" className="hover:text-brown-400 hover:underline text-lg">About</a>
             <a href="#" className="hover:text-brown-400 hover:underline text-lg">Services</a>
             <a href="#" className="hover:text-brown-400 hover:underline text-lg">Contact</a>
             <Link
@@ -84,7 +86,7 @@ const LibraryManagementTextOverlay = () => {
           } sm:hidden mt-2 space-y-2 text-white bg-gray-800 p-4 rounded`}
         >
           <a href="#" className="block hover:text-brown-400">Home</a>
-          <a href="#" className="block hover:text-brown-400">About</a>
+          <a href="#about" className="block hover:text-brown-400">About</a>
           <a href="#" className="block hover:text-brown-400">Services</a>
           <a href="#" className="block hover:text-brown-400">Contact</a>
           <a 
@@ -105,7 +107,13 @@ const LibraryManagementTextOverlay = () => {
 
       {/* Optional: Dark Overlay to Improve Text Readability */}
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-0"></div>
+      
     </div>
+    <div id='about'>
+      <About/>
+    </div>
+    
+    </>
   );
 };
 
