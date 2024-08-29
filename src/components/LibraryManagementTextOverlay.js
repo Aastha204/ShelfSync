@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import About from './About';
+import BookTypes from './booktypes';
 
 const LibraryManagementTextOverlay = () => {
   const texts = [
@@ -68,7 +69,8 @@ const LibraryManagementTextOverlay = () => {
           <div className="hidden sm:flex space-x-8 text-white items-center">
             <a href="#" className="hover:text-brown-400 hover:underline text-lg">Home</a>
             <a href="#about" className="hover:text-brown-400 hover:underline text-lg">About</a>
-            <a href="#" className="hover:text-brown-400 hover:underline text-lg">Services</a>
+            <a href="#" className="hover:text-brown-400 hover:underline text-lg">MyBooks</a>
+            <a href="#browse" className="hover:text-brown-400 hover:underline text-lg">Browse</a>
             <a href="#" className="hover:text-brown-400 hover:underline text-lg">Contact</a>
             <Link
               to="/userProfile"
@@ -87,7 +89,8 @@ const LibraryManagementTextOverlay = () => {
         >
           <a href="#" className="block hover:text-brown-400">Home</a>
           <a href="#about" className="block hover:text-brown-400">About</a>
-          <a href="#" className="block hover:text-brown-400">Services</a>
+          <a href="#" className="block hover:text-brown-400">MyBooks</a>
+          <a href="#browse" className="block hover:text-brown-400">Browse</a>
           <a href="#" className="block hover:text-brown-400">Contact</a>
           <a 
             href="#" 
@@ -111,6 +114,9 @@ const LibraryManagementTextOverlay = () => {
     </div>
     <div id='about'>
       <About/>
+    </div>
+    <div id='browse'>
+      <BookTypes/>
     </div>
     
     </>
