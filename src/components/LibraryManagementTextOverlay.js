@@ -1,60 +1,5 @@
-// import React from 'react'
-// import { useState } from 'react';
-// import { useEffect } from 'react';
-
-// const LibraryManagementTextOverlay = () => {
-
-//     const texts = [
-//         "Empowering Knowledge: Seamless Library Management",
-//         "Streamline Your Library: Efficiently Manage Books and Resources",
-//         "Unlock the Future of Library Management",
-//         "Your Digital Library, Organized and Accessible"
-//       ];
-    
-//       const [currentIndex, setCurrentIndex] = useState(0);
-//       const [visible, setVisible] = useState(true);
-    
-//       useEffect(() => {
-//         const interval = setInterval(() => {
-//           setVisible(false);
-//           setTimeout(() => {
-//             setCurrentIndex((prevIndex) => (prevIndex + 1) % texts.length);
-//             setVisible(true);
-//           }, 2000); // 2-second break
-//         }, 7000); // 5-second display + 2-second break
-    
-//         return () => clearInterval(interval);
-//       }, [texts.length]);
-//   return (
-//     <div className="relative w-full h-screen flex items-center justify-center bg-black">
-//       {/* Background Video */}
-//       <video
-//         className="absolute top-0 left-0 w-full h-full object-cover"
-//         autoPlay
-//         loop
-//         muted
-//       >
-//         <source src="./videos/library.mp4" type="video/mp4" />
-//         Your browser does not support the video tag.
-//       </video>
-
-//       {/* Text Display */}
-//       {visible && (
-//         <p className="relative z-10 text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center px-4 animate-fade-in">
-//           {texts[currentIndex]}
-//         </p>
-//       )}
-
-//       {/* Optional: Dark Overlay to Improve Text Readability */}
-//       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-0"></div>
-//     </div>
-//   )
-// }
-
-// export default LibraryManagementTextOverlay
-
-
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const LibraryManagementTextOverlay = () => {
   const texts = [
@@ -118,11 +63,17 @@ const LibraryManagementTextOverlay = () => {
           </button>
 
           {/* Desktop Menu */}
-          <div className="hidden sm:flex space-x-4 text-white">
-            <a href="#" className="hover:text-gray-400">Home</a>
-            <a href="#" className="hover:text-gray-400">About</a>
-            <a href="#" className="hover:text-gray-400">Services</a>
-            <a href="#" className="hover:text-gray-400">Contact</a>
+          <div className="hidden sm:flex space-x-8 text-white items-center">
+            <a href="#" className="hover:text-brown-400 hover:underline text-lg">Home</a>
+            <a href="#" className="hover:text-brown-400 hover:underline text-lg">About</a>
+            <a href="#" className="hover:text-brown-400 hover:underline text-lg">Services</a>
+            <a href="#" className="hover:text-brown-400 hover:underline text-lg">Contact</a>
+            <Link
+              to="/userProfile"
+              className="block mt-2 px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold transform transition-transform hover:scale-105 text-lg"
+            >
+              Login
+            </Link>
           </div>
         </div>
 
@@ -132,10 +83,16 @@ const LibraryManagementTextOverlay = () => {
             isOpen ? "block" : "hidden"
           } sm:hidden mt-2 space-y-2 text-white bg-gray-800 p-4 rounded`}
         >
-          <a href="#" className="block hover:text-gray-400">Home</a>
-          <a href="#" className="block hover:text-gray-400">About</a>
-          <a href="#" className="block hover:text-gray-400">Services</a>
-          <a href="#" className="block hover:text-gray-400">Contact</a>
+          <a href="#" className="block hover:text-brown-400">Home</a>
+          <a href="#" className="block hover:text-brown-400">About</a>
+          <a href="#" className="block hover:text-brown-400">Services</a>
+          <a href="#" className="block hover:text-brown-400">Contact</a>
+          <a 
+            href="#" 
+            className="block mt-2 px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold transform transition-transform hover:scale-105 text-lg"
+          >
+            Login
+          </a>
         </div>
       </nav>
 
@@ -153,4 +110,3 @@ const LibraryManagementTextOverlay = () => {
 };
 
 export default LibraryManagementTextOverlay;
-
