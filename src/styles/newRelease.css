@@ -1,140 +1,118 @@
-img {
-	max-width: 100%;
-	height: auto;
-	vertical-align: bottom;
-}
-body{
-    color:#000000;
+.new-releases-container {
+    position: relative; /* Make the container a reference point for absolute positioning */
+    padding: 20px;
+    text-align: center; /* Center the content */
 }
 
-.recipe-card {
-	background: #fff;
-	margin: 4em auto;
-	width: 90%;
-	max-width: 496px;
-	@include border-top-radius(5px);
-	@include border-bottom-radius(5px);
+.new-releases-heading {
+    position: absolute;
+    top: 10px; /* Adjust based on your preference */
+    left: 200px; /* Adjust based on your preference */
+    font-size: 28px;
+    margin: 0;
+    color: rgb(141, 37, 37);
+    font-weight: bold;
+    font-family: 'Bookman Old Style';
+    z-index: 1; /* Ensure it is on top of the books */
+}
 
-	aside {
-		position: relative;
+.book-list {
+    display: flex;
+    justify-content: center; /* Center the book list horizontally */
+    gap: 50px;
+    flex-wrap: wrap; /* Allow cards to wrap on smaller screens */
+    padding-top: 50px; /* Adjust based on the height of the heading */
+}
 
-		img {
-			@include border-top-radius(5px);
-		}
+.book-card {
+    background: rgb(247, 233, 233);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow */
+    width: 300px; /* Width of the card */
+    height: 318px; /* Height of the card */
+    text-align: center;
+    padding-bottom: 15px; /* Reduce padding to accommodate the content */
+    padding-top: 10px;
+    overflow: hidden; /* Ensure no content overflows the card */
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effect */
+}
 
-		.button {
-			background: #57abf2;
-			display: inline-block;
-			position: absolute;
-			top: 80%;
-			right: 3%;
-			width: em(65);
-			height: em(65);
-			border-radius: em(65);
-			line-height: em(65);
-			text-align: center;
+.book-card:hover {
+    transform: scale(1.05); /* Slightly enlarge the card on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+}
 
-			.icon {
-				vertical-align: middle;
-			}
-		}
-	}
+.image-container {
+    position: relative;
+}
 
-	article {
-		padding: 1.25em 1.5em;
+.image-container img {
+    width: 100%; /* Make the image fully cover the card width */
+    height: 150px; /* Adjust height to maintain aspect ratio and fit the card */
+    object-fit: contain; /* Ensure the image covers the container without distortion */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
 
-		ul {
-			list-style: none;
-			margin: 0.5em 0 0;
-			padding: 0;
-			li {
-				display: inline-block;
-				margin-left: 1em;
-				line-height: 1em;
-				&:first-child {
-					margin-left: 0;
-				}
+.card-content {
+    padding: 10px; /* Reduce padding for more spacing */
+    height: 120px; /* Adjust height to ensure everything fits */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
-				.icon {
-				    vertical-align: bottom;
-				}
+.card-content h3 {
+    font-size: 18px;
+    margin: 5px 0;
+}
 
-				span:nth-of-type(2) {
-					margin-left: 0.5em;
-					font-size: 0.8em;
-					font-weight: 300;
-					vertical-align: middle;
-					color: #838689;
-				}
-			}
-		}
+.card-content p {
+    color: gray;
+    margin: 5px 0;
+    font-size: 14px; /* Reduce font size for better fit */
+}
 
-		h2, h3 {
-			margin: 0;
-			font-weight: 300;
-		}
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px; /* Reduce margin */
+}
 
-		h2 {
-			font-size: em(28);
-			color: #222222;
-		}
+.price {
+    font-size: 18px; /* Reduce font size */
+    font-weight: bold;
+}
 
-		h3 {
-			font-size: em(15);
-			color: #838689;
-		}
+.rating {
+    color: #81462a;
+    font-size: 18px; /* Reduce font size */
+}
 
-		p {
-			margin: 1.25em 0;
-			font-size: em(13);
-			font-weight: 400;
-			color: #222222;
+.add-btn {
+    margin-top: 5px;
+    background-color: #3f0d04;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px; /* Reduce padding for better fit */
+    cursor: pointer;
+    width: 100%;
+    font-size: 14px; /* Reduce font size */
+}
 
-			span {
-				font-weight: 700;
-				color: #000000;
-			}
-		}
+.add-btn:hover {
+    background-color: #6e372e;
+    
+}
 
-		.ingredients {
-			margin: 2em 0 0.5em;
-		}
-	}
-
-	.icon {
-	    display: inline;
-	    display: inline-block;
-	    background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/203277/recipe-card-icons.svg);
-	    background-repeat: no-repeat;
-	}
-
-	.icon-calories,.icon-calories\:regular {
-	    background-position: 0 0;
-	    width: 16px;
-	    height: 19px;
-	}
-
-	.icon-clock,.icon-clock\:regular {
-	    background-position: 0 -19px;
-	    width: 20px;
-	    height: 20px;
-	}
-
-	.icon-level,.icon-level\:regular {
-	    background-position: 0 -39px;
-	    width: 16px;
-	    height: 19px;
-	}
-
-	.icon-play,.icon-play\:regular {
-	    background-position: 0 -58px;
-	    width: 21px;
-	    height: 26px;
-	}
-
-	.icon-users,.icon-users\:regular {
-	    background-position: 0 -84px;
-	    width: 18px;
-	    height: 18px;
-	}
+.view-more {
+    position: absolute;
+    bottom: 350px; /* Adjust based on your preference */
+    right: 200px; /* Adjust based on your preference */
+    color: #381d11;
+    text-decoration: none;
+    z-index: 1; /* Ensure it is on top of the books */
 }

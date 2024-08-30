@@ -1,31 +1,64 @@
 import React from "react";
 import "../styles/newRelease.css";
 
-function NewRelease() {
+const BookCard = ({ title, author, price, rating, imageUrl }) => {
     return (
-        <div className="recipe-card">
-            <aside>
-                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/203277/oatmeal.jpg" alt="Chai Oatmeal" />
-                <a href="#" className="button"><span className="icon icon-play"></span></a>
-            </aside>
-
-            <article>
-                <h2>Chai Oatmeal</h2>
-                <h3>Breakfast</h3>
-
-                <ul>
-                    <li><span className="icon icon-users"></span><span>1</span></li>
-                    <li><span className="icon icon-clock"></span><span>15 min</span></li>
-                    <li><span className="icon icon-level"></span><span>Beginner level</span></li>
-                    <li><span className="icon icon-calories"></span><span>248</span></li>
-                </ul>
-
-                <p>For an extra thick and creamy bowl, add oat bran.  It'll make for a hearty helping and also add more fiber to your meal.  If you love the taste of chai, you'll enjoy this spiced version with coriander, cinnamon, and turmeric.</p>
-
-                <p className="ingredients"><span>Ingredients:&nbsp;</span>Milk, salt, coriander, cardamom, cinnamon, turmeric, honey, vanilla extract, regular oats, oat bran.</p>
-            </article>
+      <div className="book-card">
+        <div className="image-container">
+          <img src={imageUrl} alt={title} />
+          {/* <button className="favorite-btn">❤</button> */}
         </div>
+        <div className="card-content">
+          <h3>{title}</h3>
+          <p>{author}</p>
+          <div className="card-footer">
+            <span className="price">₹{price}</span>
+            <span className="rating">⭐{rating}</span>
+          </div>
+          <button className="add-btn">Issue</button>
+        </div>
+      </div>
     );
-}
-
-export default NewRelease;
+  };
+  
+  const NewReleases = () => {
+    const books = [
+      {
+        title: 'Harry Potter',
+        author: 'J.K Rowling',
+        price: 250,
+        rating: 4.2,
+        imageUrl: '/images/HarryPotter.png',
+      },
+      {
+        title: 'End of the Point',
+        author: 'Elizabeth Grave',
+        price: 300,
+        rating: 4.5,
+        imageUrl: '/images/EndOfPoint.png',
+      },
+      {
+        title: 'Korean CookBook',
+        author: 'Jiu Chung',
+        price: 200,
+        rating: 4.0,
+        imageUrl: '/images/KoreanCookbook.png',
+      },
+    ];
+  
+    return (
+      <div className="new-releases-container">
+        <h2 className="new-releases-heading">New Releases</h2>
+        <div className="book-list">
+          {books.map((book, index) => (
+            <BookCard key={index} {...book} />
+          ))}
+        </div>
+        <a href="/more" className="view-more">
+          View More
+        </a>
+      </div>
+    );
+  };
+  
+  export default NewReleases;
