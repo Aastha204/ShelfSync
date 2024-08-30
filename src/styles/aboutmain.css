@@ -1,0 +1,83 @@
+/* Custom styles for the About page */
+.bg-custom {
+    background-color: #f7f7f7;
+}
+  
+.text-heading {
+    color: #4a4a4a; /* Dark gray for heading */
+}
+  
+.text-paragraph {
+    color: #333; /* Darker gray for paragraph */
+}
+  
+.text-highlight {
+    color: #5a1d04; /* Highlight color for specific text */
+}
+  
+/* Social media icon colors */
+.text-facebook {
+    color: #3b5998;
+}
+  
+.text-linkedin {
+    color: #0077b5;
+}
+  
+.text-Instagram {
+    color: #da1ad4;
+}
+.text-github {
+    color: #333;
+}
+  
+.text-envelope {
+    color: #d44638;
+}
+
+/* Hover effects for social media icons */
+.text-facebook:hover {
+    color: #2d4373;
+}
+  
+.text-linkedin:hover {
+    color: #004b87;
+}
+  
+.text-Instagram:hover {
+    color: #6d1e92;
+}
+  
+.text-github:hover {
+    color: #212121;
+}
+  
+.text-envelope:hover {
+    color: #b5362d;
+}
+
+/* Shadow box effect on hover */
+.shadow-lg {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Light shadow */
+}
+
+.shadow-xl {
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); /* More visible shadow */
+}
+
+/* Rounded corners for the image */
+.rounded-lg {
+    border-radius: 0.5rem; /* Rounded corners */
+}
+
+/* Button styles */
+a {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+/* Button Hover Effect */
+a:hover {
+    transform: scale(1.05); /* Slightly increase size */
+}
