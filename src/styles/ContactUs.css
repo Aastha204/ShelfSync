@@ -1,0 +1,457 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* body { */
+    /* font-family: Arial, sans-serif; */
+    /* background-color: #2E1D0F;  */
+    /* color: #F0EDE5; Off White */
+        /* background: linear-gradient(135deg, #2E1D0F 25%, #FFD700 100%); */
+/* } */
+/* Background color for FAQ and Footer section */
+.footer-container p{
+    color: white;
+    margin-left: 45%;
+    
+}
+.faq-heading-container{
+    color: white;
+    
+}
+.faq-footer-section {
+    background-color: #2E1D0F; /* Change this color to the desired one */
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+
+
+/* Home Icon */
+.home-icon {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 2em;
+    color: #ffffff;
+    background-color: #191818;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1000;
+    transition: background-color 0.3s;
+}
+
+.home-icon:hover {
+    background-color: #555;
+}
+
+.contact-page {
+    min-height: 100vh;
+    background: url('https://images8.alphacoders.com/130/1300862.png') no-repeat center center;
+    background-size: cover; /* Ensure the background image covers the container */
+    padding: 50px 20px;
+    position: relative;
+}
+       
+/* Contact Info Section */
+.contact-info {
+    display: flex;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 40px auto;
+    text-align: left;
+    font-size: 1.2em;
+    flex-direction: column;
+}
+
+.contact-info div {
+    margin-bottom: 15px;
+}
+
+.contact-info i {
+    color: #FFD700;
+    margin-right: 10px;
+}
+.contact-page h1 {
+text-align: center;
+font-size: 2.5em;
+color: #FFD700;
+margin-bottom: 20px;
+font-family: 'Georgia', serif; /* Example font, feel free to change */
+}
+
+.contact-page p {
+text-align: center;
+font-size: 1.2em;
+margin-bottom: 40px;
+color: #F0EDE5;
+}
+.form-container h2{
+color:white;
+}
+
+
+/* .form-container {
+max-width: 600px;
+margin: 0 auto;
+background-color: rgba(255, 255, 255, 0.8);
+padding: 30px;
+border-radius: 10px;
+color: #333;
+} */
+
+/* Form Container */
+.form-container {
+    background-color: rgba(45, 20, 20, 0.863);
+    padding: 30px;
+    border-radius: 10px;
+    color: #333;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-container input, .form-container textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: #A0522D;
+    border: none;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-container button:hover {
+    background-color: #C77445;
+}
+
+/* FAQ Section */
+.faq-section {
+    margin: 50px auto;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 24px;
+}
+
+.faq-column {
+    width: 48%;
+}
+
+.faq-section h2 {
+    text-align: center;
+    font-size: 2.2em;
+    color: #FFD700;
+    margin-bottom: 30px;
+    animation: fadeIn 2s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Horizontal Card Layout */
+article {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+article:hover {
+    transform: translateY(-5px);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 40px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+figure {
+    margin: 0;
+    padding: 0;
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+}
+
+figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease-in-out;
+}
+
+article:hover figure img {
+    transform: scale(1.1);
+}
+
+.article-body {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.article-body h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.6rem;
+    color: #333;
+}
+
+.article-body p {
+    margin: 0;
+    display: none;
+    font-size: 1rem;
+    color: #555;
+}
+
+.article-body a {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: #28666e;
+    margin-top: 10px;
+    font-size: 1rem;
+}
+
+.article-body a svg {
+    width: 24px;
+    height: 24px;
+    margin-left: 5px;
+    transition: transform 0.3s;
+}
+
+.article-body a:hover svg {
+    transform: translateX(5px);
+}
+
+/* Footer Section */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #2E1D0F;
+    color: #f5f5f5df;
+    position: relative;
+    width: 100vw; /* Full width of the viewport */
+    left: 50%;
+    margin-left: -50vw; /* Center the footer by shifting it left */
+}
+
+.marquee {
+display: inline-block;
+overflow: hidden;
+white-space: nowrap;
+width: 100%;
+background: #2E1D0F; /* Dark Brown Background to match theme */
+color: #ffffffde; /* Gold Text Color */
+font-size: 124px; /* Adjust font size to fit your design */
+position: relative;
+/* height: 10%; */
+
+}
+
+.marquee p {
+display: inline-block;
+padding-left: 100%; /* Start from the right edge */
+animation: marquee 20s linear infinite; /* Adjust duration as needed */
+}
+
+@keyframes marquee {
+0% {
+transform: translateX(100%); /* Start from outside the right edge */
+}
+100% {
+transform: translateX(-100%); /* Move to outside the left edge */
+}
+}
+
+
+.social-icons a {
+    margin: 0 10px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.5em;
+}
+
+@media (max-width: 768px) {
+    .faq-section {
+        flex-direction: column;
+    }
+
+    .faq-column {
+        width: 100%;
+    }
+
+    article {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    figure {
+        width: 100%;
+        height: 180px;
+    }
+
+    .article-body {
+        padding: 15px;
+    }
+
+    .form-container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .faq-section h2 {
+        font-size: 1.8em;
+    }
+}
+.article-body p {
+    display: block; /* Ensure the paragraph is displayed as a block */
+    margin-top: 10px; /* Optional styling */
+}
+
+/* Ensure no hidden styles are applied to the FAQ description */
+.faq-heading-container {
+    text-align: center;
+    margin: 30px 0;
+    padding: 20px;
+    
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.5), 0 0 25px rgba(255, 105, 180, 0.5), 0 0 35px rgba(255, 105, 180, 0.5);
+    animation: glowEffect 2s infinite alternate;
+}
+
+.faq-heading {
+    font-size: 2.5em;
+    font-weight: bold;
+    color:white;
+    margin-bottom: 10px;
+}
+
+.faq-subheading {
+    font-size: 1.2em;
+    color: 00;
+}
+
+@keyframes glowEffect {
+    0% {
+        box-shadow: 0 0 5px rgba(255, 105, 180, 0.5), 0 0 25px rgba(255, 105, 180, 0.5), 0 0 35px rgba(255, 105, 180, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(255, 182, 193, 0.8), 0 0 45px rgba(255, 182, 193, 0.8), 0 0 60px rgba(255, 182, 193, 0.8);
+    }
+}
+/* Contact Buttons Container */
+/* Contact Buttons Container */
+.contact-buttons-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    gap: 20px; /* Space between buttons */
+    margin: 30px 0;
+}
+
+/* Contact Button */
+.contact-button {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #F0EDE5; /* Off White text color */
+    font-size: 16px;
+    font-weight: 500;
+    background-color: #3A1F13; /* Dark Brown Background to match theme */
+    border: 1px solid #4F2C1F; /* Subtle border */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.contact-button i {
+    margin-right: 10px;
+    font-size: 20px; /* Larger icon size */
+}
+
+/* Specific Button Colors */
+.whatsapp {
+    color: #ffffff; /* WhatsApp Color */
+}
+
+.call {
+    color: #ffffff; /* Call Color */
+}
+
+.email {
+    color: #ffffff; /* Email Color */
+}
+
+.location {
+    color: #ffffff; /* Location Color */
+}
+
+/* Hover Effects */
+.contact-button.whatsapp:hover {
+    background-color: #4A2D1F; /* Slightly lighter background */
+    color: #07bb37; /* Gold color on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+    transform: scale(1.05); /* Zoom in effect */
+}
+.contact-button.call:hover {
+    background-color: #4A2D1F; /* Slightly lighter background */
+    color: #579ce2; /* Gold color on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+    transform: scale(1.05); /* Zoom in effect */
+}
+.contact-button.email:hover {
+    background-color: #4A2D1F; /* Slightly lighter background */
+    color: #ff3700; /* Gold color on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+    transform: scale(1.05); /* Zoom in effect */
+}
+.contact-button.location:hover {
+    background-color: #4A2D1F; /* Slightly lighter background */
+    color: #FFD700; /* Gold color on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+    transform: scale(1.05); /* Zoom in effect */
+}
+
+.contact-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 130%;
+    height: 130%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+
+@keyframes glowEffect {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 105, 180, 0.3), 0 0 20px rgba(255, 105, 180, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(255, 105, 180, 0.6), 0 0 25px rgba(255, 105, 180, 0.6);
+    }
+}

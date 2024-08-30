@@ -1,0 +1,55 @@
+/* Base style for the cards */
+.card {
+  background-color: #5a1d04;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  width: 20rem;
+  opacity: 0; /* Initially hidden */
+  transform: translateX(100%); /* Initially off-screen to the right */
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  margin-right: 1.2rem; /* Space between the cards */
+  margin-left: 1.2rem;
+}
+
+/* Animation when the card becomes visible */
+.card.animate {
+  opacity: 1;
+  transform: translateX(0); /* Slide into place smoothly */
+}
+
+/* Ensure cards are in a single horizontal line */
+.horizontal-scroll-container {
+  display: flex;
+  justify-content: flex-start;
+  overflow-x: hidden; /* No horizontal scrolling */
+}
+
+/* Hover effect for the cards */
+.card:hover {
+  transform: scale(1.05);
+  border: 3px solid #ffff09;
+}
+
+/* Staggered animation delays for cards */
+.card:nth-child(1) {
+  transition-delay: 0.2s;
+}
+
+.card:nth-child(2) {
+  transition-delay: 0.4s;
+}
+
+.card:nth-child(3) {
+  transition-delay: 0.6s;
+}
+
+.card:nth-child(4) {
+  transition-delay: 0.8s;
+}
+.card:nth-child(5) {
+  transition-delay: 0.8s;
+}
+h2.text-4xl.font-bold.text-center.mb-12 {
+  color: #450a0a; /* Change to desired color */
+}
