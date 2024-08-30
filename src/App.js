@@ -2,17 +2,12 @@ import LibraryManagementTextOverlay from './components/LibraryManagementTextOver
 import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
 import UserProfile from './components/UserProfile';
 import About from './components/About';
-<<<<<<< HEAD
-import BookType from './components/booktypes';
-import NewRelease from './components/newRelease';
-import Footer from './components/Footer';
-import CardComponent from './components/cards';
-=======
 import Aboutuscard from './components/aboutusCards';
-import BookType from'./components/booktypes'
+import BookType from './components/booktypes'
+import NewRelease from './components/newRelease';
+import CardComponent from './components/cards';
 import Footer from './components/Footer';
 import ContactPage from './components/contactUs';
->>>>>>> fb9dbaca10d54139880726f19b87b35836c5d7d7
 
 function App() {
   return (

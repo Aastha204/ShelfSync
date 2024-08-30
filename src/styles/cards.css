@@ -1,4 +1,4 @@
-.card-container {
+.card1-container {
   display: flex;
   gap: 50px; /* Increased gap between cards */
   overflow-x: auto; /* Allows horizontal scrolling */
@@ -8,8 +8,8 @@
 }
 
 /* Individual Card */
-.card {
-  background-color: #f8f5f1; /* Light beige background */
+.card1 {
+  background-color: #e7dbcb; /* Light beige background */
   border-radius: 15px; /* Rounded corners */
   padding: 20px;
   width: 320px; /* Fixed width for cards */
@@ -21,13 +21,13 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
 }
 
-.card:hover {
+.card1:hover {
   transform: translateY(-8px); /* Lift card more on hover */
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
 }
 
 /* Card Title */
-.card-title {
+.card1-title {
   font-size: 21px;
   font-weight: bold;
   color: #513737; /* Dark grey text color */
@@ -36,7 +36,7 @@
 }
 
 /* Card Image */
-.card-image {
+.card1-image {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -46,7 +46,7 @@
   align-items: flex-end;
 }
 
-.card-image img {
+.card1-image img {
   width: 185px; /* Make image cover the card width */
   max-height:150px ; /* Maintain aspect ratio */
   object-fit: cover; /* Ensure the image covers the area */

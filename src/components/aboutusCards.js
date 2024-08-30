@@ -54,6 +54,7 @@ const AboutusCards = () => {
           <p className="text-white">Our dedicated support team ensures that you receive timely assistance and expert guidance.</p>
         </div>
       </div>
+      <br></br>
     </div>
   );
 };

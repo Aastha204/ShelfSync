@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import About from './About';
 import AboutusCards from './aboutusCards';
+import BookCards from './cards';
 import Footer from './Footer';
 import BookType from './booktypes';
 
@@ -124,6 +125,10 @@ const LibraryManagementTextOverlay = () => {
 
     <div id="browse">
       <BookType/>
+    </div>
+
+    <div>
+      <BookCards/>
     </div>
     
     <div id="footer">
