@@ -1,0 +1,56 @@
+.card-container {
+  display: flex;
+  gap: 50px; /* Increased gap between cards */
+  overflow-x: auto; /* Allows horizontal scrolling */
+  padding: 20px;
+  justify-content: center; /* Center cards horizontally */
+  align-items: center; /* Center cards vertically */
+}
+
+/* Individual Card */
+.card {
+  background-color: #f8f5f1; /* Light beige background */
+  border-radius: 15px; /* Rounded corners */
+  padding: 20px;
+  width: 320px; /* Fixed width for cards */
+  height: 200px; /* Fixed height for cards */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  display: flex;
+  flex-direction: column;
+  position: relative; /* Needed for positioning the image */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+}
+
+.card:hover {
+  transform: translateY(-8px); /* Lift card more on hover */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+}
+
+/* Card Title */
+.card-title {
+  font-size: 21px;
+  font-weight: bold;
+  color: #513737; /* Dark grey text color */
+  margin-bottom: 10px;
+  font-family: 'Bookman Old Style';
+}
+
+/* Card Image */
+.card-image {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.card-image img {
+  width: 185px; /* Make image cover the card width */
+  max-height:150px ; /* Maintain aspect ratio */
+  object-fit: cover; /* Ensure the image covers the area */
+  border: 5px; /* Add a border to highlight the image */
+  filter: brightness(1.1); /* Slightly brighten the image */
+}
+
