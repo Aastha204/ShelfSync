@@ -10,15 +10,15 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cover bg-center p-4 sm:p-8" style={{ backgroundImage: "url('Images/LibraryAuth.jpeg')" }}>
-      <div className="container mx-auto px-4 py-8 bg-brown-800 bg-opacity-80 rounded-lg relative max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
+    <div className="min-h-screen bg-cover bg-center p-4 sm:p-8" style={{ backgroundImage: "url('images/login.jpeg')" }}>
+      <div className="container mx-auto px-4 py-8 bg-transparent-800 bg-opacity-40 rounded-lg relative max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
         <div className="w-full mx-auto relative overflow-hidden">
           <div className="flex w-full relative" style={{ minHeight: '460px' }}>
 
             {/* Login Form */}
             <div className={`absolute w-full transition-transform duration-700 ease-in-out transform ${isLogin ? 'translate-x-0' : '-translate-x-full'}`}>
               <div className="p-8 bg-white rounded-lg shadow-lg">
-                <h2 className="text-2xl font-bold text-brown-700 text-center">Login</h2>
+                <h2 className="text-5xl font-bold text-brown-700 text-center">Login</h2>
                 <form className="mt-4">
                   <label className="block text-sm font-medium text-gray-700">Email</label>
                   <input type="email" className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-brown-500" />
@@ -37,7 +37,7 @@ const Login = () => {
             {/* Signup Form */}
             <div className={`absolute w-full transition-transform duration-700 ease-in-out transform ${!isLogin ? 'translate-x-0' : 'translate-x-full'}`}>
               <div className="p-8 bg-white rounded-lg shadow-lg">
-                <h2 className="text-2xl font-bold text-brown-700 text-center">Sign Up</h2>
+                <h2 className="text-5xl font-bold text-brown-700 text-center">Sign Up</h2>
                 <form className="mt-4">
                   <label className="block text-sm font-medium text-gray-700">Full Name</label>
                   <input type="text" className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-brown-500" />

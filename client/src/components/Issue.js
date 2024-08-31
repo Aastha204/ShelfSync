@@ -19,22 +19,22 @@ const Issue = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cover bg-center p-8" style={{ backgroundImage: "url('Images/Library.jpeg')" }}>
-      <div className="container mx-auto px-4 py-8 bg-brown-100 bg-opacity-80 rounded-lg">
-        <h1 className="text-3xl font-bold text-white text-center mb-6">Your Books</h1>
-        <table className="min-w-full border-collapse bg-brown-600 rounded-lg overflow-hidden">
-          <thead className="bg-brown-700 text-white">
-            <tr className='bg-brown-700'>
-              <th className="bg-brown-700 p-4 text-left">S.No.</th>
-              <th className="bg-brown-700 p-4 text-left">Book Name</th>
-              <th className="p-4 text-left bg-brown-700">Author Name</th>
-              <th className="p-4 text-left bg-brown-700">Book Type</th>
-              <th className="p-4 text-left bg-brown-700">Action</th>
+    <div className="min-h-screen bg-cover bg-center p-8" style={{ backgroundImage: "url('Images/issue.jpg')" }}>
+      <div className="container mx-auto px-4 py-8 bg-brown-800 bg-opacity-20 rounded-lg shadow-lg">
+        <h1 className="text-6xl font-bold text-white text-center mb-6">Your Books</h1>
+        <table className="min-w-full border-collapse bg-brown-900 rounded-lg overflow-hidden shadow-md">
+          <thead>
+            <tr className="bg-brown-800 text-white">
+              <th className="p-4 text-left">S.No.</th>
+              <th className="p-4 text-left">Book Name</th>
+              <th className="p-4 text-left">Author Name</th>
+              <th className="p-4 text-left">Book Type</th>
+              <th className="p-4 text-left">Action</th>
             </tr>
           </thead>
           <tbody className="text-white">
             {books.map((book, index) => (
-              <tr key={book.id} className={`bg-brown-500 ${index % 2 === 0 ? 'bg-brown-400' : 'bg-brown-600'} hover:bg-brown-700`}>
+              <tr key={book.id} className={`hover:bg-brown-600 ${index % 2 === 0 ? 'bg-brown-400' : 'bg-brown-500'}`}>
                 <td className="p-4 text-left">{index + 1}</td>
                 <td className="p-4 text-left">{book.name}</td>
                 <td className="p-4 text-left">{book.author}</td>
