@@ -8,6 +8,9 @@ import NewRelease from './components/newRelease';
 import CardComponent from './components/cards';
 import Footer from './components/Footer';
 import ContactPage from './components/contactUs';
+import BookTrack from './components/bookTrack';
+import ReceiptManager from './components/receipt';
+// import LatestCard from './components/latestcard';
 
 function App() {
   return (
@@ -20,6 +23,8 @@ function App() {
         <Route path="/booktype" element={<BookType/>}/>
         <Route path="/cards" element={<CardComponent/>}/>
         <Route path="/newrelease" element={<NewRelease/>}/>
+        <Route path="/booktrack" element={<BookTrack/>}/>
+        <Route path="/receipt" element={<ReceiptManager/>}/>
         <Route path="/footer" element={<Footer/>}/>
         <Route path="/contact" element={<ContactPage/>}/>
       </Routes>

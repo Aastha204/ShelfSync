@@ -1,7 +1,7 @@
 /* General Page Styling */
 .profile-page {
   display: flex;
-  height: 100vh;
+  height: auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(to right, #341a0e, #5e311d);
   color: #333;
@@ -36,60 +36,24 @@
   text-decoration: none;
   font-size: 18px;
   transition: background-color 0.3s;
+  border-radius: 4px;
 }
 
-.sidebar ul a:hover {
+.sidebar ul a:hover,
+.sidebar ul a.active {
   background-color: #85482c;
   color: #fff;
-  border-radius: 4px;
-}
-
-.sidebar ul a.active {
-  background-color: #ffeb3b;
-  color: #243c5a;
-  border-radius: 4px;
 }
 
 /* Main Content Styling */
 .profile-main {
   flex: 1;
-  padding: 40px;
-  background-color: #f7f9fb;
+  padding: 18px 40px;
+  background-color: #fce6ce;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Search Bar Styling */
-.search-bar {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
-}
-
-.search-bar input {
-  padding: 12px;
-  width: 350px;
-  border: 2px solid #ddd;
-  border-radius: 30px;
-  font-size: 16px;
-}
-
-.search-bar button {
-  padding: 12px 20px;
-  margin-left: 10px;
-  border: none;
-  background-color: #6b201b;
-  color: #fff;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 30px;
-  transition: background-color 0.3s;
-}
-
-.search-bar button:hover {
-  background-color: #380d0a;
-  
+  /* overflow-y: auto; */
 }
 
 /* Profile Card Styling */
@@ -101,9 +65,16 @@
   padding: 30px;
   border-radius: 15px;
   margin-bottom: 30px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 5px solid #471616;
+  box-shadow: 0 4px 10px rgba(143, 5, 5, 0.966);
 }
 
+.profile-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(143, 5, 5, 0.966);
+}
+
+/* Profile Info Styling */
 .profile-info {
   display: flex;
   align-items: center;
@@ -116,8 +87,9 @@
 }
 
 .profile-info h3 {
-  font-size: 22px;
+  font-size: 25px;
   margin: 0;
+  color: #471616;
 }
 
 .profile-info p {
@@ -147,38 +119,124 @@
   color: #555;
 }
 
-/* Table Styling */
-.issued-books{
-  background-color: white;
-  padding: 25px;
+/* Card Container Styling */
+.card-container {
+  display: flex;
+  justify-content: space-between;
+  height: 300px;
+  margin-top: 20px;
+}
+
+/* Clickable Card Styling */
+.clickable-card {
+  position: relative;
+  flex: 1;
+  background-color: #471714;
+  padding: 20px;
   border-radius: 15px;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  margin-right: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+  overflow: hidden;
+  /* border: 2px solid transparent; */
+  box-shadow: 0 0 15px 3px rgba(71, 23, 20, 0.7);
 }
 
-.issued-books h4 {
-  margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 20px;
-  color: #333;
+.clickable-card:last-child {
+  margin-right: 0;
 }
 
-table {
+.clickable-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px 6px rgba(71, 23, 20, 0.9);
+}
+
+.clickable-card img {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 16px;
+  height: 100%;
+  object-fit: fill;
+  border-radius: 10px;
+  background-color: white;
+  transition: transform 0.3s ease;
 }
 
-table th, table td {
-  padding: 15px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+.clickable-card:hover img {
+  transform: scale(1.1);
 }
 
-table th {
-  background-color: #f0f0f0;
+/* Overlay Text Styling */
+.overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 26px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  text-align: center;
+  padding: 10px;
+  background: rgba(71, 23, 20, 0.7);
+  border-radius: 10px;
 }
 
-table tr:hover {
-  background-color: #f9f9f9;
+.contact-link {
+  display: block;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 18px;
+  color: #471714;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 10px;
+  transition: background-color 0.3s, color 0.3s;
 }
+
+.contact-link:hover {
+  color: rgb(153, 65, 65);
+  /* background-color: #4b1b15; */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .profile-page {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+  }
+
+  .profile-main {
+    padding: 20px;
+  }
+
+  .profile-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-info {
+    margin-bottom: 20px;
+  }
+
+  .profile-details {
+    width: 100%;
+  }
+
+  .card-container {
+    flex-direction: column;
+  }
+
+  .clickable-card {
+    margin-bottom: 20px;
+    height: auto;
+  }
+}
+
+
