@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import About from './About';
+import AboutusCards from './aboutusCards';
+import BookCards from './cards';
 import Footer from './Footer';
+import NewReleases from './newRelease';
 import BookType from './booktypes';
 
 const LibraryManagementTextOverlay = () => {
@@ -72,7 +75,7 @@ const LibraryManagementTextOverlay = () => {
             <a href="#about" className="hover:text-brown-400 hover:underline text-lg">About</a>
             <a href="#" className="hover:text-brown-400 hover:underline text-lg">MyBooks</a>
             <a href="#browse" className="hover:text-brown-400 hover:underline text-lg">Browse</a>
-            <a href="#" className="hover:text-brown-400 hover:underline text-lg">Contact</a>
+            <a href="/contact" className="hover:text-brown-400 hover:underline text-lg">Contact</a>
             <Link
               to="/userProfile"
               className="block mt-2 px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold transform transition-transform hover:scale-105 text-lg"
@@ -117,8 +120,20 @@ const LibraryManagementTextOverlay = () => {
       <About/>
     </div>
 
+    <div>
+      <AboutusCards/>
+    </div>
+
     <div id="browse">
       <BookType/>
+    </div>
+
+    <div>
+      <BookCards/>
+    </div>
+
+    <div>
+      <NewReleases/>
     </div>
     
     <div id="footer">

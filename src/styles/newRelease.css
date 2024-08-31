@@ -1,0 +1,118 @@
+.new-releases-container {
+    position: relative; /* Make the container a reference point for absolute positioning */
+    padding: 20px;
+    text-align: center; /* Center the content */
+}
+
+.new-releases-heading {
+    position: absolute;
+    top: 10px; /* Adjust based on your preference */
+    left: 200px; /* Adjust based on your preference */
+    font-size: 28px;
+    margin: 0;
+    color: rgb(141, 37, 37);
+    font-weight: bold;
+    font-family: 'Bookman Old Style';
+    z-index: 1; /* Ensure it is on top of the books */
+}
+
+.book-list {
+    display: flex;
+    justify-content: center; /* Center the book list horizontally */
+    gap: 50px;
+    flex-wrap: wrap; /* Allow cards to wrap on smaller screens */
+    padding-top: 50px; /* Adjust based on the height of the heading */
+}
+
+.book-card {
+    background: rgb(247, 233, 233);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow */
+    width: 300px; /* Width of the card */
+    height: 318px; /* Height of the card */
+    text-align: center;
+    padding-bottom: 15px; /* Reduce padding to accommodate the content */
+    padding-top: 10px;
+    overflow: hidden; /* Ensure no content overflows the card */
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effect */
+}
+
+.book-card:hover {
+    transform: scale(1.05); /* Slightly enlarge the card on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+}
+
+.image-container {
+    position: relative;
+}
+
+.image-container img {
+    width: 100%; /* Make the image fully cover the card width */
+    height: 150px; /* Adjust height to maintain aspect ratio and fit the card */
+    object-fit: contain; /* Ensure the image covers the container without distortion */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-content {
+    padding: 10px; /* Reduce padding for more spacing */
+    height: 120px; /* Adjust height to ensure everything fits */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-content h3 {
+    font-size: 18px;
+    margin: 5px 0;
+}
+
+.card-content p {
+    color: gray;
+    margin: 5px 0;
+    font-size: 14px; /* Reduce font size for better fit */
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px; /* Reduce margin */
+}
+
+.price {
+    font-size: 18px; /* Reduce font size */
+    font-weight: bold;
+}
+
+.rating {
+    color: #81462a;
+    font-size: 18px; /* Reduce font size */
+}
+
+.add-btn {
+    margin-top: 5px;
+    background-color: #3f0d04;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px; /* Reduce padding for better fit */
+    cursor: pointer;
+    width: 100%;
+    font-size: 14px; /* Reduce font size */
+}
+
+.add-btn:hover {
+    background-color: #6e372e;
+    
+}
+
+.view-more {
+    position: absolute;
+    bottom: 350px; /* Adjust based on your preference */
+    right: 200px; /* Adjust based on your preference */
+    color: #381d11;
+    text-decoration: none;
+    z-index: 1; /* Ensure it is on top of the books */
+}

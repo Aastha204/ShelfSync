@@ -1,0 +1,93 @@
+.manage-receipt-container {
+    padding: 20px;
+    background-color: rgb(250, 241, 226);
+}
+  
+.main-heading-latest {
+    text-align: center;
+    font-size: 55px;
+    margin-bottom: 20px;
+    color: rgb(48, 8, 8);
+    font-weight: bolder;
+}
+  
+.subheading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+  
+.subheading {
+    margin-bottom: 20px;
+    font-size: 35px;
+    color: rgb(90, 20, 20);
+    font-weight: bold;
+}
+  
+.card-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.card-latest {
+    flex: 1 1 200px; /* Adjust the width based on your design */
+    max-width: 400px;
+    max-height: 200px;
+    border: 1px solid #420d0d;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-latest:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+  
+.card-latest img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+  
+.card-content {
+    padding: 10px;
+}
+  
+.button-container {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-button {
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+}
+
+.view-button {
+    background-color: #4CAF50; /* Green */
+}
+
+.delete-button {
+    background-color: #f44336; /* Red */
+}
+
+.view-more-button {
+    background-color: #7e1e18; /* Blue */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
