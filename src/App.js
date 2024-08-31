@@ -12,7 +12,6 @@ import Issue from './components/Issue';
 import Return from './components/Return';
 import Invoice from './components/Invoice';
 import ContactPage from './components/contactUs';
-<<<<<<< HEAD
 import BestAuthorBooks from './components/bestauthorbooks';
 import ListOfBestFictionBooks from './components/listofbestfictionbooks';
 import AmazonBestsellersBooks from './components/amazonbestsellersbooks';
@@ -22,12 +21,10 @@ import Fiction from './components/fiction';
 import Thriller from './components/thriller';
 import Romance from './components/romance';
 import Comics from './components/comics';
-=======
 import BookTrack from './components/bookTrack';
 import ReceiptManager from './components/ManageReceipt';
 // import LatestCard from './components/latestcard';
 
->>>>>>> e8201ef157ec77bce0814be55dcefefdb1726b82
 function App() {
   return (
     <Router>
