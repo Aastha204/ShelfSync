@@ -23,6 +23,7 @@ import Romance from './components/romance';
 import Comics from './components/comics';
 import BookTrack from './components/bookTrack';
 import ReceiptManager from './components/ManageReceipt';
+import AllBooks from './components/books';
 // import LatestCard from './components/latestcard';
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
         <Route path="/thriller" element={<Thriller/>}/>
         <Route path="/romance" element={<Romance/>}/>
         <Route path="/comics" element={<Comics/>}/>
+        <Route path="/books" element={<AllBooks/>}/>
       </Routes>
     </Router>
   );

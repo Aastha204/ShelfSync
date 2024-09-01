@@ -1,105 +1,105 @@
-/* body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 0;
-  } */
-  
-  .booktype {
-    text-align: center;
-    padding: 20px;
-  }
-  
-  .search-bar {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .input-box {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    margin-right: 10px;
-    width: 210px;
-  }
-  
-  .search-button {
-    padding: 10px 20px;
-    background-color: #53210d;
-    border: none;
-    border-radius: 15px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  .search-button:hover{
-    background-color: #270c01;
-  }
-  
-  .book-types {
-    margin-top: 30px;
-  }
-  
-  .book-types h1 {
-    font-family: 'Bookman Old Style';
-    font-size: 40px; /* Increased font size */
-    font-weight: bold; /* Made the text bold */
-    color: #821a00; /* Changed color to indigo */
-    margin-bottom: 25px; /* Added more space below */
-    text-transform: uppercase; /* Uppercased the text */
-    letter-spacing: 2px; /* Increased letter spacing */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Added a subtle text shadow */
-  }
-  
-  .icons {
-    display: flex;
-    justify-content: center;
-    gap: 40px; /* Increased gap between icons */
-  }
-  
-  .icon-container {
-    text-align: center;
-    font-size: 19px;
-    padding: 10px;
-    font-family: 'Calisto MT';
-    color:#270c01;
-  }
-  
-  .icon {
-    background-color: #5a1d04;
-    width: 130px; /* Increased width */
-    height: 130px; /* Increased height */
-    border-radius: 50%;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 47px; /* Increased icon size */
-  }
-  
-  .children::before {
-    content: '\1F46B'; /* Unicode for children icon */
-  }
-  
-  .history::before {
-    content: '\1F4D6'; /* Unicode for book icon */
-  }
-  
-  .fiction::before {
-    content: '\1F4A1'; /* Unicode for light bulb (fiction icon) */
-  }
-  
-  .thriller::before {
-    content: '\1F47B'; /* Unicode for ghost icon */
-  }
-  
-  .romance::before {
-    content: '\2764'; /* Unicode for heart icon */
-  }
-  
-  .comics::before {
-    content: '\2728'; /* Unicode for sparkle icon */
-  }
-  
+.booktype {
+  text-align: center;
+  padding: 20px;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.input-box {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-right: 10px;
+  width: 210px;
+}
+
+.search-button {
+  padding: 10px 20px;
+  background-color: #53210d;
+  border: none;
+  border-radius: 15px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #270c01;
+}
+
+.book-types {
+  margin-top: 30px;
+}
+
+.book-types h1 {
+  font-family: 'Bookman Old Style';
+  font-size: 40px; /* Increased font size */
+  font-weight: bold; /* Made the text bold */
+  color: #821a00; /* Changed color to indigo */
+  margin-bottom: 25px; /* Added more space below */
+  text-transform: uppercase; /* Uppercased the text */
+  letter-spacing: 2px; /* Increased letter spacing */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Added a subtle text shadow */
+}
+
+.icons {
+  display: flex;
+  justify-content: center;
+  gap: 40px; /* Increased gap between icons */
+}
+
+.icon-container {
+  text-align: center;
+  font-size: 19px;
+  padding: 10px;
+  font-family: 'Calisto MT';
+  color: #270c01;
+}
+
+/* Style for <a> tag to prevent default link styles from affecting appearance */
+.icon-container a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.icon {
+  background-color: #5a1d04;
+  width: 130px; /* Increased width */
+  height: 130px; /* Increased height */
+  border-radius: 50%;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 47px; /* Increased icon size */
+}
+
+.children::before {
+  content: '\1F46B'; /* Unicode for children icon */
+}
+
+.history::before {
+  content: '\1F4D6'; /* Unicode for book icon */
+}
+
+.fiction::before {
+  content: '\1F4A1'; /* Unicode for light bulb (fiction icon) */
+}
+
+.thriller::before {
+  content: '\1F47B'; /* Unicode for ghost icon */
+}
+
+.romance::before {
+  content: '\2764'; /* Unicode for heart icon */
+}
+
+.comics::before {
+  content: '\2728'; /* Unicode for sparkle icon */
+}
