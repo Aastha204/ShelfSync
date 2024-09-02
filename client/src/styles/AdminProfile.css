@@ -1,0 +1,889 @@
+/* General Styles */
+.admin-container {
+    display: flex;
+  }
+  
+  /* Sidebar */
+  .sidebar1 {
+    width: 250px;
+    background-color: hsl(27, 44%, 10%);
+    padding: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed; 
+    height: 100vh; 
+    overflow-y: auto;
+  }
+  
+  /* Adjusting content margin to prevent overlap with the fixed sidebar */
+  .content {
+    flex-grow: 1;
+    padding: 20px;
+    margin-left: 250px; /* Same width as the sidebar */
+  }
+  
+  /* Logo */
+  .logo {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .logo-img {
+    max-width: 120px;
+    border-radius: 50%;
+  }
+  
+  /* Navbar List */
+  .nav-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Even spacing */
+  }
+  
+  .nav-list li {
+    padding: 12px;
+    cursor: pointer;
+    background-color: #6d4c41;
+    color: white;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+  }
+  
+  .nav-list li:hover, .nav-list li.active {
+    background-color: #d15123;
+  }
+  
+
+  
+  .section-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4a3f35;
+    margin-bottom: 20px;
+  }
+ 
+  
+  .profile-content {
+    display: flex;
+    gap: 40px;
+    justify-content: flex-start;
+  }
+  
+  .profile-img-box {
+    flex-shrink: 0;
+  }
+  
+  .profile-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10%;
+    border: 4px solid #4a3f35;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .profile-details {
+    color: #4a3f35;
+    font-size: 16px;
+  }
+  
+  .profile-details h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: white;
+  }
+  .profile-details p{
+    color: white;
+  }
+  .profile-details h4{
+    color: white;
+  }
+  
+  /* Dashboard Section */
+  .dashboard-section {
+    padding: 20px;
+  }
+  
+  .card-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .dashboard-card {
+    flex: 1;
+    background-color: #a1887f;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .dashboard-card:hover {
+    transform: scale(1.05);
+    background-color: #8d6e63;
+  }
+  
+  /* Chart Container */
+  .chart-container {
+    margin-bottom: 30px;
+  }
+  
+  /* Table Container */
+  .table-container {
+    margin-top: 20px;
+  }
+  
+  .dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .dashboard-table th,
+  .dashboard-table td {
+    padding: 10px;
+    border: 1px solid #4a3f35;
+    text-align: center;
+  }
+  
+  .dashboard-table thead th {
+    background-color: #4a3f35;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .dashboard-table tbody tr:nth-child(even) {
+    background-color: #f5f5f5;
+  }
+  
+  .dashboard-table tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+  
+  .dashboard-table tbody tr:hover {
+    background-color: #e0e0e0;
+  }
+  
+  /* Book Management Section */
+  .book-management-section {
+    padding: 20px;
+    background-color: #d7ccc8;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .book-management-section .section-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4a3f35;
+    margin-bottom: 20px;
+  }
+  
+  /* Issue & Return Section */
+  .issue-return-section {
+    padding: 20px;
+    background-color: #d7ccc8;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .issue-return-section .section-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4a3f35;
+    margin-bottom: 20px;
+  }
+  
+  /* Settings Section */
+  .settings-section {
+    padding: 20px;
+    background-color: #d7ccc8;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+ 
+  
+  /* Help & Support Section */
+  .help-support-section {
+    padding: 20px;
+    background-color: #d7ccc8;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+
+  
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      height: auto; /* Remove fixed height for smaller screens */
+      position: relative; /* Relative positioning on smaller screens */
+    }
+  
+    .content {
+      margin-left: 0; /* Remove margin on smaller screens */
+    }
+    
+    .profile-content {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .card-container {
+      flex-direction: column;
+    }
+  }
+  
+  /* Book Management Section */
+  /* AdminProfile.css */
+  
+  /* General Styles */
+  .admin-container {
+    display: flex;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    min-height: 100vh;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    width: 250px;
+    background-color: #4a3f35;
+    padding: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: fixed; /* Fixed position */
+    height: 100vh; /* Full viewport height */
+    overflow-y: auto; /* Scroll if content exceeds viewport height */
+    transition: width 0.3s ease-in-out;
+  }
+  
+  .sidebar .logo {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .sidebar .logo-img {
+    max-width: 120px;
+    border-radius: 50%;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .sidebar .logo-img:hover {
+    transform: scale(1.1);
+  }
+  
+  .nav-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Even spacing */
+  }
+  
+  .nav-list li {
+    padding: 12px;
+    cursor: pointer;
+    background-color: #6d4c41;
+    color: white;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .nav-list li:hover,
+  .nav-list li.active {
+    background-color: #8d6e63;
+    transform: translateX(5px);
+  }
+  
+  /* Content Section */
+  .content {
+    flex-grow: 1;
+    padding: 20px;
+    margin-left: 250px; /* Same width as the sidebar */
+    transition: margin-left 0.3s ease-in-out;
+  }
+  
+  /* Profile Section */
+  .profile-section {
+    background-color: #402c24d7;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+   
+    
+  }
+.section-title h2{
+    color: white;
+}
+  
+  .section-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #35291e;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 2px solid #d7ccc2;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .section-title:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  }
+  
+  .profile-content {
+    display: flex;
+    gap: 40px;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .profile-img-box {
+    flex-shrink: 0;
+  }
+  
+  .profile-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10%;
+    border: 4px solid #4a3f35;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
+  }
+  
+  .profile-details {
+    color: #4a3f35;
+    font-size: 16px;
+  }
+  
+  .profile-details h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .profile-details p {
+    margin: 5px 0;
+  }
+  
+  /* Dashboard Section */
+  .dashboard-section {
+    padding: 20px;
+  }
+  
+  .card-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+  
+  .dashboard-card {
+    flex: 1;
+    /* min-width: 200px; */
+    background-color: #3e2a22;
+    color: white;
+    /* padding: 20px; */
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    font-size: 30px;
+  }
+  
+  .dashboard-card:hover {
+    transform: scale(1.05);
+    background-color: #8d6e63;
+  }
+  
+  .chart-container {
+    margin-bottom: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  
+  .dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .dashboard-table th,
+  .dashboard-table td {
+    padding: 10px;
+    border: 1px solid #4a3f35;
+    text-align: center;
+  }
+  
+  .dashboard-table thead th {
+    background-color: #4a3f35;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .dashboard-table tbody tr:nth-child(even) {
+    background-color: #f5f5f5;
+  }
+  
+  .dashboard-table tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+  
+  .dashboard-table tbody tr:hover {
+    background-color: #e0e0e0;
+  }
+  
+  /* Book Management Section */
+  .book-management-section {
+    padding: 20px;
+    background-color: #d7ccc8;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .book-management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .add-book-btn {
+    padding: 10px 20px;
+    background-color: #6d4c41;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    font-size: 16px;
+  }
+  
+  .add-book-btn:hover {
+    background-color: #8d6e63;
+    transform: scale(1.05);
+  }
+  
+  /* Add Book Form */
+  .add-book-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .add-book-form input,
+  .add-book-form select,
+  .add-book-form button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 2px solid #4a3f35;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .add-book-form input:focus,
+  .add-book-form select:focus,
+  .add-book-form button:focus {
+    outline: none;
+    border-color: #8d6e63;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .submit-book-btn {
+    background-color: #6d4c41;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .submit-book-btn:hover {
+    background-color: #8d6e63;
+  }
+  
+  /* Book Table */
+  .book-table-container {
+    overflow-x: auto;
+  }
+  
+  .book-table {
+    width: 100%;
+    border-collapse: collapse;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .book-table th,
+  .book-table td {
+    padding: 15px;
+    text-align: left;
+    border: 2px solid #4a3f35;
+  }
+  
+  .book-table th {
+    background-color: #4a3f35;
+    color: white;
+  }
+  
+  .book-table tbody tr:nth-child(even) {
+    background-color: #f5f5f5;
+  }
+  
+  .book-table tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+  
+  .book-table tbody tr:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .edit-btn,
+  .delete-btn {
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    margin-right: 5px;
+    font-size: 14px;
+  }
+  
+  .edit-btn {
+    background-color: #ff9800;
+    color: white;
+  }
+  
+  .edit-btn:hover {
+    background-color: #ffa726;
+    transform: scale(1.05);
+  }
+  
+  .delete-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .delete-btn:hover {
+    background-color: #ef5350;
+    transform: scale(1.05);
+  }
+  
+  /* Issue & Return Section */
+  .issue-return-section
+   {
+    padding: 20px;
+    background-color: #4a3831;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(236, 233, 233, 0.793);
+    margin-bottom: 20px;
+    color: white;
+  }
+ 
+  
+  .issue-return-section .section-title
+ {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+  
+  /* Mobile Responsiveness */
+  @media (max-width: 1200px) {
+    .sidebar {
+      width: 200px;
+    }
+  
+    .content {
+      margin-left: 200px;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .profile-content {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .card-container {
+      flex-direction: column;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      height: auto; /* Remove fixed height for smaller screens */
+      position: relative; /* Relative positioning on smaller screens */
+    }
+  
+    .content {
+      margin-left: 0; /* Remove margin on smaller screens */
+    }
+  
+    .profile-content {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .card-container {
+      flex-direction: column;
+    }
+  
+    .dashboard-card {
+      min-width: 100%;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .profile-img {
+      width: 150px;
+      height: 150px;
+    }
+  
+    .add-book-form input,
+    .add-book-form select,
+    .add-book-form button {
+      font-size: 14px;
+    }
+  
+    .edit-btn,
+    .delete-btn {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+  /* issue return section  */
+  .content {
+    flex-grow: 1;
+    padding: 20px;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .section-title {
+    margin-bottom: 20px;
+    
+  }
+  
+  .issue-return-section {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .issue-return-section.active {
+    opacity: 1;
+  }
+  
+  .issue-return-cards {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .issue-return-card {
+    background-color: #8d6e63;
+    color: #fff;
+    padding: 20px;
+    width: 48%;
+    text-align: center;
+    border-radius: 8px;
+    transition: transform 0.3s;
+  }
+  
+  .issue-return-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .search-bar-container {
+    margin-bottom: 20px;
+  }
+  
+  .search-bar {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .issue-return-table-container {
+    margin-top: 20px;
+  }
+  
+  .issue-return-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .issue-return-table th,
+  .issue-return-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .issue-return-table th {
+    background-color: #8d6e63;
+    color: #fff;
+  }
+  .issue-return-section {
+    opacity: 1;
+    transition: none;
+  }
+  /* delete box css */
+  /* Delete Confirmation Modal */
+  .delete-confirm-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .delete-confirm-content {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .delete-confirm-content p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .confirm-delete-btn,
+  .cancel-delete-btn {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .confirm-delete-btn {
+    background-color: #e53935;
+    color: #fff;
+  }
+  
+  .cancel-delete-btn {
+    background-color: #757575;
+    color: #fff;
+  }
+  
+  .confirm-delete-btn:hover {
+    background-color: #c62828;
+  }
+  
+  .cancel-delete-btn:hover {
+    background-color: #616161;
+  }
+  
+  /* Undo Notification */
+  .undo-notification {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    animation: slideInLeft 0.5s ease-in-out;
+  }
+  
+  .undo-notification p {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .undo-btn {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #2196f3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .undo-btn:hover {
+    background-color: #1976d2;
+  }
+  
+  /* Loading Bar */
+  .undo-notification::after {
+    content: '';
+    display: block;
+    height: 4px;
+    background-color: #1976d2;
+    animation: loading 5s linear forwards;
+    border-radius: 0 0 8px 8px;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes loading {
+    from {
+      width: 100%;
+    }
+    to {
+      width: 0%;
+    }
+  }
+  

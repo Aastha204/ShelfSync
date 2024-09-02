@@ -9,7 +9,7 @@ const MemberProfile = () => {
         <ul>
           <a href="/">Home</a>
           <a>Edit Profile</a>
-          <a>Issued Books</a>
+          <a href="/issue">Issued Books</a>
           <a>Returned Books</a>
           <a>Log out</a>
         </ul>

@@ -24,6 +24,7 @@ import Comics from './components/comics';
 import BookTrack from './components/bookTrack';
 import ReceiptManager from './components/ManageReceipt';
 import AllBooks from './components/books';
+import AdminProfilePage from './components/AdminProfile';
 // import LatestCard from './components/latestcard';
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
         <Route path="/romance" element={<Romance/>}/>
         <Route path="/comics" element={<Comics/>}/>
         <Route path="/books" element={<AllBooks/>}/>
+        <Route path="/admin" element={<AdminProfilePage/>}/>
       </Routes>
     </Router>
   );
@@ -68,3 +70,15 @@ function App() {
 // }
 
 export default App
+// import AdminProfilePage from './components/AdminProfile';
+
+
+// function App() {
+//   return (
+//     <div>
+//       <AdminProfilePage/>
+//     </div>
+//   );
+// }
+
+// export default App
