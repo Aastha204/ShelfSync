@@ -29,6 +29,7 @@ import AdminProfilePage from './components/AdminProfile';
 import { Navigate } from 'react-router-dom';
 import AddBook from './components/AddBook';
 import BookList from './components/BookList';
+import ChangeUserProfile from './components/changeUserProfile';
 import Signup from './components/Signup';
 
 const ProtectedRoute = ({ children }) => {
@@ -72,7 +73,7 @@ function App() {
         <Route path='/add' element={<AddBook/>}/>
         <Route path='/bookList' element={<BookList/>}/>
         <Route path="/books" element={<AllBooks/>}/>
-
+        <Route path="/changeUserProfile" element={<ChangeUserProfile/>}/>
       </Routes>
     </Router>
   );

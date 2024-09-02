@@ -5,14 +5,12 @@ const MemberProfile = () => {
   return (
     <div className="userprofile-profile-page">
       <aside className="userprofile-sidebar">
-        <h2>ShelfSync</h2>
+        <img src="/images/logo1.png" alt="Logo" className="userprofile-logo" />
         <ul>
           <a href="/">Home</a>
           <a>Edit Profile</a>
           <a href="/issue">Issued Books</a>
           <a href="/return">Returned Books</a>
-          <a href="/issue">Issued Books</a>
-          <a>Returned Books</a>
           <a>Log out</a>
         </ul>
       </aside>
@@ -22,7 +20,6 @@ const MemberProfile = () => {
             {/* <img src="https://via.placeholder.com/100" alt="Profile" /> */}
             <div>
               <h3>Name</h3>
-              <p>username</p>
               <p>email</p>
               <p>phone no</p>
             </div>
