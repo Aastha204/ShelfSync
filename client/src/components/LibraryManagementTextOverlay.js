@@ -77,7 +77,7 @@ const LibraryManagementTextOverlay = () => {
             <a href="#browse" className="hover:text-brown-400 hover:underline text-lg">Browse</a>
             <a href="/contact" className="hover:text-brown-400 hover:underline text-lg">Contact</a>
             <Link
-              to="/userProfile"
+              to="/login"
               className="block mt-2 px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold transform transition-transform hover:scale-105 text-lg"
             >
               Login
@@ -96,12 +96,12 @@ const LibraryManagementTextOverlay = () => {
           <a href="#" className="block hover:text-brown-400">MyBooks</a>
           <a href="#browse" className="block hover:text-brown-400">Browse</a>
           <a href="#" className="block hover:text-brown-400">Contact</a>
-          <a 
-            href="#" 
+          <Link 
+            to="/login" 
             className="block mt-2 px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold transform transition-transform hover:scale-105 text-lg"
           >
             Login
-          </a>
+          </Link>
         </div>
       </nav>
 
