@@ -1,0 +1,74 @@
+/* Preloader container styling */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    z-index: 9999;
+    transition: transform 1s ease-out, opacity 0.5s ease-out;
+  }
+  
+/* Text styling */
+.preloader-text {
+    color: rgba(255, 255, 255, 0.937);
+    font-size: 3rem;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    transition: transform 1s ease-out, opacity 0.5s ease-out;
+    text-align: center;
+  }
+  
+  
+  .preloader-text img {
+    display: block;
+    margin: 0 auto; /* Center the image horizontally */
+    width: 360px; /* Adjust width as needed */
+    height: 300px; /* Adjust height as needed */
+    margin-bottom: 20px; /* Space between logo and text */
+  }
+  
+/* Zoom-out effect */
+.zoom-out {
+    transform: scale(0.5);
+    opacity: 0.8;
+  }
+  
+/* Slide-up effect */
+.slide-up {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  
+@media (min-width: 768px) {
+    .preloader-text {
+      font-size: 4rem;
+    }
+  }
+  
+@media (min-width: 1024px) {
+    .preloader-text {
+      font-size: 5rem;
+    }
+  }
+
+@keyframes pop {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+.animate-pop {
+    animation: pop 0.5s ease-in-out;
+  }
