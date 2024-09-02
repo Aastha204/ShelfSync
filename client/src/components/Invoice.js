@@ -2,7 +2,7 @@ import React from 'react'
 
 const Invoice = () => {
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center py-10">
+    <div className="min-h-screen bg-brown-500 flex justify-center items-center py-10">
       <div className="bg-white w-full max-w-4xl md:max-w-2xl sm:max-w-md border-4 border-brown-600 rounded-lg shadow-lg">
         {/* Header */}
         <div className="flex justify-between items-start sm:items-center flex-col sm:flex-row px-6 py-4 border-b-2 border-brown-600">

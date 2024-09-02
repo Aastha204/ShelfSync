@@ -75,7 +75,9 @@ const Login = () => {
   
 
   return (
-    <div className="min-h-screen bg-cover bg-center p-4 sm:p-8" style={{ backgroundImage: `url('images/login.jpeg')` }}>
+
+    <div className="min-h-screen bg-cover bg-center p-4 sm:p-8" style={{ backgroundImage: "url('images/login.jpeg')" }}>
+
       <div className="container mx-auto px-4 py-8 bg-transparent-800 bg-opacity-40 rounded-lg relative max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
         <div className="w-full mx-auto relative overflow-hidden">
           <div className="flex w-full relative" style={{ minHeight: '460px' }}>
@@ -93,11 +95,17 @@ const Login = () => {
                   
                   <button className="w-full bg-brown-600 hover:bg-brown-700 text-white font-bold py-2 px-4 rounded-lg mt-6">Login</button>
                 </form>
+
                 <Link to="/signup" className="text-sm text-center mt-4">
                   Don't have an account? <span className="text-brown-600 hover:text-brown-700 cursor-pointer" >Sign up</span>
                 </Link>
+
+                
+                
               </div>
             </div>
+
+           
 
           </div>
         </div>

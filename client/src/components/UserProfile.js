@@ -7,6 +7,7 @@ const MemberProfile = () => {
       <aside className="sidebar">
         <h2>ShelfSync</h2>
         <ul>
+          <a href="/">Home</a>
           <a>Edit Profile</a>
           <a>Issued Books</a>
           <a>Returned Books</a>

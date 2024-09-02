@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/booktype.css';
 
-function booktype() {
+function BookType() {
   return (
     <div className="booktype">
       <div className="search-bar">
@@ -13,28 +13,40 @@ function booktype() {
         <h1>Book Types</h1>
         <div className="icons">
           <div className="icon-container">
-            <div className="icon children"></div>
-            <a>Children</a>
+            <a href="#children">
+              <div className="icon children"></div>
+              <span>Children</span>
+            </a>
           </div>
           <div className="icon-container">
-            <div className="icon history"></div>
-            <a>History</a>
+            <a href="#history">
+              <div className="icon history"></div>
+              <span>History</span>
+            </a>
           </div>
           <div className="icon-container">
-            <div className="icon fiction"></div>
-            <a>Fiction</a>
+            <a href="#fiction">
+              <div className="icon fiction"></div>
+              <span>Fiction</span>
+            </a>
           </div>
           <div className="icon-container">
-            <div className="icon thriller"></div>
-            <a>Thriller</a>
+            <a href="#thriller">
+              <div className="icon thriller"></div>
+              <span>Thriller</span>
+            </a>
           </div>
           <div className="icon-container">
-            <div className="icon romance"></div>
-            <a>Romance</a>
+            <a href="#romance">
+              <div className="icon romance"></div>
+              <span>Romance</span>
+            </a>
           </div>
           <div className="icon-container">
-            <div className="icon comics"></div>
-            <a>Comics</a>
+            <a href="#comics">
+              <div className="icon comics"></div>
+              <span>Comics</span>
+            </a>
           </div>
         </div>
       </div>
@@ -42,4 +54,4 @@ function booktype() {
   );
 }
 
-export default booktype;
+export default BookType;

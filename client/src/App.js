@@ -23,6 +23,7 @@ import Romance from './components/romance';
 import Comics from './components/comics';
 import BookTrack from './components/bookTrack';
 import ReceiptManager from './components/ManageReceipt';
+import AllBooks from './components/books';
 // import LatestCard from './components/latestcard';
 import { Navigate } from 'react-router-dom';
 import AddBook from './components/AddBook';
@@ -73,8 +74,11 @@ function App() {
         <Route path="/thriller" element={<Thriller/>}/>
         <Route path="/romance" element={<Romance/>}/>
         <Route path="/comics" element={<Comics/>}/>
+
         <Route path='/add' element={<AddBook/>}/>
         <Route path='/bookList' element={<BookList/>}/>
+        <Route path="/books" element={<AllBooks/>}/>
+
       </Routes>
     </Router>
   );

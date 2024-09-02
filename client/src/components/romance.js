@@ -55,7 +55,7 @@ const BookCard = ({ title, author, price, rating, imageUrl }) => {
             <BookCard key={index} {...book} />
           ))}
         </div>
-        <a href="/more" className="view-more">
+        <a href="/books" className="view-more">
           View More
         </a>
       </div>
