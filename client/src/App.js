@@ -24,10 +24,12 @@ import Comics from './components/comics';
 import BookTrack from './components/bookTrack';
 import ReceiptManager from './components/ManageReceipt';
 import AllBooks from './components/books';
+import AdminProfilePage from './components/AdminProfile';
 // import LatestCard from './components/latestcard';
 import { Navigate } from 'react-router-dom';
 import AddBook from './components/AddBook';
 import BookList from './components/BookList';
+import ChangeUserProfile from './components/changeUserProfile';
 import Signup from './components/Signup';
 
 
@@ -54,14 +56,7 @@ function App() {
         <Route path="/footer" element={<Footer/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
-        {/* <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <UserProfile />
-            </ProtectedRoute>
-          }
-        /> */}
+        <Route path='/userprofile' element={<UserProfile/>}/>
         <Route path="/issue" element={<Issue/>}/>
         <Route path="/return" element={<Return/>}/>
         <Route path="/invoice" element={<Invoice/>}/>
@@ -75,11 +70,11 @@ function App() {
         <Route path="/thriller" element={<Thriller/>}/>
         <Route path="/romance" element={<Romance/>}/>
         <Route path="/comics" element={<Comics/>}/>
-
+        <Route path="/admin" element={<AdminProfilePage/>}/>
         <Route path='/add' element={<AddBook/>}/>
         <Route path='/bookList' element={<BookList/>}/>
         <Route path="/books" element={<AllBooks/>}/>
-
+        <Route path="/changeUserProfile" element={<ChangeUserProfile/>}/>
       </Routes>
     
     </div>
@@ -94,3 +89,15 @@ function App() {
 // }
 
 export default App
+// import AdminProfilePage from './components/AdminProfile';
+
+
+// function App() {
+//   return (
+//     <div>
+//       <AdminProfilePage/>
+//     </div>
+//   );
+// }
+
+// export default App

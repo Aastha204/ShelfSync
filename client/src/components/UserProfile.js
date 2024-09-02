@@ -30,28 +30,30 @@ const MemberProfile = () => {
     },1000);
   }
   return (
-    <div className="profile-page">
-      <aside className="sidebar">
-        <h2>ShelfSync</h2>
+    <div className="userprofile-profile-page">
+      <aside className="userprofile-sidebar">
+        <img src="/images/logo1.png" alt="Logo" className="userprofile-logo" />
         <ul>
           <a href="/">Home</a>
           <a>Edit Profile</a>
-          <a>Issued Books</a>
-          <a>Returned Books</a>
+          <a href="/issue">Issued Books</a>
+          <a href="/return">Returned Books</a>
           <button onClick={handleLogout}>Log out</button>
+          
         </ul>
       </aside>
-      <main className="profile-main">
-        <div className="profile-card">
-          <div className="profile-info">
+      <main className="userprofile-profile-main">
+        <div className="userprofile-profile-card">
+          <div className="userprofile-profile-info">
             {/* <img src="https://via.placeholder.com/100" alt="Profile" /> */}
             <div>
               <h3>{loggedInUserName}</h3>
               <p>{loggedInUserEmail}</p>
+
               <p>phone no</p>
             </div>
           </div>
-          <div className="profile-details">
+          <div className="userprofile-profile-details">
             <div>
               <p>Age</p>
               <p>50</p>
@@ -71,22 +73,21 @@ const MemberProfile = () => {
           </div>
         </div>
 
-        
-        <div className="card-container">
-          <div className="clickable-card">
+        <div className="userprofile-card-container">
+          <div className="userprofile-clickable-card">
             <img src="/images/1.png" alt="Card 1" />
-            <div className="overlay-text">
-            <a href="/receipt">Manage Your Receipt</a>
+            <div className="userprofile-overlay-text">
+              <a href="/receipt">Manage Your Receipt</a>
             </div>
           </div>
-          <div className="clickable-card">
+          <div className="userprofile-clickable-card">
             <img src="/images/2.png" alt="Card 2" />
-            <div className="overlay-text">
-            <a href="/booktrack">Track Your Books</a>
+            <div className="userprofile-overlay-text">
+              <a href="/booktrack">Track Your Books</a>
             </div>
           </div>
         </div>
-        <a href="/contact" class="contact-link">
+        <a href="/contact" className="userprofile-contact-link">
           Have any query? Contact us
         </a>
       </main>
