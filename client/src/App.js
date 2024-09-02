@@ -53,14 +53,7 @@ function App() {
         <Route path="/footer" element={<Footer/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
-        {/* <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <UserProfile />
-            </ProtectedRoute>
-          }
-        /> */}
+        <Route path='/userprofile' element={<UserProfile/>}/>
         <Route path="/issue" element={<Issue/>}/>
         <Route path="/return" element={<Return/>}/>
         <Route path="/invoice" element={<Invoice/>}/>
