@@ -326,9 +326,7 @@
    
     
   }
-.section-title h2{
-    color: white;
-}
+
   
   .section-title {
     font-size: 24px;
@@ -340,11 +338,13 @@
     border-radius: 8px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     transition: box-shadow 0.3s ease-in-out;
+    color: white;
   }
 
   .section-title:hover {
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
   }
+ 
   
   .profile-content {
     display: flex;
@@ -384,6 +384,9 @@
   /* Dashboard Section */
   .dashboard-section {
     padding: 20px;
+  }
+  .dashboard-section h2 {
+  color:#3f3228
   }
   
   .card-container {

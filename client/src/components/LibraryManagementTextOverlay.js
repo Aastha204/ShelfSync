@@ -81,6 +81,7 @@ const LibraryManagementTextOverlay = () => {
 
           {/* Desktop Menu */}
           <div className="hidden sm:flex space-x-8 text-white items-center">
+          
             <a href="/" className="hover:text-white-400 hover:underline text-lg">Home</a>
             <a href="#about" className="hover:text-white-400 hover:underline text-lg">About</a>
             <a href="/issue" className="hover:text-white-400 hover:underline text-lg">MyBooks</a>
