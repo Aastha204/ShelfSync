@@ -30,19 +30,20 @@ import AddBook from './components/AddBook';
 import BookList from './components/BookList';
 import Signup from './components/Signup';
 
-const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem('token');
-  return token ? children : <Navigate to="/" />;
-};
+
+// const ProtectedRoute = ({ children }) => {
+//   const token = localStorage.getItem('token');
+//   return token ? children : <Navigate to="/" />;
+// };
 
 function App() {
-
-  
+   
   return (
-    <Router>
+    <div className="App">
+      
       <Routes>
         <Route path="/" element={<LibraryManagementTextOverlay/>}/>
-        
+        <Route path="/userprofile" element={<UserProfile/>} />
         <Route path="/about" element={<About/>}/>
         <Route path="/aboutuscard" element={<Aboutuscard/>}/>
         <Route path="/booktype" element={<BookType/>}/>
@@ -80,7 +81,8 @@ function App() {
         <Route path="/books" element={<AllBooks/>}/>
 
       </Routes>
-    </Router>
+    
+    </div>
   );
 }
 // function App() {

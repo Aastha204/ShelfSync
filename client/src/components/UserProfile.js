@@ -1,7 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/UserProfile.css";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { handleSuccess } from "./utils";
+import { ToastContainer } from "react-toastify";
 
 const MemberProfile = () => {
+
+  
+
+  const [loggedInUserName,setLoggedInUserName]=useState('');
+  const [loggedInUserEmail,setLoggedInUserEmail]=useState('');
+  const navigate=useNavigate();
+  useEffect(() => {
+    const userName = localStorage.getItem('loggedInUserName');
+    const userEmail = localStorage.getItem('loggedInUserEmail');
+    console.log('Fetched from localStorage:', { userName, userEmail });
+    setLoggedInUserName(userName);
+    setLoggedInUserEmail(userEmail);
+  }, []);
+  
+  const handleLogout=(e)=>{
+    localStorage.removeItem('token');
+    localStorage.removeItem('loggedInUserName');
+    localStorage.removeItem('loggedIn UserEmail');
+    handleSuccess('User Logged Out');
+    setTimeout(()=>{
+          navigate("/");
+    },1000);
+  }
   return (
     <div className="profile-page">
       <aside className="sidebar">
@@ -11,7 +38,7 @@ const MemberProfile = () => {
           <a>Edit Profile</a>
           <a>Issued Books</a>
           <a>Returned Books</a>
-          <a>Log out</a>
+          <button onClick={handleLogout}>Log out</button>
         </ul>
       </aside>
       <main className="profile-main">
@@ -19,9 +46,8 @@ const MemberProfile = () => {
           <div className="profile-info">
             {/* <img src="https://via.placeholder.com/100" alt="Profile" /> */}
             <div>
-              <h3>Name</h3>
-              <p>username</p>
-              <p>email</p>
+              <h3>{loggedInUserName}</h3>
+              <p>{loggedInUserEmail}</p>
               <p>phone no</p>
             </div>
           </div>
@@ -64,6 +90,7 @@ const MemberProfile = () => {
           Have any query? Contact us
         </a>
       </main>
+      <ToastContainer/>
     </div>
   );
 };
