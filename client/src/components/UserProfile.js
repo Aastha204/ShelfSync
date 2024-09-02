@@ -10,6 +10,8 @@ const MemberProfile = () => {
           <a href="/">Home</a>
           <a>Edit Profile</a>
           <a href="/issue">Issued Books</a>
+          <a href="/return">Returned Books</a>
+          <a href="/issue">Issued Books</a>
           <a>Returned Books</a>
           <a>Log out</a>
         </ul>

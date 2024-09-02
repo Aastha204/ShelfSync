@@ -81,13 +81,14 @@ const LibraryManagementTextOverlay = () => {
 
           {/* Desktop Menu */}
           <div className="hidden sm:flex space-x-8 text-white items-center">
-            <a href="#" className="hover:text-white-400 hover:underline text-lg">Home</a>
+            <a href="/" className="hover:text-white-400 hover:underline text-lg">Home</a>
             <a href="#about" className="hover:text-white-400 hover:underline text-lg">About</a>
+            <a href="/issue" className="hover:text-white-400 hover:underline text-lg">MyBooks</a>
             <a href="/issue" className="hover:text-white-400 hover:underline text-lg">MyBooks</a>
             <a href="#browse" className="hover:text-white-400 hover:underline text-lg">Browse</a>
             <a href="/contact" className="hover:text-white-400 hover:underline text-lg">Contact</a>
             <Link
-              to="/userProfile"
+              to="/login"
               className="block mt-2 px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold transform transition-transform hover:scale-105 text-lg"
             >
               Login
@@ -101,8 +102,9 @@ const LibraryManagementTextOverlay = () => {
             isOpen ? "block" : "hidden"
           } sm:hidden mt-2 space-y-2 text-white bg-gray-800 p-4 rounded`}
         >
-          <a href="#" className="block hover:text-brown-400">Home</a>
+          <a href="/" className="block hover:text-brown-400">Home</a>
           <a href="#about" className="block hover:text-brown-400">About</a>
+          <a href="/issue" className="block hover:text-brown-400">MyBooks</a>
           <a href="/issue" className="block hover:text-brown-400">MyBooks</a>
           <a href="#browse" className="block hover:text-brown-400">Browse</a>
           <a href="/contact" className="block hover:text-brown-400">Contact</a>
@@ -111,7 +113,7 @@ const LibraryManagementTextOverlay = () => {
             className="block mt-2 px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold transform transition-transform hover:scale-105 text-lg"
           >
             Login
-          </a>
+            </a>
         </div>
       </nav>
 

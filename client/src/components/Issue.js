@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 
 const Issue = () => {
   const [books, setBooks] = useState([
-    { id: 1, name: "The Great Gatsby", author: "F. Scott Fitzgerald", type: "Fiction", isIssued: false },
-    { id: 2, name: "Sapiens", author: "Yuval Noah Harari", type: "Non-fiction", isIssued: false },
-    { id: 3, name: "Harry Potter", author: "J.K. Rowling", type: "Fantasy", isIssued: false },
+    { id: 1, name: "The Great Gatsby", author: "F. Scott Fitzgerald", type: "Fiction", isIssued: true },
+    { id: 2, name: "Sapiens", author: "Yuval Noah Harari", type: "Non-fiction", isIssued: true },
+    { id: 3, name: "Harry Potter", author: "J.K. Rowling", type: "Fantasy", isIssued: true },
   ]);
 
-  // Function to handle issuing/returning books
-  const toggleIssueBook = (id) => {
+  // Function to handle returning books
+  const returnBook = (id) => {
     const updatedBooks = books.map((book) => {
       if (book.id === id) {
-        return { ...book, isIssued: !book.isIssued };
+        return { ...book, isIssued: false };
       }
       return book;
     });
@@ -40,12 +40,14 @@ const Issue = () => {
                 <td className="p-4 text-left">{book.author}</td>
                 <td className="p-4 text-left">{book.type}</td>
                 <td className="p-4 text-left">
-                  <button
-                    onClick={() => toggleIssueBook(book.id)}
-                    className={`px-4 py-2 rounded text-white ${book.isIssued ? "bg-red-500 hover:bg-red-700" : "bg-green-500 hover:bg-green-700"}`}
-                  >
-                    {book.isIssued ? "Return" : "Issue"}
-                  </button>
+                  {book.isIssued && (
+                    <button
+                      onClick={() => returnBook(book.id)}
+                      className="px-4 py-2 rounded text-white bg-red-500 hover:bg-red-700"
+                    >
+                      Return
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

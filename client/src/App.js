@@ -26,13 +26,24 @@ import ReceiptManager from './components/ManageReceipt';
 import AllBooks from './components/books';
 import AdminProfilePage from './components/AdminProfile';
 // import LatestCard from './components/latestcard';
+import { Navigate } from 'react-router-dom';
+import AddBook from './components/AddBook';
+import BookList from './components/BookList';
+import Signup from './components/Signup';
+
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem('token');
+  return token ? children : <Navigate to="/" />;
+};
 
 function App() {
+
+  
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LibraryManagementTextOverlay/>}/>
-        <Route path="/userProfile" element={<UserProfile/>}/>
+        
         <Route path="/about" element={<About/>}/>
         <Route path="/aboutuscard" element={<Aboutuscard/>}/>
         <Route path="/booktype" element={<BookType/>}/>
@@ -42,6 +53,8 @@ function App() {
         <Route path="/receipt" element={<ReceiptManager/>}/>
         <Route path="/footer" element={<Footer/>}/>
         <Route path="/login" element={<Login/>}/>
+        <Route path='/signup' element={<Signup/>}/>
+        <Route path='/userprofile' element={<UserProfile/>}/>
         <Route path="/issue" element={<Issue/>}/>
         <Route path="/return" element={<Return/>}/>
         <Route path="/invoice" element={<Invoice/>}/>
@@ -55,8 +68,11 @@ function App() {
         <Route path="/thriller" element={<Thriller/>}/>
         <Route path="/romance" element={<Romance/>}/>
         <Route path="/comics" element={<Comics/>}/>
-        <Route path="/books" element={<AllBooks/>}/>
         <Route path="/admin" element={<AdminProfilePage/>}/>
+        <Route path='/add' element={<AddBook/>}/>
+        <Route path='/bookList' element={<BookList/>}/>
+        <Route path="/books" element={<AllBooks/>}/>
+
       </Routes>
     </Router>
   );
