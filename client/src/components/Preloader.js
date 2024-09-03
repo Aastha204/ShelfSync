@@ -32,7 +32,7 @@ const Preloader = ({ onTransitionEnd }) => {
     <div className={`preloader ${slideUp ? 'slide-up' : ''}`}>
       <div className={`preloader-text ${zoomOut ? 'zoom-out' : ''}`}>
       <img
-              src="./images/logo1shelf.png" // Path to your logo image
+              src="./images/logo1.png" // Path to your logo image
               alt="Library Logo"
               className="preloader-logo" // Adjust the logo height here
             />

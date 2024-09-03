@@ -90,7 +90,7 @@ const LibraryManagementTextOverlay = () => {
           {/* Logo */}
           <a href="/" className="flex items-center">
             <img
-              src="./images/logo1shelf.png" // Path to your logo image
+              src="./images/logo1.png" // Path to your logo image
               alt="Library Logo"
               className="h-16 w-auto" // Adjust the logo size as needed
             />
