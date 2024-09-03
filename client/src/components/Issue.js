@@ -19,12 +19,12 @@ const Issue = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cover bg-center p-8" style={{ backgroundImage: "url('Images/issue.jpg')" }}>
-      <div className="container mx-auto px-4 py-8 bg-brown-800 bg-opacity-20 rounded-lg shadow-lg">
-        <h1 className="text-6xl font-bold text-white text-center mb-6">Your Books</h1>
-        <table className="min-w-full border-collapse bg-brown-900 rounded-lg overflow-hidden shadow-md">
+    <div className="min-h-screen bg-cover bg-center p-8" style={{ backgroundImage: "url('./images/issuebg.jpg')" }}>
+      <div className="container mx-auto px-4 py-8 bg-cyan-800 bg-opacity-40 rounded-lg shadow-lg">
+        <h1 className="text-6xl font-bold text-cyan-950 text-center mb-6">Your Books</h1>
+        <table className="min-w-full border-collapse bg-white-900 rounded-lg overflow-hidden shadow-md">
           <thead>
-            <tr className="bg-brown-800 text-white">
+            <tr className="bg-cyan-950 text-white">
               <th className="p-4 text-left">S.No.</th>
               <th className="p-4 text-left">Book Name</th>
               <th className="p-4 text-left">Author Name</th>
@@ -34,7 +34,7 @@ const Issue = () => {
           </thead>
           <tbody className="text-white">
             {books.map((book, index) => (
-              <tr key={book.id} className={`hover:bg-brown-600 ${index % 2 === 0 ? 'bg-brown-400' : 'bg-brown-500'}`}>
+              <tr key={book.id} className={`hover:bg-sky-700 ${index % 2 === 0 ? 'bg-cyan-900' : 'bg-sky-950'}`}>
                 <td className="p-4 text-left">{index + 1}</td>
                 <td className="p-4 text-left">{book.name}</td>
                 <td className="p-4 text-left">{book.author}</td>

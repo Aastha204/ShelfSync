@@ -15,6 +15,7 @@ import Thriller from './thriller';
 import Romance from './romance';
 import Comics from './comics';
 import BookType from './booktypes';
+import Preloader from './Preloader';
 // import { use } from '../../../server/Routes/AuthRouter';
 import { FaUserAlt } from 'react-icons/fa';
 
@@ -30,6 +31,7 @@ const LibraryManagementTextOverlay = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visible, setVisible] = useState(true);
   const [isOpen, setIsOpen] = useState(false); // For hamburger menu toggle
+  const [isLoading, setIsLoading] = useState(true); // For preloader
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate=useNavigate();
 
@@ -50,6 +52,7 @@ const LibraryManagementTextOverlay = () => {
   };
 
   useEffect(() => {
+    // Text animation
     const interval = setInterval(() => {
       setVisible(false);
       setTimeout(() => {
@@ -61,23 +64,38 @@ const LibraryManagementTextOverlay = () => {
     return () => clearInterval(interval);
   }, [texts.length]);
 
+  const handlePreloaderEnd = () => {
+    setIsLoading(false); // Hide preloader and show the main content
+  };
+
+  if (isLoading) {
+    return <Preloader onTransitionEnd={handlePreloaderEnd} />;
+  }
+
   return (
     <>
       <div className="relative w-full h-screen flex items-center justify-center bg-black">
-      {/* Background Video */}
-      <video
-        className="absolute top-0 left-0 w-full h-full object-cover"
-        autoPlay
-        loop
-        muted
-      >
-        <source src="./videos/library.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+        {/* Background Video */}
+        <video
+          className="absolute top-0 left-0 w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+        >
+          <source src="./videos/library.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        {/* Navbar */}
+        <nav className="absolute top-0 left-0 right-0 p-4 z-20 flex items-center justify-between">
+          {/* Logo */}
+          <a href="/" className="flex items-center">
+            <img
+              src="./images/logo1.png" // Path to your logo image
+              alt="Library Logo"
+              className="h-16 w-auto" // Adjust the logo size as needed
+            />
+          </a>
 
-      {/* Navbar */}
-      <nav className="absolute top-0 right-0 p-4 z-20">
-        <div className="flex items-center justify-between">
           {/* Hamburger Menu Icon */}
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -101,7 +119,6 @@ const LibraryManagementTextOverlay = () => {
 
           {/* Desktop Menu */}
           <div className="hidden sm:flex space-x-8 text-white items-center">
-          
             <a href="/" className="hover:text-white-400 hover:underline text-lg">Home</a>
             <a href="#about" className="hover:text-white-400 hover:underline text-lg">About</a>
             <a href="/issue" className="hover:text-white-400 hover:underline text-lg">MyBooks</a>
@@ -119,14 +136,14 @@ const LibraryManagementTextOverlay = () => {
                 </div>
               ) : (
                 <Link
-                  to="/optioncards"
+                  to="/custom"
                   className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold transform transition-transform hover:scale-105 text-lg"
                 >
                   Login
                 </Link>
               )}
           </div>
-        </div>
+        </nav>
 
         {/* Mobile Menu */}
         <div
@@ -163,78 +180,67 @@ const LibraryManagementTextOverlay = () => {
               </Link>
             )}
         </div>
-      </nav>
 
-      {/* Text Display */}
-      {visible && (
-        <p className="relative z-10 text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center px-4 animate-fade-in">
-          {texts[currentIndex]}
-        </p>
-      )}
+        {/* Text Display */}
+        {visible && (
+          <p className="relative z-10 text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center px-4 animate-fade-in">
+            {texts[currentIndex]}
+          </p>
+        )}
 
-      {/* Optional: Dark Overlay to Improve Text Readability */}
-      <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-0"></div>
-      
-    </div>
-    <div id='about'>
-      <About/>
-    </div>
+        {/* Optional: Dark Overlay to Improve Text Readability */}
+        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-0"></div>
+      </div>
 
-    <div>
-      <AboutusCards/>
-    </div>
-
-    <div id="browse">
-      <BookType/>
-    </div>
-
-    <div>
-      <BookCards/>
-    </div>
-
-    <div id="newrelease">
-      <NewReleases/>
-    </div>
-
-    <div id="bestauthor">
-      <BestAuthor/>
-    </div>
-
-    <div id="bestfiction">
-      <BestFictional/>
-    </div>
-
-    <div id="amazonseller">
-      <Amazonseller/>
-    </div>
-    
-    <div id="children">
-      <Children/>
-    </div>
-
-    <div id="history">
-      <History/>
-    </div>
-
-    <div id="fiction">
-      <Fiction/>
-    </div>
-
-    <div id="thriller">
-      <Thriller/>
-    </div>
-
-    <div id="romance">
-      <Romance/>
-    </div>
-
-    <div id="comics">
-      <Comics/>
-    </div>
-
-    <div id="footer">
-      <Footer/>
-    </div>
+     
+   
+  
+      {/* Content Sections */}
+      <div id="about">
+        <About />
+      </div>
+      <div>
+        <AboutusCards />
+      </div>
+      <div id="browse">
+        <BookType />
+      </div>
+      <div>
+        <BookCards />
+      </div>
+      <div id="newrelease">
+        <NewReleases />
+      </div>
+      <div id="bestauthor">
+        <BestAuthor />
+      </div>
+      <div id="bestfiction">
+        <BestFictional />
+      </div>
+      <div id="amazonseller">
+        <Amazonseller />
+      </div>
+      <div id="children">
+        <Children />
+      </div>
+      <div id="history">
+        <History />
+      </div>
+      <div id="fiction">
+        <Fiction />
+      </div>
+      <div id="thriller">
+        <Thriller />
+      </div>
+      <div id="romance">
+        <Romance />
+      </div>
+      <div id="comics">
+        <Comics />
+      </div>
+      <div id="footer">
+        <Footer />
+      </div>
     </>
   );
 };

@@ -8,9 +8,9 @@ const Return = () => {
   ]);
 
   return (
-    <div className="min-h-screen bg-cover bg-center p-8" style={{ backgroundImage: "url('images/return.png')" }}>
+    <div className="min-h-screen bg-cover bg-center p-8" style={{ backgroundImage: "url('./images/issuebg.jpg')" }}>
       <div className="container mx-auto px-4 py-8 bg-brown-100 bg-opacity-20 rounded-lg">
-        <h1 className="text-6xl font-bold text-brown text-center mb-6">Return Books</h1>
+        <h1 className="text-6xl font-bold text-brown-800 text-center mb-6">Return Books</h1>
         <table className="min-w-full border-collapse bg-brown-700 rounded-lg overflow-hidden">
           <thead className="bg-brown-800 text-white">
             <tr>

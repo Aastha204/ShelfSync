@@ -30,7 +30,7 @@ import { Navigate } from 'react-router-dom';
 import AddBook from './components/AddBook';
 import ChangeUserProfile from './components/changeUserProfile';
 import Signup from './components/Signup';
-import OptionCards from './components/OptionCards'
+import CustomCards from './components/CustomCards';
 import AdminLogin from './components/AdminLogin'
 import AdminSignup from './components/AdminSignUp'
 
@@ -77,7 +77,7 @@ function App() {
        
         <Route path="/books" element={<AllBooks/>}/>
         <Route path="/changeUserProfile" element={<ChangeUserProfile/>}/>
-        <Route path="/optioncards" element={<OptionCards/>}/>
+        <Route path="/custom" element={<CustomCards/>}/>
         <Route path="/adminlogin" element={<AdminLogin/>}/>
         <Route path="/adminsignup" element={<AdminSignup/>}/>
       </Routes>
