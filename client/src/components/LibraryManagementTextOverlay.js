@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import About from './About';
 import AboutusCards from './aboutusCards';
 import BookCards from './cards';
@@ -16,6 +16,8 @@ import Romance from './romance';
 import Comics from './comics';
 import BookType from './booktypes';
 import Preloader from './Preloader';
+// import { use } from '../../../server/Routes/AuthRouter';
+import { FaUserAlt } from 'react-icons/fa';
 
 
 const LibraryManagementTextOverlay = () => {
@@ -30,6 +32,24 @@ const LibraryManagementTextOverlay = () => {
   const [visible, setVisible] = useState(true);
   const [isOpen, setIsOpen] = useState(false); // For hamburger menu toggle
   const [isLoading, setIsLoading] = useState(true); // For preloader
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate=useNavigate();
+
+  useEffect(() => {
+    // Check if the user is logged in by checking localStorage
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    navigate('/login');
+  };
 
   useEffect(() => {
     // Text animation
@@ -104,12 +124,24 @@ const LibraryManagementTextOverlay = () => {
             <a href="/issue" className="hover:text-white-400 hover:underline text-lg">MyBooks</a>
             <a href="#browse" className="hover:text-white-400 hover:underline text-lg">Browse</a>
             <a href="/contact" className="hover:text-white-400 hover:underline text-lg">Contact</a>
-            <Link
-              to="/custom"
-              className="block mt-2 px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold transform transition-transform hover:scale-105 text-lg"
-            >
-              Login
-            </Link>
+            {isLoggedIn ? (
+                <div className="flex items-center space-x-4">
+                  <Link
+                    to="/userprofile"
+                    className="block text-white text-lg hover:underline"
+                  >
+                    <FaUserAlt />
+                  </Link>
+                  
+                </div>
+              ) : (
+                <Link
+                  to="/custom"
+                  className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold transform transition-transform hover:scale-105 text-lg"
+                >
+                  Login
+                </Link>
+              )}
           </div>
         </nav>
 
@@ -123,13 +155,30 @@ const LibraryManagementTextOverlay = () => {
           <a href="#about" className="block hover:text-brown-400">About</a>
           <a href="/issue" className="block hover:text-brown-400">MyBooks</a>
           <a href="#browse" className="block hover:text-brown-400">Browse</a>
-          <a href="/contact" className="block hover:text-brown-400">Contact</a>
-          <a 
-            href="/login" 
-            className="block mt-2 px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold transform transition-transform hover:scale-105 text-lg"
-          >
-            Login
-          </a>
+          <a href="#" className="block hover:text-brown-400">Contact</a>
+          {isLoggedIn ? (
+              <div className="flex items-center space-x-4">
+                <Link
+                  to="/userprofile"
+                  className="block text-white text-lg hover:underline"
+                >
+                  <FaUserAlt />
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg"
+              >
+                Login
+              </Link>
+            )}
         </div>
 
         {/* Text Display */}

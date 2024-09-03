@@ -70,9 +70,69 @@ import React, { useState } from 'react';
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import '../App.css'; // Adjust the path based on your project structure
 import {Link} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { handleError, handleSuccess } from './utils'
+import { ToastContainer } from 'react-toastify';
 
 const Login = () => {
-  
+  const [loginInfo,setLoginInfo]= useState(
+    {
+        
+        email:'',
+        password:''
+    }
+)
+
+const navigate=useNavigate()
+const handleChange=(e)=>{
+   const {name,value}=e.target;
+   console.log(name,value);
+   const copyLoginInfo = {...loginInfo};
+   copyLoginInfo[name]=value;
+   setLoginInfo(copyLoginInfo)
+}
+
+console.log('loginInfo -> ',loginInfo);
+
+const handleLogin= async (e)=>{
+    e.preventDefault();
+    const {email,password}= loginInfo;
+    if(!email || !password){
+        return handleError("email and password are required")
+    }
+    try{
+       const url = "http://localhost:3001/auth/login";
+       const response = await fetch(url,{
+        method:"POST",
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(loginInfo)
+       });
+       const result = await response.json();
+       const {success,message,jwtToken , name,error}=result;
+       if(success){
+        handleSuccess(message);
+        localStorage.setItem('token',jwtToken);
+        localStorage.setItem('loggedInUserName',name);
+        localStorage.setItem('loggedInUserEmail',email);
+        setTimeout(()=>{
+          navigate('/userprofile');
+
+        },1000)
+       }
+       else if(error){
+        const details = error?.details[0].message;
+        handleError(details)
+       }
+       else if(!success){
+        handleError(message);
+       }
+       console.log(result)
+    }catch(err){
+        handleError(err)
+    }
+}
 
   return (
 
@@ -96,14 +156,14 @@ const Login = () => {
             <div className={`absolute w-full transition-transform duration-700 ease-in-out transform `}>
               <div className="p-8 bg-white rounded-lg shadow-lg">
                 <h2 className="text-5xl font-bold text-brown-700 text-center">Login</h2>
-                <form className="mt-4">
+                <form className="mt-4" onSubmit={handleLogin}>
                   <label className="block text-sm font-medium text-gray-700">Email</label>
-                  <input type="email" className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-brown-500" />
+                  <input type="email" name='email' onChange={handleChange} value={loginInfo.email} className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-brown-500" />
                   
                   <label className="block text-sm font-medium text-gray-700 mt-4">Password</label>
-                  <input type="password" className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-brown-500" />
+                  <input type="password" name='password' onChange={handleChange} value={loginInfo.password} className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-brown-500" />
                   
-                  <button className="w-full bg-brown-600 hover:bg-brown-700 text-white font-bold py-2 px-4 rounded-lg mt-6">Login</button>
+                  <button type='submit' className="w-full bg-brown-600 hover:bg-brown-700 text-white font-bold py-2 px-4 rounded-lg mt-6">Login</button>
                 </form>
 
                 <Link to="/signup" className="text-sm text-center mt-4">
@@ -120,6 +180,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <ToastContainer/>
     </div>
   );
 };
