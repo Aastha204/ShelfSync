@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Chart from 'chart.js/auto';
 import '../styles/AdminProfile.css';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import { handleSuccess } from "./utils";
 
 const AdminProfilePage = () => {
   const [activeSection, setActiveSection] = useState('profile');
@@ -22,12 +24,33 @@ const AdminProfilePage = () => {
   const [bookToDelete, setBookToDelete] = useState(null);
   const [recentlyDeleted, setRecentlyDeleted] = useState(null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const totalBooks = 1000;
   const booksIssued = 300;
   const booksReturned = 200;
   const booksLeft = totalBooks - booksIssued;
+
+  const [loggedInAdminName,setLoggedInAdminName]=useState('');
+  const [loggedInAdminEmail,setLoggedInAdminEmail]=useState('');
+  const navigate=useNavigate();
+  useEffect(() => {
+    const adminName = localStorage.getItem('loggedInAdminName');
+    const adminEmail = localStorage.getItem('loggedInAdminEmail');
+    console.log('Fetched from localStorage:', { adminName, adminEmail });
+    setLoggedInAdminName(adminName);
+    setLoggedInAdminEmail(adminEmail);
+  }, []);
+  
+  const handleLogout=(e)=>{
+    localStorage.removeItem('token');
+    localStorage.removeItem('loggedInAdminName');
+    localStorage.removeItem('loggedInAdminEmail');
+    handleSuccess('Admin Logged Out');
+    setTimeout(()=>{
+          navigate("/");
+    },1000);
+  }
 
   const handleSectionClick = (section) => {
     setActiveSection(section);
@@ -159,6 +182,7 @@ const AdminProfilePage = () => {
             Issue & Return
           </li>
           <li>
+           <button onClick={handleLogout}> Logout</button> 
             <a href="/"> Logout</a> 
           </li>
         </ul>
@@ -175,11 +199,11 @@ const AdminProfilePage = () => {
                 <img src="https://t3.ftcdn.net/jpg/05/22/57/00/360_F_522570005_1Awl2mMScnQUJ99ZJuaof9Psr2Qp33w7.jpg" alt="Admin Profile" className="profile-img" />
               </div>
               <div className="profile-details">
-                <h3>Name: Aastha </h3>
-                <p>Username: admin123</p>
+                <h3>Name: {loggedInAdminName}</h3>
+                <p>Email: {loggedInAdminEmail}</p>
                 <p>Age: 20</p>
                 <p>Contact: +1234567890</p>
-                <p>Email: admin@example.com</p>
+               
                 <p>Address: 123 Library Lane, City, Country</p>
                 <h4>Date of Birth: 01/01/1989</h4>
               </div>
@@ -359,6 +383,25 @@ const AdminProfilePage = () => {
           </div>
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="delete-confirm-modal">
+          <div className="delete-confirm-content">
+            <p>Do you really want to delete this book?</p>
+            <button className="confirm-delete-btn" onClick={confirmDelete}>Yes</button>
+            <button className="cancel-delete-btn" onClick={() => setShowDeleteConfirm(false)}>No</button>
+          </div>
+        </div>
+      )}
+
+      {/* Undo Delete Notification */}
+      {recentlyDeleted && (
+        <div className="undo-notification">
+          <p>Book deleted. <button className="undo-btn" onClick={undoDelete}>Undo</button></p>
+        </div>
+      )}
+      <ToastContainer/>
     </div>
   );
 };

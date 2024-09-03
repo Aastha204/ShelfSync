@@ -5,20 +5,20 @@ import { useState } from 'react'
 import { handleError, handleSuccess } from './utils'
 
 const validateName = (name) => {
-  const regex = /^[a-zA-Z]+(?:[.'-]?[a-zA-Z]+)(?: [a-zA-Z]+(?:[.'-]?[a-zA-Z]+))*$/;
-  return regex.test(name);
-};
+    const regex = /^[a-zA-Z]+(?:[.'-]?[a-zA-Z]+)(?: [a-zA-Z]+(?:[.'-]?[a-zA-Z]+))*$/;
+    return regex.test(name);
+  };
 
 const validatePassword = (password) => {
-  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,15}$/;
-  return regex.test(password);
-};
-
-// Email validation function
-const validateEmail = (email) => {
-  const regex=/^[a-zA-Z0-9._%+-]+@(gmail\.com|outlook\.com|yahoo\.com|hotmail\.com|live\.com|icloud\.com)$/;
-  return regex.test(email);
-};
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,15}$/;
+    return regex.test(password);
+  };
+  
+  // Email validation function
+  const validateEmail = (email) => {
+    const regex=/^[a-zA-Z0-9._%+-]+@(gmail\.com|outlook\.com|yahoo\.com|hotmail\.com|live\.com|icloud\.com)$/;
+    return regex.test(email);
+  };
 
 const Signup = () => {
 
@@ -48,19 +48,19 @@ const Signup = () => {
             return handleError("name,email and password are required")
         }
         if (!validateName(name)) {
-          return handleError("Name must contain only letters and spaces.");
-        }
-
+            return handleError("Name must contain only letters and spaces.");
+          }
+        
         if (!validatePassword(password)) {
-          return handleError("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
-        }
-    
-        if (!validateEmail(email)) {
-          return handleError("Email must be a valid email");
-        }
-
+            return handleError("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+          }
+      
+          if (!validateEmail(email)) {
+            return handleError("Email must be a valid email");
+          }
+  
         try{
-           const url = "http://localhost:3001/auth/signup";
+           const url = "http://localhost:3001/admin/signup";
            const response = await fetch(url,{
             method:"POST",
             headers:{
@@ -73,7 +73,7 @@ const Signup = () => {
            if(success){
             handleSuccess(message);
             setTimeout(()=>{
-                navigate('/login');
+                navigate('/adminlogin');
             },1000)
            }
            else if(error){
@@ -114,7 +114,7 @@ const Signup = () => {
                
                 <button type='submit' className="w-full bg-brown-600 hover:bg-brown-700 text-white font-bold py-2 px-4 rounded-lg mt-6">Sign Up</button>
               </form>
-              <Link to="/login" className="text-sm text-center mt-4">
+              <Link to="/adminlogin" className="text-sm text-center mt-4">
                 Already have an account? <span className="text-brown-600 hover:text-brown-700 cursor-pointer" >Login</span>
               </Link>
             </div>
@@ -129,5 +129,3 @@ const Signup = () => {
 }
 
 export default Signup
-
-
