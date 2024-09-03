@@ -8,7 +8,7 @@ const MemberProfile = () => {
         <img src="/images/logo1.png" alt="Logo" className="userprofile-logo" />
         <ul>
           <a href="/">Home</a>
-          <a>Edit Profile</a>
+          <a href="/changeUserProfile">Edit Profile</a>
           <a href="/issue">Issued Books</a>
           <a href="/return">Returned Books</a>
           <a>Log out</a>
