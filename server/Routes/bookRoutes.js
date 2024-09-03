@@ -1,25 +1,18 @@
+// routes/bookRoutes.js
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
-const path = require('path');
-const { addBook, getBooks, updateBook, deleteBook } = require('../Controllers/bookController');
+const bookController = require('../Controllers/bookController');
 
-// Set up multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Folder where images will be stored
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
-  },
-});
+// Add Book
+router.post('/add', bookController.addBook);
 
-const upload = multer({ storage });
+// Delete Book
+router.delete('/delete/:id', bookController.deleteBook);
 
-// Routes
-router.post('/add', upload.single('image'), addBook); // Upload image
-router.get('/', getBooks);
-router.put('/update/:id', upload.single('image'), updateBook); // Upload image
-router.delete('/delete/:id', deleteBook);
+// Update Book
+router.put('/update/:id', bookController.updateBook);
+
+// Get All Books
+router.get('/', bookController.getBooks);
 
 module.exports = router;

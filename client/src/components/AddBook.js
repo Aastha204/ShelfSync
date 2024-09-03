@@ -1,88 +1,121 @@
-import React, { useState } from 'react';
+// components/BookManager.js
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import {ToastContainer, toast } from 'react-toastify';
 
-const AddBook = ({ onBookAdded }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    author: '',
-    ratePerMonth: '',
-    available: true
-  });
-  const [error, setError] = useState('');
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value
-    });
+const BookManager = () => {
+  const [books, setBooks] = useState([]);
+  const [bookData, setBookData] = useState({ name: '', author: '', available: true, ratePerMonth: 0 });
+  const [editing, setEditing] = useState(null);
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/api/books');
+      setBooks(response.data);
+    } catch (error) {
+      toast.error('Error fetching books');
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.post("http://localhost:3001/books/add", formData)
-      .then((res) => {
-        setFormData({
-          name: '',
-          author: '',
-          ratePerMonth: '',
-          available: true
-        });
-        onBookAdded(res.data); // Notify the parent (BookList) to refresh the list
-      })
-      .catch(err => setError('Failed to add book'));
+  const handleAdd = async () => {
+    try {
+      const response = await axios.post('http://localhost:3001/api/books/add', bookData);
+      toast.success('Book added successfully');
+      setBooks([...books, response.data.book]);
+      setBookData({ name: '', author: '', available: true, ratePerMonth: 0 });
+    } catch (error) {
+      if (error.response && error.response.data.message === 'Book already exists') {
+        toast.error('Book already exists');
+      } else {
+        toast.error('Error adding book');
+      }
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:/api/books/delete/${id}`);
+      toast.success('Book deleted successfully');
+      setBooks(books.filter(book => book._id !== id));
+    } catch (error) {
+      toast.error('Error deleting book');
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const response = await axios.put(`http://localhost:3001/api/books/update/${editing}`, bookData);
+      toast.success('Book updated successfully');
+      setBooks(books.map(book => book._id === editing ? response.data.book : book));
+      setEditing(null);
+      setBookData({ name: '', author: '', available: true, ratePerMonth: 0 });
+    } catch (error) {
+      toast.error('Error updating book');
+    }
   };
 
   return (
-    <div className=" p-4 bg-brown-100 text-brown-900 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4 text-center md:text-3xl">Add a New Book</h1>
-
-      {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
-
-      <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto p-4 bg-white rounded-lg shadow-md">
+    <div className="p-4">
+      <h1 className="text-2xl mb-4">Book Manager</h1>
+      <div className="mb-4">
         <input
-          className="border border-brown-300 p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-brown-500"
           type="text"
-          name="name"
           placeholder="Book Name"
-          value={formData.name}
-          onChange={handleChange}
-          required
+          value={bookData.name}
+          onChange={e => setBookData({ ...bookData, name: e.target.value })}
+          className="border p-2 mb-2 w-full"
         />
         <input
-          className="border border-brown-300 p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-brown-500"
           type="text"
-          name="author"
-          placeholder="Author Name"
-          value={formData.author}
-          onChange={handleChange}
-          required
+          placeholder="Author"
+          value={bookData.author}
+          onChange={e => setBookData({ ...bookData, author: e.target.value })}
+          className="border p-2 mb-2 w-full"
         />
         <input
-          className="border border-brown-300 p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-brown-500"
           type="number"
-          name="ratePerMonth"
           placeholder="Rate Per Month"
-          value={formData.ratePerMonth}
-          onChange={handleChange}
-          required
+          value={bookData.ratePerMonth}
+          onChange={e => setBookData({ ...bookData, ratePerMonth: e.target.value })}
+          className="border p-2 mb-2 w-full"
         />
-        <label className="flex items-center">
-          <input
-            type="checkbox"
-            name="available"
-            checked={formData.available}
-            onChange={handleChange}
-            className="mr-2"
-          />
-          Available
-        </label>
-        <button type="submit" className="bg-brown-500 text-white p-2 rounded-md hover:bg-brown-600 w-full">
-          Add Book
-        </button>
-      </form>
+        <div className="mb-2">
+          <label className="mr-2">
+            <input
+              type="checkbox"
+              checked={bookData.available}
+              onChange={e => setBookData({ ...bookData, available: e.target.checked })}
+              className="mr-2"
+            />
+            Available
+          </label>
+        </div>
+        {editing ? (
+          <button onClick={handleUpdate} className="bg-blue-500 text-white p-2 rounded">Update Book</button>
+        ) : (
+          <button onClick={handleAdd} className="bg-green-500 text-white p-2 rounded">Add Book</button>
+        )}
+      </div>
+      <div>
+        {books.map(book => (
+          <div key={book._id} className="border p-4 mb-4">
+            <h2 className="text-xl">{book.name}</h2>
+            <p><strong>Author:</strong> {book.author}</p>
+            <p><strong>Available:</strong> {book.available ? 'Yes' : 'No'}</p>
+            <p><strong>Rate Per Month:</strong> ${book.ratePerMonth}</p>
+            <button onClick={() => setEditing(book._id)} className="bg-yellow-500 text-white p-2 rounded mr-2">Edit</button>
+            <button onClick={() => handleDelete(book._id)} className="bg-red-500 text-white p-2 rounded">Delete</button>
+          </div>
+        ))}
+      </div>
+      <ToastContainer/>
     </div>
   );
 };
 
-export default AddBook;
+export default BookManager;

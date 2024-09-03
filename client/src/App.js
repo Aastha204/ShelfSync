@@ -28,7 +28,6 @@ import AdminProfilePage from './components/AdminProfile';
 // import LatestCard from './components/latestcard';
 import { Navigate } from 'react-router-dom';
 import AddBook from './components/AddBook';
-import BookList from './components/BookList';
 import ChangeUserProfile from './components/changeUserProfile';
 import Signup from './components/Signup';
 import OptionCards from './components/OptionCards'
@@ -75,7 +74,7 @@ function App() {
         <Route path="/comics" element={<Comics/>}/>
         <Route path="/admin" element={<AdminProfilePage/>}/>
         <Route path='/add' element={<AddBook/>}/>
-        <Route path='/bookList' element={<BookList/>}/>
+       
         <Route path="/books" element={<AllBooks/>}/>
         <Route path="/changeUserProfile" element={<ChangeUserProfile/>}/>
         <Route path="/optioncards" element={<OptionCards/>}/>
