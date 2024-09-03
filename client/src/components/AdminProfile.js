@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'chart.js/auto';
 import '../styles/AdminProfile.css';
+import { useNavigate } from 'react-router-dom';
 
 const AdminProfilePage = () => {
   const [activeSection, setActiveSection] = useState('profile');
@@ -20,6 +21,8 @@ const AdminProfilePage = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [bookToDelete, setBookToDelete] = useState(null);
   const [recentlyDeleted, setRecentlyDeleted] = useState(null);
+
+  const navigate = useNavigate();
 
   const totalBooks = 1000;
   const booksIssued = 300;
@@ -134,13 +137,14 @@ const AdminProfilePage = () => {
     }
   }, [activeSection]);
 
+  const handleAddBookClick = () => {
+    navigate('/add');
+  };
+
   return (
     <div className="admin-container">
-      {/* sidebar1 */}
+      {/* Sidebar */}
       <div className="sidebar1">
-        {/* <div className="logo">
-          <img src="../images/1.png" alt="Logo" className="logo-img" />
-        </div> */}
         <ul className="nav-list">
           <li onClick={() => handleSectionClick('profile')} className={activeSection === 'profile' ? 'active' : ''}>
             Admin Profile
@@ -155,7 +159,7 @@ const AdminProfilePage = () => {
             Issue & Return
           </li>
           <li>
-           <a href="/"> Logout</a> 
+            <a href="/"> Logout</a> 
           </li>
         </ul>
       </div>
@@ -224,8 +228,8 @@ const AdminProfilePage = () => {
           <div className="book-management-section">
             <div className="book-management-header">
               <h2 className="section-title">Manage Books</h2>
-              <button className="add-book-btn" onClick={() => setShowAddBookForm(!showAddBookForm)}>
-                {showAddBookForm ? 'Close Form' : 'Add a Book'}
+              <button className="add-book-btn" onClick={handleAddBookClick}>
+                Add Book
               </button>
             </div>
 
@@ -238,6 +242,7 @@ const AdminProfilePage = () => {
                   placeholder="Name of Book"
                   value={bookForm.name}
                   onChange={handleInputChange}
+                  required
                 />
                 <input
                   type="text"
@@ -245,108 +250,107 @@ const AdminProfilePage = () => {
                   placeholder="Author Name"
                   value={bookForm.author}
                   onChange={handleInputChange}
+                  required
                 />
-                <select name="genre" value={bookForm.genre} onChange={handleInputChange}>
-                  <option value="">Select Genre</option>
-                  <option value="Romantic">Romantic</option>
-                  <option value="Comic">Comic</option>
-                  <option value="Thriller">Thriller</option>
-                  <option value="Fictional">Fictional</option>
-                  <option value="Horror">Horror</option>
-                  <option value="Children">Children</option>
-                </select>
                 <input
-                  type="number"
+                  type="text"
+                  name="genre"
+                  placeholder="Genre"
+                  value={bookForm.genre}
+                  onChange={handleInputChange}
+                  required
+                />
+                <input
+                  type="text"
                   name="isbn"
-                  placeholder="ISBN Number"
+                  placeholder="ISBN"
                   value={bookForm.isbn}
                   onChange={handleInputChange}
-                  min="0"
-                  step="1"
+                  required
                 />
                 <input
-                  type="number"
+                  type="text"
                   name="yearPublished"
                   placeholder="Year Published"
                   value={bookForm.yearPublished}
                   onChange={handleInputChange}
-                  min="0"
-                  step="1"
+                  required
                 />
-                <input type="file" name="image" onChange={handleFileChange} />
-                <button className="submit-book-btn" onClick={handleAddBook}>
-                  {editingIndex !== null ? 'Update Book' : 'Add Book'}
-                </button>
+                <input type="file" name="image" onChange={handleFileChange} required />
+                <button onClick={handleAddBook}>{editingIndex !== null ? 'Update Book' : 'Add Book'}</button>
               </div>
             )}
 
-            {/* Book Table */}
-            <div className="book-table-container">
-              <table className="book-table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Author</th>
-                    <th>Genre</th>
-                    <th>ISBN</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredBooks.map((book, index) => (
-                    <tr key={index}>
-                      <td>{book.name}</td>
-                      <td>{book.author}</td>
-                      <td>{book.genre}</td>
-                      <td>{book.isbn}</td>
-                      <td>
-                        <button className="edit-btn" onClick={() => handleEditBook(index)}>Edit</button>
-                        <button className="delete-btn" onClick={() => handleDeleteBook(index)}>Delete</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {/* Book List */}
+            <input
+              type="text"
+              className="search-bar"
+              placeholder="Search Books..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+
+            <ul className="book-list">
+              {filteredBooks.map((book, index) => (
+                <li key={index} className="book-item">
+                  <img src={URL.createObjectURL(book.image)} alt="Book Cover" className="book-cover" />
+                  <div className="book-details">
+                    <h3>{book.name}</h3>
+                    <p>Author: {book.author}</p>
+                    <p>Genre: {book.genre}</p>
+                    <p>ISBN: {book.isbn}</p>
+                    <p>Year Published: {book.yearPublished}</p>
+                  </div>
+                  <div className="book-actions">
+                    <button onClick={() => handleEditBook(index)}>Edit</button>
+                    <button onClick={() => handleDeleteBook(index)}>Delete</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            {showDeleteConfirm && (
+              <div className="delete-confirmation">
+                <p>Are you sure you want to delete this book?</p>
+                <button onClick={confirmDelete}>Yes</button>
+                <button onClick={() => setShowDeleteConfirm(false)}>No</button>
+              </div>
+            )}
+
+            {recentlyDeleted && (
+              <div className="undo-delete">
+                <p>Book deleted. <button onClick={undoDelete}>Undo</button></p>
+              </div>
+            )}
           </div>
         )}
 
-        {/* Issue & Return Section */}
+        {/* Issue and Return Section */}
         {activeSection === 'issueReturn' && (
           <div className="issue-return-section">
-            <h2 className="section-title">Issue & Return</h2>
-            <div className="issue-return-cards">
-              <div className="issue-return-card">Books Issued: {booksIssued}</div>
-              <div className="issue-return-card">Books Returned: {booksReturned}</div>
-            </div>
-            <div className="search-bar-container">
-              <input
-                type="text"
-                className="search-bar"
-                placeholder="Search by Book Name, Author, ISBN"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <div className="issue-return-table-container">
+            <h2 className="section-title">Issue & Return Management</h2>
+            <div className="issue-return-container">
+              <h3>Issue History</h3>
               <table className="issue-return-table">
                 <thead>
                   <tr>
-                    <th>User Name</th>
-                    <th>User ID</th>
-                    <th>Book Issued Name</th>
-                    <th>Return Date</th>
-                    <th>Fine</th>
+                    <th>Book Name</th>
+                    <th>ISBN</th>
+                    <th>Issued To</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {issueReturnData.map((data, index) => (
+                  {issueReturnData.map((item, index) => (
                     <tr key={index}>
-                      <td>{data.userName}</td>
-                      <td>{data.userId}</td>
-                      <td>{data.bookName}</td>
-                      <td>{data.returnDate}</td>
-                      <td>{data.fine}</td>
+                      <td>{item.bookName}</td>
+                      <td>{item.isbn}</td>
+                      <td>{item.issuedTo}</td>
+                      <td>{item.issueDate}</td>
+                      <td>{item.dueDate}</td>
+                      <td>{item.status}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -355,27 +359,8 @@ const AdminProfilePage = () => {
           </div>
         )}
       </div>
-
-      {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && (
-        <div className="delete-confirm-modal">
-          <div className="delete-confirm-content">
-            <p>Do you really want to delete this book?</p>
-            <button className="confirm-delete-btn" onClick={confirmDelete}>Yes</button>
-            <button className="cancel-delete-btn" onClick={() => setShowDeleteConfirm(false)}>No</button>
-          </div>
-        </div>
-      )}
-
-      {/* Undo Delete Notification */}
-      {recentlyDeleted && (
-        <div className="undo-notification">
-          <p>Book deleted. <button className="undo-btn" onClick={undoDelete}>Undo</button></p>
-        </div>
-      )}
     </div>
   );
 };
 
 export default AdminProfilePage;
-

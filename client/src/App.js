@@ -32,6 +32,7 @@ import BookList from './components/BookList';
 import ChangeUserProfile from './components/changeUserProfile';
 import Signup from './components/Signup';
 
+
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('token');
   return token ? children : <Navigate to="/" />;
@@ -44,7 +45,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LibraryManagementTextOverlay/>}/>
-        
+      
         <Route path="/about" element={<About/>}/>
         <Route path="/aboutuscard" element={<Aboutuscard/>}/>
         <Route path="/booktype" element={<BookType/>}/>
