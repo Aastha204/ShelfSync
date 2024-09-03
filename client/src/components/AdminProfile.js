@@ -169,6 +169,7 @@ const AdminProfilePage = () => {
       {/* Sidebar */}
       <div className="sidebar1">
         <ul className="nav-list">
+        <img src="/images/logo1.png" alt="Logo" className="userprofile-logo" />
           <li onClick={() => handleSectionClick('profile')} className={activeSection === 'profile' ? 'active' : ''}>
             Admin Profile
           </li>
