@@ -9,13 +9,14 @@
     justify-content: center;
     align-items: center;
     background-color: black;
+   
     z-index: 9999;
     transition: transform 1s ease-out, opacity 0.5s ease-out;
   }
   
 /* Text styling */
 .preloader-text {
-    color: rgba(255, 255, 255, 0.937);
+    color: rgba(255, 255, 255, 0.84);
     font-size: 3rem;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     transition: transform 1s ease-out, opacity 0.5s ease-out;

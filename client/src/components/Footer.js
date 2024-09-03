@@ -1,25 +1,55 @@
-import React from 'react'
+import React from 'react';
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+
 
 const Footer = () => {
   return (
-    <div className='bg-[#3e1302] w-full p-12 text-white flex justify-between items-start space-x-12'>
-      <div>
-        <h2 className='font-bold mb-4 text-lg text-white-400'>Let us help you</h2>
-        <p className='mb-2 hover:text-yellow-300 cursor-pointer'>Your account</p>
-        <p className='hover:text-yellow-300 cursor-pointer'>Your Books</p>
+    <footer className="bg-[#2E1D0F] w-full p-12 text-white flex flex-col md:flex-row justify-between items-start space-y-6 md:space-y-0 md:space-x-12">
+      {/* Contact Section */}
+      <div className="flex-1">
+        <h2 className="font-bold mb-4 text-lg text-yellow-400">Let us help you</h2>
+        <Link to="/account" className="block mb-2 hover:text-yellow-300 cursor-pointer">ShelfSync@gmail.com</Link>
+        <Link to="/books" className="block hover:text-yellow-300 cursor-pointer">Your Books</Link>
       </div>
-      <div>
-        <h2 className='font-bold mb-4 text-lg text-white-400'>Contact us</h2>
-        <p className='mb-2 hover:text-yellow-300 cursor-pointer'>+91 1234567890</p>
-        <p className='hover:text-yellow-300 cursor-pointer'>+91 1234567890</p>
+
+      {/* Contact Information */}
+      <div className="flex-1">
+        <h2 className="font-bold mb-4 text-lg text-yellow-400">Contact Us</h2>
+        <p className="mb-2 hover:text-yellow-300 cursor-pointer">+91 1234567890</p>
+        <p className="hover:text-yellow-300 cursor-pointer">+91 9876543210</p>
       </div>
-      <div>
-        <h2 className='font-bold mb-4 text-lg text-white-400'>Address</h2>
-        <p className='mb-2'>Delhi</p>
+
+      {/* Address Section */}
+      <div className="flex-1">
+        <h2 className="font-bold mb-4 text-lg text-yellow-400">Address</h2>
+        <p className="mb-2">Delhi</p>
         <p>India</p>
       </div>
-    </div>
-  )
-}
 
-export default Footer
+      {/* Social Media Icons */}
+      <div className="flex-1 flex flex-col items-start space-y-4 mt-6 md:mt-0">
+        <h2 className="font-bold mb-4 text-lg text-yellow-400">Follow Us</h2>
+        <div className="flex space-x-4">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-yellow-300 transition-colors duration-300">
+            <FaFacebookF className="text-2xl" />
+          </a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-yellow-300 transition-colors duration-300">
+            <FaTwitter className="text-2xl" />
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-yellow-300 transition-colors duration-300">
+            <FaInstagram className="text-2xl" />
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-yellow-300 transition-colors duration-300">
+            <FaLinkedinIn className="text-2xl" />
+          </a>
+        </div>
+      </div>
+      {/* <div className="text-center mt-6 mb-2">
+        <p className="text-sm text-white">© ShelfSync. All rights reserved.</p>
+      </div> */}
+    </footer>
+  );
+};
+
+export default Footer;

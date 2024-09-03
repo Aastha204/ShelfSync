@@ -238,6 +238,13 @@
   }
 }
 
+
+.userprofile-logo {
+  top:0px;
+}
+
+
+
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
   .userprofile-profile-page {

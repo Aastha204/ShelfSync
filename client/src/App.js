@@ -29,7 +29,11 @@ import AdminProfilePage from './components/AdminProfile';
 import { Navigate } from 'react-router-dom';
 import AddBook from './components/AddBook';
 import BookList from './components/BookList';
+import ChangeUserProfile from './components/changeUserProfile';
 import Signup from './components/Signup';
+import CustomCards from './components/CustomCards';
+
+
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('token');
@@ -43,7 +47,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LibraryManagementTextOverlay/>}/>
-        
+    
         <Route path="/about" element={<About/>}/>
         <Route path="/aboutuscard" element={<Aboutuscard/>}/>
         <Route path="/booktype" element={<BookType/>}/>
@@ -72,6 +76,9 @@ function App() {
         <Route path='/add' element={<AddBook/>}/>
         <Route path='/bookList' element={<BookList/>}/>
         <Route path="/books" element={<AllBooks/>}/>
+        <Route path="/changeUserProfile" element={<ChangeUserProfile/>}/>
+        <Route path="/custom" element={<CustomCards/>}/>
+       
 
       </Routes>
     </Router>
