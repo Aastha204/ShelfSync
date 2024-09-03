@@ -31,6 +31,9 @@ import AddBook from './components/AddBook';
 import BookList from './components/BookList';
 import ChangeUserProfile from './components/changeUserProfile';
 import Signup from './components/Signup';
+import OptionCards from './components/OptionCards'
+import AdminLogin from './components/AdminLogin'
+import AdminSignup from './components/AdminSignUp'
 
 
 // const ProtectedRoute = ({ children }) => {
@@ -75,6 +78,9 @@ function App() {
         <Route path='/bookList' element={<BookList/>}/>
         <Route path="/books" element={<AllBooks/>}/>
         <Route path="/changeUserProfile" element={<ChangeUserProfile/>}/>
+        <Route path="/optioncards" element={<OptionCards/>}/>
+        <Route path="/adminlogin" element={<AdminLogin/>}/>
+        <Route path="/adminsignup" element={<AdminSignup/>}/>
       </Routes>
     
     </div>

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const BookModel = require('./Models/Book'); // Ensure this path is correct
 const AuthRouter=require('./Routes/AuthRouter')
+const AdminRouter=require('./Routes/AdminRoutes');
 
 
 require('dotenv').config();
@@ -83,6 +84,7 @@ app.delete("/books/delete/:id", (req, res) => {
 });
 
 app.use('/auth',AuthRouter)
+app.use('/admin',AdminRouter);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

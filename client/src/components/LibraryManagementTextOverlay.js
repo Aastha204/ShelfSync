@@ -119,7 +119,7 @@ const LibraryManagementTextOverlay = () => {
                 </div>
               ) : (
                 <Link
-                  to="/login"
+                  to="/optioncards"
                   className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold transform transition-transform hover:scale-105 text-lg"
                 >
                   Login

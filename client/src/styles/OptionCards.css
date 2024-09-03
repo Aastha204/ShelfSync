@@ -1,0 +1,102 @@
+/* Container styling */
+.option-cards-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: black;
+  }
+  
+  /* Card styling */
+  .option-card {
+    width: 300px;
+    height: 250px;
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    font-size: 1.5rem;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: visible; /* Allow hover image to pop out */
+    transition: all 0.3s ease, transform 0.6s ease;
+    perspective: 1000px;
+  }
+  
+  /* Hover bend and blur effect */
+  .option-card.hovered {
+    transform: rotateX(10deg); /* Bend inward */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  }
+  
+  /* Background image in the card */
+  .card-background-image {
+    width: 120px;
+    height: 120px;
+    transition: transform 0.6s ease, filter 0.6s ease;
+    filter: blur(0); /* No blur initially */
+  }
+  
+  /* Blurring the background image on hover */
+  .option-card.hovered .card-background-image {
+    transform: scale(0.8); /* Scale down */
+    filter: blur(5px); /* Blur the background image */
+  }
+  
+  /* Main content of the card */
+  .card-content {
+    position: relative;
+    z-index: 1;
+    height: 100%; /* Ensure full height for proper button placement */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Hover image styling */
+  .hover-image {
+    position: absolute;
+    top: -80px; /* Shifted more upwards to pop out */
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.5); /* Initial position inside the card */
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    z-index: 2;
+  }
+  
+  /* Pop-out hover image effect */
+  .option-card.hovered .hover-image {
+    opacity: 1;
+    transform: translate(-50%, -100px) scale(1.3); /* Pop out more above the card */
+  }
+  
+  /* Glow Button styling */
+  .glow-button {
+    width: 80%;
+    padding: 10px;
+    font-size: 1rem;
+    color: white;
+    background-color: transparent;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1;
+    margin-bottom: 10px; /* Placed at the bottom of the card */
+  }
+  
+  /* Glow effect on hover */
+  .glow-button:hover {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
