@@ -4,7 +4,7 @@ import '../styles/CustomCards.css'; // Import the unique CSS file
 const CustomCard = ({ href, coverImage, characterImage, titleText }) => {
   return (
     <div className="custom-card-container">
-      <a href={href} alt={titleText} target="_blank" rel="noopener noreferrer">
+      <a href={href} alt={titleText} rel="noopener noreferrer">
         <div className="custom-card">
           <div className="custom-wrapper">
             <img src={coverImage} className="custom-cover-image" alt="Cover" />
@@ -23,7 +23,7 @@ const CustomCardApp = () => {
       {/* Adding multiple CustomCard components */}
       
       <CustomCard
-        href="/login"
+        href="/adminlogin"
         coverImage="https://clipart-library.com/images/8i6oer5KT.png"
         characterImage="https://clipart-library.com/images/8i6oer5KT.png"
         titleText="Login as Admin"

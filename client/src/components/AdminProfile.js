@@ -176,15 +176,15 @@ const AdminProfilePage = () => {
           <li onClick={() => handleSectionClick('dashboard')} className={activeSection === 'dashboard' ? 'active' : ''}>
             Dashboard
           </li>
-          <li onClick={() => handleSectionClick('bookManagement')} className={activeSection === 'bookManagement' ? 'active' : ''}>
-            Book Management
+          <li>
+           <a href='/add'>Book Management</a> 
           </li>
           <li onClick={() => handleSectionClick('issueReturn')} className={activeSection === 'issueReturn' ? 'active' : ''}>
             Issue & Return
           </li>
           <li>
            <button onClick={handleLogout}> Logout</button> 
-            <a href="/"> Logout</a> 
+           
           </li>
         </ul>
       </div>

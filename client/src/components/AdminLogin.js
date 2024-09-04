@@ -68,7 +68,17 @@ const handleLogin= async (e)=>{
 
   return (
 
-    <div className="min-h-screen bg-cover bg-center p-4 sm:p-8" style={{ backgroundImage: "url('images/login.jpeg')" }}>
+    <div className="min-h-screen bg-cover bg-center p-4 sm:p-8" >
+    <video 
+        autoPlay 
+        muted 
+        loop 
+        className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+      >
+        <source src="/videos/library2.mp4" type="video/mp4" />
+       
+        Your browser does not support the video tag.
+      </video>
 
       <div className="container mx-auto px-4 py-8 bg-transparent-800 bg-opacity-40 rounded-lg relative max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
         <div className="w-full mx-auto relative overflow-hidden">
@@ -89,17 +99,12 @@ const handleLogin= async (e)=>{
                 </form>
 
                 <Link to="/adminsignup" className="text-sm text-center mt-4">
+                
                   Don't have an account? <span className="text-brown-600 hover:text-brown-700 cursor-pointer" >Sign up</span>
-                </Link>
-
-                
-                
+                </Link>                
               </div>
-            </div>
-
-           
-
-          </div>
+            </div>  
+        </div>
         </div>
       </div>
       <ToastContainer/>

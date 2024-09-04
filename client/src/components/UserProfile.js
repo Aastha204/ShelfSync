@@ -1,7 +1,35 @@
 import React from "react";
 import "../styles/UserProfile.css";
+import { Link, useNavigate } from "react-router-dom";
+import { useState,useEffect } from "react";
+import { handleSuccess } from "./utils";
+import { ToastContainer } from "react-toastify";
 
 const MemberProfile = () => {
+  const [loggedInUserName,setLoggedInUserName]=useState('');
+  const [loggedInUserEmail,setLoggedInUserEmail]=useState('');
+  const navigate=useNavigate();
+  useEffect(() => {
+    const userName = localStorage.getItem('loggedInUserName');
+    const userEmail = localStorage.getItem('loggedInUserEmail');
+    console.log('Fetched from localStorage:', { userName, userEmail });
+    setLoggedInUserName(userName);
+    setLoggedInUserEmail(userEmail);
+  }, []);
+  
+  const handleLogout=(e)=>{
+    localStorage.removeItem('token');
+    localStorage.removeItem('loggedInUserName');
+    localStorage.removeItem('loggedInUserEmail');
+    handleSuccess('User Logged Out');
+    setTimeout(()=>{
+          navigate("/");
+    },1000);
+  }
+
+  const handleAll=()=>{
+    navigate("/booklist");
+    }
   return (
     <div className="userprofile-profile-page">
       <aside className="userprofile-sidebar">
@@ -9,9 +37,10 @@ const MemberProfile = () => {
         <ul>
           <a href="/">Home</a>
           <a href="/changeUserProfile">Edit Profile</a>
+          <a ><button onClick={handleAll}>All Books</button></a>
           <a href="/issue">Issued Books</a>
           <a href="/return">Returned Books</a>
-          <a>Log out</a>
+          <a ><button onClick={handleLogout}>Log out</button></a>
         </ul>
       </aside>
       <main className="userprofile-profile-main">
@@ -19,9 +48,8 @@ const MemberProfile = () => {
           <div className="userprofile-profile-info">
             {/* <img src="https://via.placeholder.com/100" alt="Profile" /> */}
             <div>
-              <h3>Name</h3>
-              <p>username</p>
-              <p>email</p>
+              <h3>{loggedInUserName}</h3>
+              <p>{loggedInUserEmail}</p>
               <p>phone no</p>
             </div>
           </div>
@@ -63,6 +91,7 @@ const MemberProfile = () => {
           Have any query? Contact us
         </a>
       </main>
+      <ToastContainer/>
     </div>
   );
 };

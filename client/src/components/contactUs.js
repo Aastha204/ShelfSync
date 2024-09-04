@@ -1,14 +1,39 @@
 import '../styles/ContactUs.css'; 
 import React, { useState } from 'react';
-import { FaWhatsapp, FaPhoneAlt, FaEnvelope, FaMapMarkedAlt,FaHome,FaArrowAltCircleUp} from 'react-icons/fa';
+import { FaWhatsapp, FaPhoneAlt, FaEnvelope, FaMapMarkedAlt, FaHome, FaArrowAltCircleUp } from 'react-icons/fa';
 
 const ContactPage = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        message: ''
+    });
+
+    const handleInputChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        localStorage.setItem('contactFormData', JSON.stringify(formData));
+        console.log('Form Data Stored:', formData);
+        // You can add additional logic here, such as showing a success message or resetting the form.
+    
+    setFormData({
+        name: '',
+        email: '',
+        message: ''
+    });
+
+    // Show a pop-up message
+    alert('Message sent to the console!');
+};
     return (
         <>
             <div className="contact-page">
                 {/* Home Icon */}
                 <div className="home-icon">
-                    <a href="/"><FaHome/></a>
+                    <a href="/"><FaHome /></a>
                 </div>
                 
                 {/* Contact Form Section */}
@@ -16,10 +41,31 @@ const ContactPage = () => {
                     <h1>Get in touch 🤝</h1>
                     <p>If you have any questions about our services or want to contact us or share your feedback, we'd love to hear from you.</p>
                     <h2><b>Contact Us</b></h2>
-                    <form action="#">
-                        <input type="text" name="name" placeholder="Your Name" required />
-                        <input type="email" name="email" placeholder="Your Email" required />
-                        <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+                    <form onSubmit={handleSubmit}>
+                        <input  className='text-black'
+                            type="text" 
+                            name="name" 
+                            placeholder="Your Name" 
+                            required 
+                            value={formData.name} 
+                            onChange={handleInputChange} 
+                        />
+                        <input className='text-black'
+                            type="email" 
+                            name="email" 
+                            placeholder="Your Email" 
+                            required 
+                            value={formData.email} 
+                            onChange={handleInputChange} 
+                        />
+                        <textarea className='text-black'
+                            name="message" 
+                            rows="5" 
+                            placeholder="Your Message" 
+                            required 
+                            value={formData.message} 
+                            onChange={handleInputChange} 
+                        />
                         <button type="submit">Send Message</button>
                     </form>
                 </div>
@@ -88,9 +134,9 @@ const ContactPage = () => {
                     </a>
                 </div>
                 {/* Up Arrow Icon */}
-<div className="up-arrow-icon" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-    <i className="fas fa-arrow-up"></i>
-</div>
+                <div className="up-arrow-icon" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                    <i className="fas fa-arrow-up"></i>
+                </div>
 
                 <div className="footer-container">
                     <div className="marquee">
@@ -100,9 +146,9 @@ const ContactPage = () => {
                     </div>
                     <div className="social-icons">
                         <a href="#"><i className="fab fa-instagram"></i></a>
-                        <a href="#"><i className="fab fa-facebook-f"></i></a>
-                        <a href="#"><i className="fab fa-twitter"></i></a>
-                        <a href="#"><i className="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
                     </div>
                     <p><b>© ShelfSync All Rights Reserved</b></p>
                 </div>
