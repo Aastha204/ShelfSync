@@ -6,11 +6,11 @@ const ManageReceipt = () => {
   
   // State to manage cards in different sections
   const [cards, setCards] = useState({
-    latest: Array.from({ length: 5 }, (_, index) => `/images/latest.jpg`),
-    lastMonth: Array.from({ length: 11 }, (_, index) => `/images/threemonth.jpg`),
-    threeMonth: Array.from({ length: 11 }, (_, index) => `/images/lastMonth.jpg`),
-    sixMonth: Array.from({ length: 11 }, (_, index) => `/images/sixmonth.jpg`),
-    lastYear: Array.from({ length: 11 }, (_, index) => `/images/lastyear.jpg`),
+    latest: Array.from({ length: 5 }, (_, index) => `https://img.freepik.com/free-vector/modern-flat-payment-receipt_23-2147911082.jpg`),
+    lastMonth: Array.from({ length: 4 }, (_, index) => `https://i.pinimg.com/736x/67/17/c6/6717c6a62cf3ff946827facba3387f80.jpg`),
+    threeMonth: Array.from({ length: 4 }, (_, index) => `/images/lastMonth.jpg`),
+    sixMonth: Array.from({ length: 4 }, (_, index) => `/images/sixmonth.jpg`),
+    lastYear: Array.from({ length: 4 }, (_, index) => `/images/lastyear.jpg`),
   });
 
   const handleViewMore = () => {
@@ -31,7 +31,7 @@ const ManageReceipt = () => {
         <img src={imgSrc} alt={`Card ${index + 1}`} />
         <div className="card-content">
           <div className="button-container">
-            <button className="card-button view-button">View</button>
+            <button className="card-button view-button"><a href='/invoice'>View</a></button>
             <button
               className="card-button delete-button"
               onClick={() => handleDelete(section, index)}

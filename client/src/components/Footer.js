@@ -23,8 +23,8 @@ const Footer = () => {
       {/* Address Section */}
       <div className="flex-1">
         <h2 className="font-bold mb-4 text-lg text-yellow-400">Address</h2>
-        <p className="mb-2">Delhi</p>
-        <p>India</p>
+        <p className="mb-2">Chitkara University</p>
+        <p>Rajpura , Punjab</p>
       </div>
 
       {/* Social Media Icons */}
