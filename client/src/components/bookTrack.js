@@ -45,25 +45,25 @@ const BookTracker = () => {
   ];
 
   const tableData = [
-    { 
-      sNo: 1, 
-      bookName: 'The Great Gatsby', 
-      authorName: 'F. Scott Fitzgerald', 
-      type: 'Fiction', 
-      issueDate: '2024-08-01', 
-      dueDate: '2024-08-15', 
-      fine: '0'
-    },
-    { 
-      sNo: 2, 
-      bookName: 'Harry Potter', 
-      authorName: 'J.K Rowling', 
-      type: 'Fiction', 
-      issueDate: '2024-07-10', 
-      dueDate: '2024-07-24', 
-      fine: '2'
-    },
-    // Add more rows as needed
+    // { 
+    //   sNo: 1, 
+    //   bookName: 'The Great Gatsby', 
+    //   authorName: 'F. Scott Fitzgerald', 
+    //   type: 'Fiction', 
+    //   issueDate: '2024-08-01', 
+    //   dueDate: '2024-08-15', 
+    //   fine: '0'
+    // },
+    // { 
+    //   sNo: 2, 
+    //   bookName: 'Harry Potter', 
+    //   authorName: 'J.K Rowling', 
+    //   type: 'Fiction', 
+    //   issueDate: '2024-07-10', 
+    //   dueDate: '2024-07-24', 
+    //   fine: '2'
+    // },
+    // // Add more rows as needed
   ];
 
   return (

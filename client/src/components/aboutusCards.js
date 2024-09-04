@@ -34,20 +34,20 @@ const AboutusCards = () => {
       <h2 className="text-4xl font-bold text-center mb-12 text-white">What Makes Us Unique?</h2>
       <div className="horizontal-scroll-container">
         <div ref={(el) => (cardRefs.current[0] = el)} className="card scroll-card">
-          <h3 className="text-xl font-semibold mb-4 text-white">Reliable Service</h3>
-          <p className="text-white">We provide a robust and reliable system, making library management effortless and secure.</p>
+          <h3 className="text-xl font-semibold mb-4 text-white"> Automated Invoicing</h3>
+          <p className="text-white">Generate invoices automatically for overdue books and other library services, simplifying payments.</p>
         </div>
         <div ref={(el) => (cardRefs.current[1] = el)} className="card scroll-card">
-          <h3 className="text-xl font-semibold mb-4 text-white">Scalable Solutions</h3>
-          <p className="text-white">Our platform scales with your library, whether small or large, ensuring seamless management.</p>
+          <h3 className="text-xl font-semibold mb-4 text-white">Secure Data Storage</h3>
+          <p className="text-white">Ensure the privacy and security of all user data, including borrowing records and invoices.</p>
         </div>
         <div ref={(el) => (cardRefs.current[2] = el)} className="card scroll-card">
           <h3 className="text-xl font-semibold mb-4 text-white">User-Friendly</h3>
           <p className="text-white">ShelfSync is designed with a user-first approach, offering easy navigation and management tools.</p>
         </div>
         <div ref={(el) => (cardRefs.current[3] = el)} className="card scroll-card">
-          <h3 className="text-xl font-semibold mb-4 text-white">Expert Support</h3>
-          <p className="text-white">Our dedicated support team ensures that you receive timely assistance and expert guidance.</p>
+          <h3 className="text-xl font-semibold mb-4 text-white"> Detailed Borrowing History</h3>
+          <p className="text-white">View a comprehensive record of all previously borrowed books, including dates and fees.</p>
         </div>
         <div ref={(el) => (cardRefs.current[4] = el)} className="card scroll-card">
           <h3 className="text-xl font-semibold mb-4 text-white">Dedicated team</h3>

@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 const Return = () => {
   const [books, setBooks] = useState([
-    { id: 1, name: "The Great Gatsby", author: "F. Scott Fitzgerald", type: "Fiction", returnDate: "2024-09-01" },
-    { id: 2, name: "Sapiens", author: "Yuval Noah Harari", type: "Non-fiction", returnDate: "2024-09-05" },
-    { id: 3, name: "Harry Potter", author: "J.K. Rowling", type: "Fantasy", returnDate: "2024-09-10" },
+    // { id: 1, name: "The Great Gatsby", author: "F. Scott Fitzgerald", type: "Fiction", returnDate: "2024-09-01" },
+    // { id: 2, name: "Sapiens", author: "Yuval Noah Harari", type: "Non-fiction", returnDate: "2024-09-05" },
+    // { id: 3, name: "Harry Potter", author: "J.K. Rowling", type: "Fantasy", returnDate: "2024-09-10" },
   ]);
 
   return (
