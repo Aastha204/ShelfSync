@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 const Issue = () => {
   const [books, setBooks] = useState([
-    // { id: 1, name: "The Great Gatsby", author: "F. Scott Fitzgerald", type: "Fiction", isIssued: true },
-    // { id: 2, name: "Sapiens", author: "Yuval Noah Harari", type: "Non-fiction", isIssued: true },
-    // { id: 3, name: "Harry Potter", author: "J.K. Rowling", type: "Fantasy", isIssued: true },
+    { id: 1, name: "The Great Gatsby", author: "F. Scott Fitzgerald", type: "Fiction", isIssued: true },
+    { id: 2, name: "Sapiens", author: "Yuval Noah Harari", type: "Non-fiction", isIssued: true },
+    { id: 3, name: "Harry Potter", author: "J.K. Rowling", type: "Fantasy", isIssued: true },
   ]);
 
   // Function to handle returning books
