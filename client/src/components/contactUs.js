@@ -13,21 +13,38 @@ const ContactPage = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        localStorage.setItem('contactFormData', JSON.stringify(formData));
-        console.log('Form Data Stored:', formData);
-        // You can add additional logic here, such as showing a success message or resetting the form.
     
-    setFormData({
-        name: '',
-        email: '',
-        message: ''
-    });
-
-    // Show a pop-up message
-    alert('Message sent to the console!');
-};
+        try {
+            const response = await fetch('http://localhost:3001/api/contact', { // Ensure this URL matches the backend port
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+    
+            if (response.ok) {
+                const result = await response.json();
+                console.log(result.message);
+                alert('Your message has been sent successfully!');
+    
+                // Clear form fields
+                setFormData({
+                    name: '',
+                    email: '',
+                    message: ''
+                });
+            } else {
+                alert('Failed to send message. Please try again later.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again later.');
+        }
+    };
+    
     return (
         <>
             <div className="contact-page">
@@ -146,9 +163,9 @@ const ContactPage = () => {
                     </div>
                     <div className="social-icons">
                         <a href="#"><i className="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i className="fab fa-facebook-f"></i></a>
+                        <a href="#"><i className="fab fa-twitter"></i></a>
+                        <a href="#"><i className="fab fa-github"></i></a>
                     </div>
                     <p><b>© ShelfSync All Rights Reserved</b></p>
                 </div>

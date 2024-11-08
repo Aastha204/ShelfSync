@@ -6,6 +6,7 @@ const AdminRouter=require('./Routes/AdminRoutes');
 const bodyParser = require('body-parser');
 const bookRoutes = require('./Routes/bookRoutes');
 const userRoutes= require('./Routes/UserRoutes');
+const ContactRoutes= require('./Routes/ContactRoutes');
 const errorMiddleware = require('./Middlewares/errorMiddleware');
 
 
@@ -26,6 +27,7 @@ app.use('/auth',AuthRouter)
 app.use('/admin',AdminRouter);
 app.use('/api/books', bookRoutes);
 app.use('/api', userRoutes);
+app.use('/api',ContactRoutes);
 
 // Error handling middleware
 app.use(errorMiddleware);

@@ -182,6 +182,9 @@ const AdminProfilePage = () => {
           <li onClick={() => handleSectionClick('issueReturn')} className={activeSection === 'issueReturn' ? 'active' : ''}>
             Issue & Return
           </li>
+          <li onClick={() => handleSectionClick('UserQueries')} className={activeSection === 'UserQueries' ? 'active' : ''}>
+            User Queries
+          </li>
           <li>
            <button onClick={handleLogout}> Logout</button> 
            
