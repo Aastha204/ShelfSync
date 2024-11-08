@@ -5,6 +5,7 @@ const AuthRouter=require('./Routes/AuthRouter')
 const AdminRouter=require('./Routes/AdminRoutes');
 const bodyParser = require('body-parser');
 const bookRoutes = require('./Routes/bookRoutes');
+const userRoutes= require('./Routes/UserRoutes');
 const errorMiddleware = require('./Middlewares/errorMiddleware');
 
 
@@ -24,6 +25,7 @@ mongoose.connect("mongodb://localhost:27017/bookstore", { useNewUrlParser: true,
 app.use('/auth',AuthRouter)
 app.use('/admin',AdminRouter);
 app.use('/api/books', bookRoutes);
+app.use('/api', userRoutes);
 
 // Error handling middleware
 app.use(errorMiddleware);

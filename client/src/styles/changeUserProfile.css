@@ -1,17 +1,10 @@
-/* Background wrapper for form container */
-.background-wrapper {
-    /* background-image: url('../public/images/1.png'); */
-    background-color: #f8f7f7;
-    background-size: cover;
-    background-position: center;
-    padding: 50px 0; /* Space around the form */
-}
+
 
 .form-container {
     background: linear-gradient(135deg, #410707, #a02e1f);
     padding: 20px;
     border-radius: 12px;
-    max-width: 600px;
+    width: 1000px;
     margin: 0 auto;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     color: white;
@@ -57,7 +50,7 @@ textarea {
 .submit-btn1 {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    background: linear-gradient(135deg, #ff4741, #ff4b2b);
     border: none;
     border-radius: 4px;
     color: white;
@@ -71,4 +64,60 @@ textarea {
     background: linear-gradient(135deg, #ff4b2b, #ff416c);
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.background-wrapper {
+    background-image: url('../../public/images/editProfile.jpg'); /* Set your image path */
+    background-size:contain;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 0; /* Space around the form */
+    position: relative;
+}
+
+.home-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 3px 20px;
+    font-size: 25px;
+    color: white;
+    background-color: brown; /* Adjust color as needed */
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    border-radius: 24px;
+}
+
+.home-button:hover {
+    background-color:rgb(85, 14, 14);
+    box-shadow: 0 0 10px 5px rgb(204, 97, 82); /* Adds a yellow shadow */
+    font-size: 29px;
+}
+
+/* .form-container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+    margin-bottom: 15px;
+} */
+
+.submit-btn1 {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50; /* Match color with theme */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.submit-btn1:hover {
+    background-color: #45a049;
 }

@@ -1,35 +1,73 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/UserProfile.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useState,useEffect } from "react";
 import { handleSuccess } from "./utils";
 import { ToastContainer } from "react-toastify";
 
 const MemberProfile = () => {
-  const [loggedInUserName,setLoggedInUserName]=useState('');
-  const [loggedInUserEmail,setLoggedInUserEmail]=useState('');
-  const navigate=useNavigate();
+  const [userDetails, setUserDetails] = useState({
+    name: '',
+    email: '',
+    phoneNo: '',
+    age: '',
+    gender: '',
+    dob: '',
+    address: ''
+  });
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const userName = localStorage.getItem('loggedInUserName');
     const userEmail = localStorage.getItem('loggedInUserEmail');
-    console.log('Fetched from localStorage:', { userName, userEmail });
-    setLoggedInUserName(userName);
-    setLoggedInUserEmail(userEmail);
+    console.log('Fetched email from localStorage:', userEmail);
+  
+    if (userEmail) {
+      fetch(`http://localhost:3001/api/userProfile?email=${userEmail}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      })
+        .then(response => {
+          console.log("Raw response:", response); // Log entire response
+  
+          if (!response.ok) {
+            throw new Error(`Server responded with ${response.status}`);
+          }
+  
+          const contentType = response.headers.get("content-type");
+          if (contentType && contentType.includes("application/json")) {
+            return response.json();
+          } else {
+            throw new Error("Response is not JSON");
+          }
+        })
+        .then(data => {
+          console.log("Fetched user data from API:", data); // Log API response
+          setUserDetails(data);
+        })
+        .catch(error => {
+          console.error("Error fetching user data:", error);
+          alert("Failed to load user data. Please try again later.");
+        });
+    } else {
+      console.warn("No email found in localStorage.");
+    }
   }, []);
   
-  const handleLogout=(e)=>{
+  const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('loggedInUserName');
     localStorage.removeItem('loggedInUserEmail');
     handleSuccess('User Logged Out');
-    setTimeout(()=>{
-          navigate("/");
-    },1000);
-  }
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  };
 
-  const handleAll=()=>{
+  const handleAll = () => {
     navigate("/booklist");
-    }
+  };
+
   return (
     <div className="userprofile-profile-page">
       <aside className="userprofile-sidebar">
@@ -40,35 +78,34 @@ const MemberProfile = () => {
           <a ><button onClick={handleAll}>All Books</button></a>
           <a href="/issue">Issued Books</a>
           <a href="/return">Returned Books</a>
-          <a ><button onClick={handleLogout}>Log out</button></a>
+          <a><button onClick={handleLogout}>Log out</button></a>
         </ul>
       </aside>
       <main className="userprofile-profile-main">
         <div className="userprofile-profile-card">
           <div className="userprofile-profile-info">
-            {/* <img src="https://via.placeholder.com/100" alt="Profile" /> */}
             <div>
-              <h3>{loggedInUserName}</h3>
-              <p>{loggedInUserEmail}</p>
-              <p>phone no</p>
+              <h3>{userDetails.name || 'Guest'}</h3>
+              <p>{userDetails.email}</p>
+              <p>{userDetails.phoneNo || 'Phone not provided'}</p>
             </div>
           </div>
           <div className="userprofile-profile-details">
             <div>
               <p>Age</p>
-              <p>50</p>
+              <p>{userDetails.age || '-'}</p>
             </div>
             <div>
               <p>Gender</p>
-              <p>Male</p>
+              <p>{userDetails.gender || '-'}</p>
             </div>
             <div>
               <p>DOB</p>
-              <p>05/22/2002</p>
+              <p>{userDetails.dob ? new Date(userDetails.dob).toLocaleDateString() : '-'}</p>
             </div>
             <div>
               <p>Address</p>
-              <p>-</p>
+              <p>{userDetails.address || 'Address not provided'}</p>
             </div>
           </div>
         </div>
@@ -91,7 +128,7 @@ const MemberProfile = () => {
           Have any query? Contact us
         </a>
       </main>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 };
