@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Chart from 'chart.js/auto';
-import '../styles/AdminProfile.css';
 import { useNavigate } from 'react-router-dom';
+import '../styles/AdminProfile.css';
 import { ToastContainer } from 'react-toastify';
 import { handleSuccess } from "./utils";
 
 const AdminProfilePage = () => {
   const [activeSection, setActiveSection] = useState('profile');
+  const [contactMessages, setContactMessages] = useState([]);
   const [books, setBooks] = useState([]);
   const [bookForm, setBookForm] = useState({
     name: '',
@@ -24,33 +26,32 @@ const AdminProfilePage = () => {
   const [bookToDelete, setBookToDelete] = useState(null);
   const [recentlyDeleted, setRecentlyDeleted] = useState(null);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const totalBooks = 1000;
   const booksIssued = 300;
   const booksReturned = 200;
   const booksLeft = totalBooks - booksIssued;
 
-  const [loggedInAdminName,setLoggedInAdminName]=useState('');
-  const [loggedInAdminEmail,setLoggedInAdminEmail]=useState('');
-  const navigate=useNavigate();
+  const [loggedInAdminName, setLoggedInAdminName] = useState('');
+  const [loggedInAdminEmail, setLoggedInAdminEmail] = useState('');
+
   useEffect(() => {
     const adminName = localStorage.getItem('loggedInAdminName');
     const adminEmail = localStorage.getItem('loggedInAdminEmail');
-    console.log('Fetched from localStorage:', { adminName, adminEmail });
-    setLoggedInAdminName(adminName);
-    setLoggedInAdminEmail(adminEmail);
+    setLoggedInAdminName(adminName || '');
+    setLoggedInAdminEmail(adminEmail || '');
   }, []);
-  
-  const handleLogout=(e)=>{
+
+  const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('loggedInAdminName');
     localStorage.removeItem('loggedInAdminEmail');
     handleSuccess('Admin Logged Out');
-    setTimeout(()=>{
-          navigate("/");
-    },1000);
-  }
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  };
 
   const handleSectionClick = (section) => {
     setActiveSection(section);
@@ -58,17 +59,17 @@ const AdminProfilePage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setBookForm({
-      ...bookForm,
+    setBookForm((prevForm) => ({
+      ...prevForm,
       [name]: value,
-    });
+    }));
   };
 
   const handleFileChange = (e) => {
-    setBookForm({
-      ...bookForm,
+    setBookForm((prevForm) => ({
+      ...prevForm,
       image: e.target.files[0],
-    });
+    }));
   };
 
   const handleAddBook = () => {
@@ -115,7 +116,7 @@ const AdminProfilePage = () => {
 
     setTimeout(() => {
       setRecentlyDeleted(null);
-    }, 5000); // Show the undo option for 5 seconds
+    }, 5000);
   };
 
   const undoDelete = () => {
@@ -161,23 +162,30 @@ const AdminProfilePage = () => {
   }, [activeSection]);
 
   const handleAddBookClick = () => {
-    navigate('/add');
+    setShowAddBookForm(true);
   };
+
+  useEffect(() => {
+    if (activeSection === 'UserQueries') {
+      axios.get('http://localhost:3001/api/contact/messages')
+        .then(response => setContactMessages(response.data))
+        .catch(error => console.error('Error fetching contact messages:', error));
+    }
+  }, [activeSection]);
 
   return (
     <div className="admin-container">
-      {/* Sidebar */}
       <div className="sidebar1">
         <ul className="nav-list">
-        <img src="/images/logo1.png" alt="Logo" className="userprofile-logo" />
+          <img src="/images/logo1.png" alt="Logo" className="userprofile-logo" />
           <li onClick={() => handleSectionClick('profile')} className={activeSection === 'profile' ? 'active' : ''}>
             Admin Profile
           </li>
           <li onClick={() => handleSectionClick('dashboard')} className={activeSection === 'dashboard' ? 'active' : ''}>
             Dashboard
           </li>
-          <li>
-           <a href='/add'>Book Management</a> 
+          <li onClick={() => handleSectionClick('bookManagement')} className={activeSection === 'bookManagement' ? 'active' : ''}>
+            Book Management
           </li>
           <li onClick={() => handleSectionClick('issueReturn')} className={activeSection === 'issueReturn' ? 'active' : ''}>
             Issue & Return
@@ -186,15 +194,12 @@ const AdminProfilePage = () => {
             User Queries
           </li>
           <li>
-           <button onClick={handleLogout}> Logout</button> 
-           
+            <button onClick={handleLogout}>Logout</button>
           </li>
         </ul>
       </div>
 
-      {/* Main Content */}
       <div className="content">
-        {/* Profile Section */}
         {activeSection === 'profile' && (
           <div className="profile-section">
             <h2 className="section-title">Admin Profile</h2>
@@ -207,7 +212,6 @@ const AdminProfilePage = () => {
                 <p>Email: {loggedInAdminEmail}</p>
                 <p>Age: 20</p>
                 <p>Contact: +1234567890</p>
-               
                 <p>Address: 123 Library Lane, City, Country</p>
                 <h4>Date of Birth: 01/01/1989</h4>
               </div>
@@ -215,7 +219,6 @@ const AdminProfilePage = () => {
           </div>
         )}
 
-        {/* Dashboard Section */}
         {activeSection === 'dashboard' && (
           <div className="dashboard-section">
             <h2 className="section-title">Dashboard</h2>
@@ -228,184 +231,110 @@ const AdminProfilePage = () => {
             <div className="chart-container">
               <canvas id="dashboardChart"></canvas>
             </div>
-            <div className="table-container">
-              <table className="dashboard-table">
-                <thead>
-                  <tr>
-                    <th>Total Books</th>
-                    <th>Books Issued</th>
-                    <th>Books Returned</th>
-                    <th>Books Left</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{totalBooks}</td>
-                    <td>{booksIssued}</td>
-                    <td>{booksReturned}</td>
-                    <td>{booksLeft}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
           </div>
         )}
 
-        {/* Book Management Section */}
         {activeSection === 'bookManagement' && (
           <div className="book-management-section">
             <div className="book-management-header">
               <h2 className="section-title">Manage Books</h2>
-              <button className="add-book-btn" onClick={handleAddBookClick}>
-                Add Book
-              </button>
+              <button onClick={handleAddBookClick}>Add Book</button>
             </div>
-
-            {/* Add Book Form */}
             {showAddBookForm && (
-              <div className="add-book-form">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Name of Book"
-                  value={bookForm.name}
-                  onChange={handleInputChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="author"
-                  placeholder="Author Name"
-                  value={bookForm.author}
-                  onChange={handleInputChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="genre"
-                  placeholder="Genre"
-                  value={bookForm.genre}
-                  onChange={handleInputChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="isbn"
-                  placeholder="ISBN"
-                  value={bookForm.isbn}
-                  onChange={handleInputChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="yearPublished"
-                  placeholder="Year Published"
-                  value={bookForm.yearPublished}
-                  onChange={handleInputChange}
-                  required
-                />
-                <input type="file" name="image" onChange={handleFileChange} required />
+              <div className="book-form">
+                <input name="name" placeholder="Name" value={bookForm.name} onChange={handleInputChange} />
+                <input name="author" placeholder="Author" value={bookForm.author} onChange={handleInputChange} />
+                <input name="genre" placeholder="Genre" value={bookForm.genre} onChange={handleInputChange} />
+                <input name="isbn" placeholder="ISBN" value={bookForm.isbn} onChange={handleInputChange} />
+                <input name="yearPublished" placeholder="Year Published" value={bookForm.yearPublished} onChange={handleInputChange} />
+                <input type="file" onChange={handleFileChange} />
                 <button onClick={handleAddBook}>{editingIndex !== null ? 'Update Book' : 'Add Book'}</button>
               </div>
             )}
-
-            {/* Book List */}
-            <input
-              type="text"
-              className="search-bar"
-              placeholder="Search Books..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-
-            <ul className="book-list">
+            <input type="text" placeholder="Search Books..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            <ul>
               {filteredBooks.map((book, index) => (
-                <li key={index} className="book-item">
-                  <img src={URL.createObjectURL(book.image)} alt="Book Cover" className="book-cover" />
-                  <div className="book-details">
-                    <h3>{book.name}</h3>
-                    <p>Author: {book.author}</p>
-                    <p>Genre: {book.genre}</p>
-                    <p>ISBN: {book.isbn}</p>
-                    <p>Year Published: {book.yearPublished}</p>
-                  </div>
-                  <div className="book-actions">
-                    <button onClick={() => handleEditBook(index)}>Edit</button>
-                    <button onClick={() => handleDeleteBook(index)}>Delete</button>
-                  </div>
+                <li key={index}>
+                  <img src={URL.createObjectURL(book.image)} alt={book.name} />
+                  <h3>{book.name}</h3>
+                  <p>{book.author}</p>
+                  <p>{book.genre}</p>
+                  <button onClick={() => handleEditBook(index)}>Edit</button>
+                  <button onClick={() => handleDeleteBook(index)}>Delete</button>
                 </li>
               ))}
             </ul>
-
             {showDeleteConfirm && (
-              <div className="delete-confirmation">
+              <div className="delete-confirm">
                 <p>Are you sure you want to delete this book?</p>
                 <button onClick={confirmDelete}>Yes</button>
                 <button onClick={() => setShowDeleteConfirm(false)}>No</button>
               </div>
             )}
-
             {recentlyDeleted && (
               <div className="undo-delete">
-                <p>Book deleted. <button onClick={undoDelete}>Undo</button></p>
+                <p>Book deleted.</p>
+                <button onClick={undoDelete}>Undo</button>
               </div>
             )}
           </div>
         )}
 
-        {/* Issue and Return Section */}
         {activeSection === 'issueReturn' && (
           <div className="issue-return-section">
             <h2 className="section-title">Issue & Return Management</h2>
-            <div className="issue-return-container">
-              <h3>Issue History</h3>
-              <table className="issue-return-table">
-                <thead>
-                  <tr>
-                    <th>Book Name</th>
-                    <th>ISBN</th>
-                    <th>Issued To</th>
-                    <th>Issue Date</th>
-                    <th>Due Date</th>
-                    <th>Status</th>
+            <p>Manage issued and returned books here.</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Book Name</th>
+                  <th>Issued To</th>
+                  <th>Issue Date</th>
+                  <th>Return Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {issueReturnData.map((entry, index) => (
+                  <tr key={index}>
+                    <td>{entry.bookName}</td>
+                    <td>{entry.issuedTo}</td>
+                    <td>{entry.issueDate}</td>
+                    <td>{entry.returnDate}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {issueReturnData.map((item, index) => (
-                    <tr key={index}>
-                      <td>{item.bookName}</td>
-                      <td>{item.isbn}</td>
-                      <td>{item.issuedTo}</td>
-                      <td>{item.issueDate}</td>
-                      <td>{item.dueDate}</td>
-                      <td>{item.status}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
+
+        {activeSection === 'UserQueries' && (
+  <div className="user-queries-section">
+    <h2 className="section-title">User Queries</h2>
+    <table className="queries-table">
+      <thead>
+        <tr>
+          <th>Sender Name</th>
+          <th>Sender Email</th>
+          <th>Message</th>
+          <th>Date Received</th>
+        </tr>
+      </thead>
+      <tbody>
+        {contactMessages.map((message, index) => (
+          <tr key={index}>
+            <td>{message.sender_name}</td>
+            <td>{message.sender_email}</td>
+            <td>{message.message}</td>
+            <td>{new Date(message.created_at).toLocaleDateString()}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
+
       </div>
-
-      {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && (
-        <div className="delete-confirm-modal">
-          <div className="delete-confirm-content">
-            <p>Do you really want to delete this book?</p>
-            <button className="confirm-delete-btn" onClick={confirmDelete}>Yes</button>
-            <button className="cancel-delete-btn" onClick={() => setShowDeleteConfirm(false)}>No</button>
-          </div>
-        </div>
-      )}
-
-      {/* Undo Delete Notification */}
-      {recentlyDeleted && (
-        <div className="undo-notification">
-          <p>Book deleted. <button className="undo-btn" onClick={undoDelete}>Undo</button></p>
-        </div>
-      )}
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 };
