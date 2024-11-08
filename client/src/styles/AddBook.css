@@ -10,6 +10,7 @@
     color: #f4e2d8;
     background-color: #6b4f35;
     padding: 10px;
+    font-size: 45px;
     border-radius: 8px;
     margin-bottom: 20px;
     box-shadow: 0 0 15px rgb(47, 39, 32);
@@ -20,12 +21,12 @@
 /* Back Button */
 .back-button {
     position: absolute;
-    top: 9px;
+    top: 19px;
     left: 26px;
     background: none;
     border: none;
     color: #fff;
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     cursor: pointer;
     transition: transform 0.2s;
 }
@@ -213,4 +214,117 @@
     box-shadow: 0 0 20px rgba(227, 176, 154, 0.869);
 }
 
+.book-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .custom-book-card {
+    background: rgb(179, 177, 177);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    height: auto;
+    margin:10px;
+    padding:10px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+  }
+  
+  .custom-book-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .custom-image-container {
+    position: relative;
+  }
+  
+  .custom-image-container img {
+    width: 100%;
+    height: 190px;
+    object-fit: contain;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-top:10px;
+  }
+  
+  .custom-card-content {
+    /* padding: 10px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .custom-book-title {
+    font-size: 22px;
+    margin: 5px 0;
+    color:black;
+  }
+  
+  .custom-book-author {
+    color: rgb(46, 45, 45);
+    font-size: 18px;
+    /* margin: 5px 0; */
+  }
+  
+  .custom-card-footer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .custom-book-price {
+    font-size: 19px;
+    font-weight: bold;
+    color:#1b1b1b;
+  }
+  
+  .custom-book-rating {
+    color: #1b1b1b;
+    font-size: 19px;
+  }
+  
+  .custom-add-btn, .custom-delete-btn {
+    background-color: #3f0d04;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    width: 48%;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .custom-add-btn:hover {
+    background-color: #6e372e;
+  }
+  
+  .custom-delete-btn:hover {
+    background-color: #a52222;
+  }
 
+  .custom-button-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .custom-add-btn, .custom-delete-btn {
+    background-color: #3f0d04;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    width: 48%;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  

@@ -4,13 +4,13 @@ const Book = require('../Models/Book');
 // Add Book
 exports.addBook = async (req, res) => {
   try {
-    const { name, author, available, ratePerMonth } = req.body;
+    const { name, author, available, ratePerMonth, bookCoverImageUrl, genre, star } = req.body;
     const existingBook = await Book.findOne({ name });
     if (existingBook) {
       return res.status(400).json({ message: 'Book already exists' });
     }
 
-    const book = new Book({ name, author, available, ratePerMonth });
+    const book = new Book({ name, author, available, ratePerMonth, bookCoverImageUrl, genre, star });
     await book.save();
     res.status(201).json({ message: 'Book added successfully', book });
   } catch (error) {
@@ -34,8 +34,12 @@ exports.deleteBook = async (req, res) => {
 // Update Book
 exports.updateBook = async (req, res) => {
   try {
-    const { name, author, available, ratePerMonth } = req.body;
-    const book = await Book.findByIdAndUpdate(req.params.id, { name, author, available, ratePerMonth }, { new: true });
+    const { name, author, available, ratePerMonth, bookCoverImageUrl, genre, star } = req.body;
+    const book = await Book.findByIdAndUpdate(
+      req.params.id,
+      { name, author, available, ratePerMonth, bookCoverImageUrl, genre, star },
+      { new: true }
+    );
     if (!book) {
       return res.status(404).json({ message: 'Book not found' });
     }

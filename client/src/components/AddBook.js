@@ -1,14 +1,21 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-import '../styles/AddBook.css'; // Link the updated CSS file
+import '../styles/AddBook.css';
 
 const BookManager = () => {
   const [books, setBooks] = useState([]);
-  const [bookData, setBookData] = useState({ name: '', author: '', available: true, ratePerMonth: '' });
+  const [bookData, setBookData] = useState({ 
+    name: '', 
+    author: '', 
+    available: true, 
+    ratePerMonth: '', 
+    bookCoverImageUrl: '', 
+    genre: '', 
+    star: '' 
+  });
   const [editing, setEditing] = useState(null);
   const navigate = useNavigate();
 
@@ -27,7 +34,9 @@ const BookManager = () => {
 
   const validateAuthorName = (name) => /^[A-Za-z\s]+$/.test(name);
 
-  const handleAdd = async () => {
+  const validateStarRating = (rating) => rating >= 0 && rating <= 5;
+
+  const handleAddOrUpdate = async () => {
     if (bookData.ratePerMonth < 0) {
       toast.error('Rate per month cannot be negative');
       return;
@@ -36,17 +45,28 @@ const BookManager = () => {
       toast.error('Author name should contain only letters and spaces');
       return;
     }
+    if (!validateStarRating(bookData.star)) {
+      toast.error('Star rating must be between 0 and 5');
+      return;
+    }
 
     try {
-      const response = await axios.post('http://localhost:3001/api/books/add', bookData);
-      toast.success('Book added successfully');
-      setBooks([...books, response.data.book]);
-      setBookData({ name: '', author: '', available: true, ratePerMonth: '' });
+      if (editing) {
+        const response = await axios.put(`http://localhost:3001/api/books/update/${editing}`, bookData);
+        toast.success('Book updated successfully');
+        setBooks(books.map(book => book._id === editing ? response.data.book : book));
+        setEditing(null);
+      } else {
+        const response = await axios.post('http://localhost:3001/api/books/add', bookData);
+        toast.success('Book added successfully');
+        setBooks([...books, response.data.book]);
+      }
+      setBookData({ name: '', author: '', available: true, ratePerMonth: '', bookCoverImageUrl: '', genre: '', star: '' });
     } catch (error) {
-      if (error.response && error.response.data.message === 'Book already exists') {
+      if (error.response?.data.message === 'Book already exists') {
         toast.error('Book already exists');
       } else {
-        toast.error('Error adding book');
+        toast.error('Error adding/updating book');
       }
     }
   };
@@ -61,40 +81,18 @@ const BookManager = () => {
     }
   };
 
-  const handleUpdate = async () => {
-    if (bookData.ratePerMonth < 0) {
-      toast.error('Rate per month cannot be negative');
-      return;
-    }
-    if (!validateAuthorName(bookData.author)) {
-      toast.error('Author name should contain only letters and spaces');
-      return;
-    }
-
-    try {
-      const response = await axios.put(`http://localhost:3001/api/books/update/${editing}`, bookData);
-      toast.success('Book updated successfully');
-      setBooks(books.map(book => book._id === editing ? response.data.book : book));
-      setEditing(null);
-      setBookData({ name: '', author: '', available: true, ratePerMonth: '' });
-    } catch (error) {
-      toast.error('Error updating book');
-    }
-  };
-
   return (
     <div className="book-manager-container">
       <button onClick={() => navigate('/admin')} className="back-button">←</button>
       <h1 className="book-manager-heading">Book Manager</h1>
-      
+
       <div className="book-form-container">
         <div className="book-form-image">
-          {/* Replace with actual image or illustration */}
           <img src="https://c1.wallpaperflare.com/preview/563/337/199/book-library-shelf-stack.jpg" alt="Book illustration" />
         </div>
-        
+
         <div className="book-form">
-        <h2 class="form-heading"><b>Add a New Book 🕮</b></h2> 
+          <h2 className="form-heading"><b>{editing ? 'Edit Book' : 'Add a New Book 🕮'}</b></h2> 
           <input
             type="text"
             placeholder="Book Name"
@@ -116,6 +114,27 @@ const BookManager = () => {
             onChange={e => setBookData({ ...bookData, ratePerMonth: e.target.value })}
             className="input-field"
           />
+          <input
+            type="text"
+            placeholder="Book Cover Image URL"
+            value={bookData.bookCoverImageUrl}
+            onChange={e => setBookData({ ...bookData, bookCoverImageUrl: e.target.value })}
+            className="input-field"
+          />
+          <input
+            type="text"
+            placeholder="Genre"
+            value={bookData.genre}
+            onChange={e => setBookData({ ...bookData, genre: e.target.value })}
+            className="input-field"
+          />
+          <input
+            type="number"
+            placeholder="Star Rating (0-5)"
+            value={bookData.star}
+            onChange={e => setBookData({ ...bookData, star: e.target.value })}
+            className="input-field"
+          />
           <div className="checkbox-container">
             <label>
               <input
@@ -127,30 +146,39 @@ const BookManager = () => {
               Available
             </label>
           </div>
-          {editing ? (
-            <button onClick={handleUpdate} className="button update-button">Update Book</button>
-          ) : (
-            <button onClick={handleAdd} className="button add-button">Add Book</button>
-          )}
+          <button onClick={handleAddOrUpdate} className={`button ${editing ? 'update-button' : 'add-button'}`}>
+            {editing ? 'Update Book' : 'Add Book'}
+          </button>
         </div>
       </div>
-      
+
       <div className="book-list-container">
-      
-        {books.map(book => (
-          <div key={book._id} className={`book-list-item ${book._id === editing ? 'highlighted' : ''}`}>
-          
-            <h2 className="book-title"><strong>Book Name: </strong>{book.name}</h2>
-            <p className="book-author"><strong>Author:</strong> {book.author}</p>
-            <p className="book-available"><strong>Available:</strong> {book.available ? 'Yes' : 'No'}</p>
-            <p className="book-rate"><strong>Rate Per Month:</strong> ₹{book.ratePerMonth}</p>
-            <div className="book-buttons">
-              <button onClick={() => setEditing(book._id)} className="button edit-button">Edit</button>
-              <button onClick={() => handleDelete(book._id)} className="button delete-button">Delete</button>
-            </div>
-          </div>
-        ))}
+  {books.map((book) => (
+    <div key={book._id} className={`custom-book-card ${book._id === editing ? 'custom-highlighted' : ''}`}>
+      <div className="custom-image-container">
+        <img src={book.bookCoverImageUrl || 'placeholder.jpg'} alt={`${book.name} cover`} className="custom-book-cover-image" />
       </div>
+      <div className="custom-card-content">
+        <h3 className="custom-book-title">{book.name}</h3>
+        <p className="custom-book-author">{book.author}</p>
+        <div className="custom-card-footer">
+          <span className="custom-book-price">₹{book.ratePerMonth}</span>
+          <span className="custom-book-rating">
+            {Array(book.star).fill('⭐').map((star, index) => (
+              <span key={index}>{star}</span>
+            ))}
+          </span>
+        </div>
+        <div className="custom-button-group">
+          <button onClick={() => setEditing(book._id)} className="custom-add-btn">Edit</button>
+          <button onClick={() => handleDelete(book._id)} className="custom-delete-btn">Delete</button>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+
       <ToastContainer />
     </div>
   );

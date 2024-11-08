@@ -1,64 +1,49 @@
-const { required } = require('joi');
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const Schema = mongoose.Schema;
- 
-const userSchema=new Schema({
-    name:{
-        type:String,
-        required:true
+
+const userSchema = new Schema({
+    userId: {
+        type: Number,
+        unique: true
     },
-    email:{
-        type:String,
-        required:true,
-        unique:true,
+    name: {
+        type: String,
+        required: true
     },
-    password:{
-        type:String,
-        required:true
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    phoneNo: {
+        type: String,
+        default: ''
+    },
+    gender: {
+        type: String,
+        default: ''
+    },
+    address: {
+        type: String,
+        default: ''
+    },
+    dob: {
+        type: Date,
+        default: null
+    },
+    age: {
+        type: Number,
+        default: null
     }
-})
+});
 
-const userModel=mongoose.model('users',userSchema);
-module.exports=userModel;
+// Apply the auto-incrementing plugin to the user schema
+userSchema.plugin(AutoIncrement, { inc_field: 'userId' });
 
-// const mongoose = require('mongoose');
-// const Schema = mongoose.Schema;
-
-// const userSchema = new Schema({
-//     name: {
-//         type: String,
-//         required: true
-//     },
-//     email: {
-//         type: String,
-//         required: true,
-//         unique: true,
-//     },
-//     password: {
-//         type: String,
-//         required: true
-//     },
-//     phoneNo: {
-//         type: String,
-//         default: ''
-//     },
-//     gender: {
-//         type: String,
-//         default: ''
-//     },
-//     address: {
-//         type: String,
-//         default: ''
-//     },
-//     dob: {
-//         type: Date,
-//         default: null
-//     },
-//     age: {
-//         type: Number,
-//         default: null
-//     }
-// });
-
-// const UserModel = mongoose.model('users', userSchema);
-// module.exports = UserModel;
+const UserModel = mongoose.model('users', userSchema);
+module.exports = UserModel;

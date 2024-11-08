@@ -16,6 +16,7 @@ import Romance from './romance';
 import Comics from './comics';
 import BookType from './booktypes';
 import Preloader from './Preloader';
+import TopThreeBook from './top3book';
 // import { use } from '../../../server/Routes/AuthRouter';
 import { FaUserAlt } from 'react-icons/fa';
 
@@ -207,6 +208,9 @@ const LibraryManagementTextOverlay = () => {
       </div>
       <div>
         <BookCards />
+      </div>
+      <div>
+        <TopThreeBook/>
       </div>
       <div id="newrelease">
         <NewReleases />
