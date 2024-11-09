@@ -30,5 +30,17 @@ router.get('/contact/messages', async (req, res) => {
         res.status(500).json({ error: 'Failed to retrieve contact messages' });
     }
 });
+// Add this route to update status in contactRoutes.js
+router.put('/contact/messages/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      await Contact.findByIdAndUpdate(id, { status });
+      res.status(200).send('Status updated');
+    } catch (error) {
+      res.status(500).json({ error: 'Error updating status' });
+    }
+  });
+  
 
 module.exports = router;

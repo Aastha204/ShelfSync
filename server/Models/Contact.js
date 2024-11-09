@@ -17,6 +17,11 @@ const contactSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    status: {
+        type: String,
+        default: "Respond",
+        trim: true
+    },
     created_at: {
         type: Date,
         default: Date.now

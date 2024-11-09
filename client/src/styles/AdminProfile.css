@@ -927,3 +927,79 @@
     background-color: #f1f1f1;
   }
   
+  /* AdminProfile.css */
+
+.admin-container {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.user-queries-section {
+  flex: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.section-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.filter-buttons {
+  margin-bottom: 20px;
+}
+
+.filter-buttons button {
+  padding: 10px 15px;
+  margin-right: 10px;
+  background-color: #ddd;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.filter-buttons button.active {
+  background-color: #4a3f35;
+  color: #fff;
+}
+
+.filter-buttons button:hover {
+  background-color: #555;
+  color: white;
+}
+
+.queries-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.queries-table th,
+.queries-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.queries-table th {
+  background-color: #4a3f35;
+  color: white;
+  font-weight: bold;
+}
+
+.queries-table td button {
+  padding: 5px 13px;
+  background-color: #5a2826;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.queries-table td button:hover {
+  background-color: #361111;
+}

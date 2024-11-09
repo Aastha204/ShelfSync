@@ -72,6 +72,34 @@ const AdminProfilePage = () => {
     }));
   };
 
+  const handleRespond = (message) => {
+    // Open default email client with the recipient's email
+    window.location.href = `mailto:${message.sender_email}`;
+  
+    // Update the status to 'Responded' after email is sent
+    axios
+      .put(`http://localhost:3001/api/contact/messages/${message._id}`, { status: 'Responded' })
+      .then(() => {
+        setContactMessages((prevMessages) =>
+          prevMessages.map((msg) =>
+            msg._id === message._id ? { ...msg, status: 'Responded' } : msg
+          )
+        );
+      })
+      .catch((error) => console.error('Error updating message status:', error));
+  };
+  const [filterStatus, setFilterStatus] = useState('All');
+
+  const handleFilterChange = (status) => {
+    setFilterStatus(status);
+  };
+
+  const filteredContactMessages = contactMessages.filter((message) => {
+    if (filterStatus === 'All') return true;
+    return filterStatus === 'Responded' ? message.status === 'Responded' : message.status !== 'Responded';
+  });
+  
+
   const handleAddBook = () => {
     if (!bookForm.name || !bookForm.author || !bookForm.genre || !bookForm.isbn || !bookForm.yearPublished || !bookForm.image) {
       alert('Please fill in all fields.');
@@ -94,6 +122,8 @@ const AdminProfilePage = () => {
     setShowAddBookForm(false);
     setEditingIndex(null);
   };
+
+
 
   const handleEditBook = (index) => {
     setEditingIndex(index);
@@ -184,8 +214,11 @@ const AdminProfilePage = () => {
           <li onClick={() => handleSectionClick('dashboard')} className={activeSection === 'dashboard' ? 'active' : ''}>
             Dashboard
           </li>
-          <li onClick={() => handleSectionClick('bookManagement')} className={activeSection === 'bookManagement' ? 'active' : ''}>
+          {/* <li onClick={() => handleSectionClick('bookManagement')} className={activeSection === 'bookManagement' ? 'active' : ''}>
             Book Management
+          </li> */}
+          <li>
+           <a href='/add'>Book Management</a> 
           </li>
           <li onClick={() => handleSectionClick('issueReturn')} className={activeSection === 'issueReturn' ? 'active' : ''}>
             Issue & Return
@@ -308,30 +341,49 @@ const AdminProfilePage = () => {
         )}
 
         {activeSection === 'UserQueries' && (
-  <div className="user-queries-section">
-    <h2 className="section-title">User Queries</h2>
-    <table className="queries-table">
-      <thead>
-        <tr>
-          <th>Sender Name</th>
-          <th>Sender Email</th>
-          <th>Message</th>
-          <th>Date Received</th>
-        </tr>
-      </thead>
-      <tbody>
-        {contactMessages.map((message, index) => (
-          <tr key={index}>
-            <td>{message.sender_name}</td>
-            <td>{message.sender_email}</td>
-            <td>{message.message}</td>
-            <td>{new Date(message.created_at).toLocaleDateString()}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-)}
+        <div className="user-queries-section">
+          <h2 className="section-title">User Queries</h2>
+
+          {/* Filter buttons */}
+          <div className="filter-buttons">
+            <button onClick={() => handleFilterChange('All')} className={filterStatus === 'All' ? 'active' : ''}>All</button>
+            <button onClick={() => handleFilterChange('Responded')} className={filterStatus === 'Responded' ? 'active' : ''}>Responded</button>
+            <button onClick={() => handleFilterChange('Unresponded')} className={filterStatus === 'Unresponded' ? 'active' : ''}>Unresponded</button>
+          </div>
+
+          <table className="queries-table">
+            <thead>
+              <tr>
+                <th>Sender Name</th>
+                <th>Sender Email</th>
+                <th>Message</th>
+                <th>Date Received</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredContactMessages.map((message, index) => (
+                <tr key={index}>
+                  <td>{message.sender_name}</td>
+                  <td>{message.sender_email}</td>
+                  <td>{message.message}</td>
+                  <td>{new Date(message.created_at).toLocaleDateString()}</td>
+                  <td>
+                    {message.status === 'Responded' ? (
+                      'Responded'
+                    ) : (
+                      <button onClick={() => handleRespond(message)}>Respond</button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+
+
 
       </div>
       <ToastContainer />
