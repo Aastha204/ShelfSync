@@ -472,3 +472,12 @@ transform: translateX(-100%); /* Move to outside the left edge */
     color: #ffffff8e;
     transform: scale(1.1);
 }
+
+@media (max-width: 768px) {
+    .faq-section {
+        flex-direction: column;
+    }
+    .faq-column {
+        width: 100%;
+    }
+}

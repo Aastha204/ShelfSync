@@ -16,7 +16,7 @@ const bookSchema = new mongoose.Schema({
     required: true 
   },
   available: { 
-    type: Boolean, 
+    type: Number, 
     required: true 
   },
   ratePerMonth: { 
@@ -27,6 +27,9 @@ const bookSchema = new mongoose.Schema({
     type: String 
   }, // URL for the book cover image
   genre: { 
+    type: String 
+  }, // Genre of the book
+  Language: { 
     type: String 
   }, // Genre of the book
   star: { 

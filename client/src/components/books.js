@@ -1,74 +1,162 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '../styles/book.css';
 import BookCards from './cards';
-import Footer from './Footer';
-import NewReleases from './newRelease';
-import BestAuthor from './bestauthorbooks';
-import BestFictional from './listofbestfictionbooks';
-import Amazonseller from './amazonbestsellersbooks';
-import Children from './children';
-import History from './history';
-import Fiction from './fiction';
-import Thriller from './thriller';
-import Romance from './romance';
-import Comics from './comics';
-import BookType from './booktypes';
 
-function Books() {
-    return (
-        <>
-            <div id="browse">
-                <BookType/>
-            </div>
+const Filter = () => {
+  const [books, setBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
+  const [editing, setEditing] = useState(null);
 
-            <div>
-                <BookCards/>
-            </div>
+  // Filter states
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState('');
+  const [priceRange, setPriceRange] = useState(100);
+  const [selectedRating, setSelectedRating] = useState(null);
+  const [selectedAvailability, setSelectedAvailability] = useState('');
 
-            <div id="newrelease">
-                <NewReleases/>
-            </div>
+  useEffect(() => {
+    fetchBooks();
+  }, []);
 
-            <div id="bestauthor">
-                <BestAuthor/>
-            </div>
+  useEffect(() => {
+    applyFilters();
+  }, [selectedCategory, selectedLanguage, priceRange, selectedRating, selectedAvailability]);
 
-            <div id="bestfiction">
-                <BestFictional/>
-            </div>
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/api/books');
+      setBooks(response.data);
+      setFilteredBooks(response.data); // Initialize filteredBooks with all books
+    } catch (error) {
+      toast.error('Error fetching books');
+    }
+  };
 
-            <div id="amazonseller">
-                <Amazonseller/>
-            </div>
+  const applyFilters = () => {
+    let updatedBooks = books;
 
-            <div id="children">
-                <Children/>
-            </div>
+    if (selectedCategory) {
+      updatedBooks = updatedBooks.filter((book) => book.genre === selectedCategory);
+    }
 
-            <div id="history">
-                <History/>
-            </div>
+    if (selectedLanguage) {
+      updatedBooks = updatedBooks.filter((book) => book.Language === selectedLanguage);
+    }
 
-            <div id="fiction">
-                <Fiction/>
-            </div>
+    if (selectedRating !== undefined && selectedRating !== null) {
+      updatedBooks = updatedBooks.filter((book) => book.star >= selectedRating);
+    }
 
-            <div id="thriller">
-                <Thriller/>
-            </div>
+    if (priceRange) {
+      updatedBooks = updatedBooks.filter((book) => book.ratePerMonth <= priceRange);
+    }
 
-            <div id="romance">
-                <Romance/>
-            </div>
+    if (selectedAvailability !== '') {
+      updatedBooks = updatedBooks.filter((book) => {
+        return selectedAvailability === 'available' ? book.available > 0 : book.available === 0;
+      });
+    }
 
-            <div id="comics">
-                <Comics/>
-            </div>
+    setFilteredBooks(updatedBooks);
+  };
 
-            <div id="footer">
-                <Footer/>
+  return (
+    <div className="filter-page-container">
+      {/* Sidebar Filter */}
+      <div className="sidebar-filter">
+        <h2>Filter</h2>
+
+        <div className="filter-section">
+          <h3>By Category</h3>
+          <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+            <option value="">All Categories</option>
+            {['Fiction', 'Romance', 'Children', 'Thriller', 'History', 'Comics'].map((category) => (
+              <option key={category} value={category}>{category}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="filter-section">
+          <h3>Language</h3>
+          <select value={selectedLanguage} onChange={(e) => setSelectedLanguage(e.target.value)}>
+            <option value="">All</option>
+            <option value="English">English</option>
+            <option value="Hindi">Hindi</option>
+          </select>
+        </div>
+
+        <div className="filter-section">
+          <h3>Price</h3>
+          <input
+            type="range"
+            min="10"
+            max="100"
+            value={priceRange}
+            onChange={(e) => setPriceRange(e.target.value)}
+          />
+          <span>Up to ₹{priceRange}</span>
+        </div>
+
+        {/* Rating Filter */}
+        <div className="filter-section">
+          <h3>Rating</h3>
+          <select value={selectedRating || ''} onChange={(e) => setSelectedRating(Number(e.target.value))}>
+            <option value="">All Ratings</option>
+            <option value="1">1 Star & above</option>
+            <option value="2">2 Stars & above</option>
+            <option value="3">3 Stars & above</option>
+            <option value="4">4 Stars & above</option>
+            <option value="5">5 Stars</option>
+          </select>
+        </div>
+
+        {/* Availability Filter */}
+        <div className="filter-section">
+          <h3>Availability</h3>
+          <select value={selectedAvailability} onChange={(e) => setSelectedAvailability(e.target.value)}>
+            <option value="">All</option>
+            <option value="available">Available</option>
+            <option value="not-available">Not Available</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Book List */}
+      <div className="book-list-container">
+        <div>
+          <BookCards />
+        </div>
+
+        {filteredBooks.map((book) => (
+          <div key={book._id} className={`custom-book-card ${book._id === editing ? 'custom-highlighted' : ''}`}>
+            <div className="custom-image-container">
+              <img src={book.bookCoverImageUrl || 'placeholder.jpg'} alt={`${book.name} cover`} className="custom-book-cover-image" />
             </div>
-        </>
-    );
+            <div className="custom-card-content">
+              <h3 className="custom-book-title">{book.name}</h3>
+              <p className="custom-book-author">{book.author}</p>
+              <div className="custom-card-footer">
+                <span className="custom-book-price">₹{book.ratePerMonth}</span>
+                <span className="custom-book-rating">
+                  {Array(book.star).fill('⭐').map((star, index) => (
+                    <span key={index}>{star}</span>
+                  ))}
+                </span>
+              </div>
+              {/* Button text based on availability */}
+              <button className="add-btn" disabled={book.available === 0}>
+                  {book.available > 0 ? 'Issue' : 'Not Available'}
+              </button>
+            </div>
+          </div>
+        ))}
+        <ToastContainer />
+      </div>
+    </div>
+  );
 };
 
-export default Books;
+export default Filter;

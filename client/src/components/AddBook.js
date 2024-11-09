@@ -10,10 +10,11 @@ const BookManager = () => {
   const [bookData, setBookData] = useState({ 
     name: '', 
     author: '', 
-    available: true, 
+    available: '', 
     ratePerMonth: '', 
     bookCoverImageUrl: '', 
     genre: '', 
+    Language: 'English', // Default language choice
     star: '' 
   });
   const [editing, setEditing] = useState(null);
@@ -33,20 +34,30 @@ const BookManager = () => {
   };
 
   const validateAuthorName = (name) => /^[A-Za-z\s]+$/.test(name);
-
   const validateStarRating = (rating) => rating >= 0 && rating <= 5;
 
   const handleAddOrUpdate = async () => {
+    // Validate if rate per month is a non-negative value
     if (bookData.ratePerMonth < 0) {
       toast.error('Rate per month cannot be negative');
       return;
     }
-    if (!validateAuthorName(bookData.author)) {
-      toast.error('Author name should contain only letters and spaces');
+
+    // Validate if availability is a non-negative value
+    if (bookData.available < 0) {
+      toast.error('Number of books available cannot be negative');
       return;
     }
+
+    // Validate if star rating is between 0 and 5
     if (!validateStarRating(bookData.star)) {
       toast.error('Star rating must be between 0 and 5');
+      return;
+    }
+
+    // Validate author name
+    if (!validateAuthorName(bookData.author)) {
+      toast.error('Author name should contain only letters and spaces');
       return;
     }
 
@@ -61,7 +72,16 @@ const BookManager = () => {
         toast.success('Book added successfully');
         setBooks([...books, response.data.book]);
       }
-      setBookData({ name: '', author: '', available: true, ratePerMonth: '', bookCoverImageUrl: '', genre: '', star: '' });
+      setBookData({
+        name: '',
+        author: '',
+        available: '',
+        ratePerMonth: '',
+        bookCoverImageUrl: '',
+        genre: '',
+        Language: 'English',
+        star: ''
+      });
     } catch (error) {
       if (error.response?.data.message === 'Book already exists') {
         toast.error('Book already exists');
@@ -128,6 +148,17 @@ const BookManager = () => {
             onChange={e => setBookData({ ...bookData, genre: e.target.value })}
             className="input-field"
           />
+
+          {/* Language Dropdown */}
+          <select
+            value={bookData.Language}
+            onChange={e => setBookData({ ...bookData, Language: e.target.value })}
+            className="input-field"
+          >
+            <option value="English">English</option>
+            <option value="Hindi">Hindi</option>
+          </select>
+
           <input
             type="number"
             placeholder="Star Rating (0-5)"
@@ -135,17 +166,13 @@ const BookManager = () => {
             onChange={e => setBookData({ ...bookData, star: e.target.value })}
             className="input-field"
           />
-          <div className="checkbox-container">
-            <label>
-              <input
-                type="checkbox"
-                checked={bookData.available}
-                onChange={e => setBookData({ ...bookData, available: e.target.checked })}
-                className="checkbox"
-              />
-              Available
-            </label>
-          </div>
+          <input
+            type="number"
+            placeholder="Number of Book Available"
+            value={bookData.available}
+            onChange={e => setBookData({ ...bookData, available: e.target.value })}
+            className="input-field"
+          />
           <button onClick={handleAddOrUpdate} className={`button ${editing ? 'update-button' : 'add-button'}`}>
             {editing ? 'Update Book' : 'Add Book'}
           </button>
@@ -153,31 +180,30 @@ const BookManager = () => {
       </div>
 
       <div className="book-list-container">
-  {books.map((book) => (
-    <div key={book._id} className={`custom-book-card ${book._id === editing ? 'custom-highlighted' : ''}`}>
-      <div className="custom-image-container">
-        <img src={book.bookCoverImageUrl || 'placeholder.jpg'} alt={`${book.name} cover`} className="custom-book-cover-image" />
+        {books.map((book) => (
+          <div key={book._id} className={`custom-book-card ${book._id === editing ? 'custom-highlighted' : ''}`}>
+            <div className="custom-image-container">
+              <img src={book.bookCoverImageUrl || 'placeholder.jpg'} alt={`${book.name} cover`} className="custom-book-cover-image" />
+            </div>
+            <div className="custom-card-content">
+              <h3 className="custom-book-title">{book.name}</h3>
+              <p className="custom-book-author">{book.author}</p>
+              <div className="custom-card-footer">
+                <span className="custom-book-price">₹{book.ratePerMonth}</span>
+                <span className="custom-book-rating">
+                  {Array(book.star).fill('⭐').map((star, index) => (
+                    <span key={index}>{star}</span>
+                  ))}
+                </span>
+              </div>
+              <div className="custom-button-group">
+                <button onClick={() => setEditing(book._id)} className="custom-add-btn">Edit</button>
+                <button onClick={() => handleDelete(book._id)} className="custom-delete-btn">Delete</button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="custom-card-content">
-        <h3 className="custom-book-title">{book.name}</h3>
-        <p className="custom-book-author">{book.author}</p>
-        <div className="custom-card-footer">
-          <span className="custom-book-price">₹{book.ratePerMonth}</span>
-          <span className="custom-book-rating">
-            {Array(book.star).fill('⭐').map((star, index) => (
-              <span key={index}>{star}</span>
-            ))}
-          </span>
-        </div>
-        <div className="custom-button-group">
-          <button onClick={() => setEditing(book._id)} className="custom-add-btn">Edit</button>
-          <button onClick={() => handleDelete(book._id)} className="custom-delete-btn">Delete</button>
-        </div>
-      </div>
-    </div>
-  ))}
-</div>
-
 
       <ToastContainer />
     </div>

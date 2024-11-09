@@ -52,14 +52,14 @@ const ContactPage = () => {
                 <div className="home-icon">
                     <a href="/"><FaHome /></a>
                 </div>
-                
+
                 {/* Contact Form Section */}
                 <div className="form-container">
                     <h1>Get in touch 🤝</h1>
                     <p>If you have any questions about our services or want to contact us or share your feedback, we'd love to hear from you.</p>
                     <h2><b>Contact Us</b></h2>
                     <form onSubmit={handleSubmit}>
-                        <input  className='text-black'
+                        <input className='text-black'
                             type="text" 
                             name="name" 
                             placeholder="Your Name" 
