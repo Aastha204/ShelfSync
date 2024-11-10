@@ -1,3 +1,4 @@
+// Filter.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -61,6 +62,26 @@ const Filter = () => {
     }
 
     setFilteredBooks(updatedBooks);
+  };
+
+  const handleIssueBook = async (bookID) => {
+    const userEmail = localStorage.getItem('loggedInUserEmail');
+    if (!userEmail) {
+      toast.error('Please log in to issue a book');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:3001/api/issues/issue', {
+        userEmail,  // Send the logged-in userID along with the bookID
+        bookID,
+      });
+
+      toast.success(response.data.message); // Display success message
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to issue book');
+    }
   };
 
   return (
@@ -147,8 +168,12 @@ const Filter = () => {
                 </span>
               </div>
               {/* Button text based on availability */}
-              <button className="add-btn" disabled={book.available === 0}>
-                  {book.available > 0 ? 'Issue' : 'Not Available'}
+              <button
+                className="add-btn"
+                disabled={book.available === 0}
+                onClick={() => handleIssueBook(book._id)} // Pass the bookID to the function
+              >
+                {book.available > 0 ? 'Issue' : 'Not Available'}
               </button>
             </div>
           </div>

@@ -9,12 +9,12 @@ const issueSchema = new mongoose.Schema({
   userID: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'users' // Reference to the user schema
+    ref: 'User' // Reference to the user schema
   },
   bookID: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'books' // Reference to the book schema
+    ref: 'Book' // Reference to the book schema
   },
   issueDate: {
     type: Date,
