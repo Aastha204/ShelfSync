@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
+import { useNavigate } from 'react-router-dom';
 import '../styles/changeUserProfile.css';
 
 const FormComponent = () => {
@@ -11,7 +11,7 @@ const FormComponent = () => {
         dob: ''
     });
 
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({
@@ -47,6 +47,7 @@ const FormComponent = () => {
         .then(data => {
             console.log('User profile updated successfully:', data);
             alert('Profile updated successfully!');
+            navigate('/userprofile');  // Navigate after successful form submission
         })
         .catch(error => {
             console.error('Error updating profile:', error);
@@ -55,7 +56,7 @@ const FormComponent = () => {
     };
 
     const navigateHome = () => {
-        navigate('/userprofile'); // Adjust this to your home page route
+        navigate('/userprofile');
     };
 
     return (
@@ -65,7 +66,7 @@ const FormComponent = () => {
                 <h2>User Details Form</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                    <label htmlFor="phone">Phone Number</label>
+                        <label htmlFor="phone">Phone Number</label>
                         <input
                             type="tel"
                             id="phone"
@@ -73,7 +74,7 @@ const FormComponent = () => {
                             value={formData.phone}
                             onChange={handleChange}
                             required
-                            pattern="\d{10}" // Ensures exactly 10 digits
+                            pattern="\d{10}"
                             title="Please enter a 10-digit phone number"
                         />
                     </div>
@@ -124,7 +125,7 @@ const FormComponent = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="submit-btn1" onClick={navigateHome}>Submit</button>
+                    <button type="submit" className="submit-btn1">Submit</button>
                 </form>
             </div>
         </div>
