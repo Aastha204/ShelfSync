@@ -1,23 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Issue = require('../Models/Issue');
+const Book = require('../Models/Book');
 const jwt = require('jsonwebtoken');
 const User = require('../Models/User');
-
-// Middleware to authenticate the token (optional)
-// const authenticate = (req, res, next) => {
-//   const token = req.headers.authorization?.split(' ')[1];
-//   if (!token) {
-//     return res.status(401).json({ error: 'No token provided' });
-//   }
-//   try {
-//     const decoded = jwt.verify(token, 'secret-123'); // Use your secret key here
-//     req.email = decoded.email; // Assuming the decoded token contains email
-//     next();
-//   } catch (error) {
-//     return res.status(403).json({ error: 'Invalid token' });
-//   }
-// };
 
 // POST route to issue a book
 router.post('/issue', async (req, res) => {
@@ -30,9 +16,24 @@ router.post('/issue', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Create the issue with the user's ObjectId
+    // Check if the book is already issued by this user
+    const existingIssue = await Issue.findOne({ userID: user._id, bookID });
+    if (existingIssue) {
+      return res.status(400).json({ error: 'Book already issued by you' });
+    }
+
+    // Decrease the available count by 1 if the book is available
+    const book = await Book.findById(bookID);
+    if (!book || book.available <= 0) {
+      return res.status(400).json({ error: 'Book is not available for issue' });
+    }
+
+    book.available -= 1; // Reduce available count
+    await book.save(); // Save the updated book
+
+    // Create the issue if no previous record exists
     const newIssue = new Issue({
-      userID: user._id, // Updated to use userId instead of userEmail
+      userID: user._id,
       bookID,
     });
 

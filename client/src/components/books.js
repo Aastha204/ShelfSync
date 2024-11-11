@@ -70,20 +70,24 @@ const Filter = () => {
       toast.error('Please log in to issue a book');
       return;
     }
-
+  
     try {
       const response = await axios.post('http://localhost:3001/api/issues/issue', {
-        userEmail,  // Send the logged-in userID along with the bookID
+        userEmail,
         bookID,
       });
-
+  
       toast.success(response.data.message); // Display success message
     } catch (error) {
       console.error(error);
-      toast.error('Failed to issue book');
+      if (error.response && error.response.data && error.response.data.error === 'Book already issued by you') {
+        toast.info('Book already issued by you'); // Display specific error message
+      } else {
+        toast.error('Failed to issue book');
+      }
     }
   };
-
+  
   return (
     <div className="filter-page-container">
       {/* Sidebar Filter */}
