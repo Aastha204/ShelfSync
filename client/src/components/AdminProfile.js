@@ -28,10 +28,23 @@ const AdminProfilePage = () => {
 
   const navigate = useNavigate();
 
-  const totalBooks = 1000;
-  const booksIssued = 300;
-  const booksReturned = 200;
-  const booksLeft = totalBooks - booksIssued;
+  const [dashboardData, setDashboardData] = useState({
+    totalBooks: 0,
+    booksIssued: 0,
+    booksReturned: 0,
+    booksLeft: 0,
+  });
+
+  useEffect(() => {
+    // Fetch the dashboard data when the component mounts
+    axios.get('http://localhost:3001/api/dashboard') // Replace with your server base URL if needed
+      .then(response => {
+        setDashboardData(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching dashboard data:', error);
+      });
+  }, []);
 
   const [loggedInAdminName, setLoggedInAdminName] = useState('');
   const [loggedInAdminEmail, setLoggedInAdminEmail] = useState('');
@@ -172,7 +185,7 @@ const AdminProfilePage = () => {
           datasets: [
             {
               label: 'Library Analytics',
-              data: [totalBooks, booksIssued, booksReturned, booksLeft],
+              data: [dashboardData.totalBooks, dashboardData.booksIssued, dashboardData.booksReturned, dashboardData.booksLeft],
               backgroundColor: ['#8d6e63', '#a1887f', '#bcaaa4', '#d7ccc8'],
               borderColor: '#4a3f35',
               borderWidth: 2,
@@ -200,6 +213,14 @@ const AdminProfilePage = () => {
       axios.get('http://localhost:3001/api/contact/messages')
         .then(response => setContactMessages(response.data))
         .catch(error => console.error('Error fetching contact messages:', error));
+    }
+  }, [activeSection]);
+
+  useEffect(() => {
+    if (activeSection === 'issueReturn') {
+      axios.get('http://localhost:3001/api/issue/getBooks') // Fetch issued books data from the backend
+        .then((response) => setIssueReturnData(response.data))
+        .catch((error) => console.error('Error fetching issued books:', error));
     }
   }, [activeSection]);
 
@@ -256,10 +277,10 @@ const AdminProfilePage = () => {
           <div className="dashboard-section">
             <h2 className="section-title">Dashboard</h2>
             <div className="card-container">
-              <div className="dashboard-card">Total Books: {totalBooks}</div>
-              <div className="dashboard-card">Books Issued: {booksIssued}</div>
-              <div className="dashboard-card">Books Returned: {booksReturned}</div>
-              <div className="dashboard-card">Books Left: {booksLeft}</div>
+              <div className="dashboard-card">Total Books: {dashboardData.totalBooks}</div>
+              <div className="dashboard-card">Books Issued: {dashboardData.booksIssued}</div>
+              <div className="dashboard-card">Books Returned: {dashboardData.booksReturned}</div>
+              <div className="dashboard-card">Books Left: {dashboardData.booksLeft}</div>
             </div>
             <div className="chart-container">
               <canvas id="dashboardChart"></canvas>
@@ -317,26 +338,33 @@ const AdminProfilePage = () => {
           <div className="issue-return-section">
             <h2 className="section-title">Issue & Return Management</h2>
             <p>Manage issued and returned books here.</p>
-            <table>
-              <thead>
-                <tr>
-                  <th>Book Name</th>
-                  <th>Issued To</th>
-                  <th>Issue Date</th>
-                  <th>Return Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {issueReturnData.map((entry, index) => (
-                  <tr key={index}>
-                    <td>{entry.bookName}</td>
-                    <td>{entry.issuedTo}</td>
-                    <td>{entry.issueDate}</td>
-                    <td>{entry.returnDate}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <table className="min-w-full border-collapse bg-brown-700 rounded-lg overflow-hidden">
+          <thead className="bg-brown-800 text-white">
+            <tr>
+              <th className="p-4 text-left">S.No.</th>
+              <th className="p-4 text-left">User Name</th>
+              <th className="p-4 text-left">User Email</th>
+              <th className="p-4 text-left">Book Name</th>
+              <th className="p-4 text-left">Author</th>
+              <th className="p-4 text-left">Issue Date</th>
+              <th className="p-4 text-left">Return Date</th>
+              
+            </tr>
+          </thead>
+          <tbody className="text-white">
+            {issueReturnData.map((issue, index) => (
+              <tr key={issue._id} className={`bg-brown-600 ${index % 2 === 0 ? 'bg-brown-500' : 'bg-brown-600'} hover:bg-brown-700`}>
+                <td className="p-4 text-left">{index + 1}</td>
+                <td className="p-4 text-left">{issue.userID.name}</td>
+                <td className="p-4 text-left">{issue.userID.email}</td>
+                <td className="p-4 text-left">{issue.bookID.name}</td>
+                <td className="p-4 text-left">{issue.bookID.author}</td>
+                <td className="p-4 text-left">{new Date(issue.issueDate).toLocaleDateString()}</td>
+                <td className="p-4 text-left">{new Date(issue.dueDate).toLocaleDateString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
           </div>
         )}
 

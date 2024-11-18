@@ -110,12 +110,14 @@ const handleLogin= async (e)=>{
         body:JSON.stringify(loginInfo)
        });
        const result = await response.json();
-       const {success,message,jwtToken , name,error}=result;
+       const {success,message,jwtToken , name,userId,error}=result;
        if(success){
         handleSuccess(message);
+       
         localStorage.setItem('token',jwtToken);
         localStorage.setItem('loggedInUserName',name);
         localStorage.setItem('loggedInUserEmail',email);
+        localStorage.setItem('loggedInUserId', userId);
         setTimeout(()=>{
           navigate('/userprofile');
 
