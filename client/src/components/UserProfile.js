@@ -65,7 +65,7 @@ const MemberProfile = () => {
   };
 
   const handleAll = () => {
-    navigate("/booklist");
+    navigate("/books");
   };
 
   return (

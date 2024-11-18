@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const Return = () => {
   const [userReturn, setUserReturn] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userId = localStorage.getItem('loggedInUserId');
@@ -26,6 +28,14 @@ const Return = () => {
 
   return (
     <div className="min-h-screen bg-cover bg-center p-8" style={{ backgroundImage: "url('./images/issuebg.jpg')" }}>
+      {/* Back to Profile Button */}
+      <button
+        onClick={() => navigate('/userProfile')}
+        className="fixed top-4 left-4 bg-brown-600 hover:bg-brown-800 text-white px-4 py-2 rounded shadow-md"
+      >
+        Back to Profile
+      </button>
+
       <div className="container mx-auto px-4 py-8 bg-brown-100 bg-opacity-20 rounded-lg">
         <h1 className="text-6xl font-bold text-brown-800 text-center mb-6">Returned Books</h1>
         <table className="min-w-full border-collapse bg-brown-700 rounded-lg overflow-hidden">
