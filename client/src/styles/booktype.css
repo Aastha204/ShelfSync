@@ -9,6 +9,14 @@
   margin-bottom: 20px;
 }
 
+.search-results {
+  display: flex; /* Use Flexbox for layout */
+  flex-wrap: wrap; /* Allow wrapping to the next row */
+  gap: 20px; /* Space between cards */
+  justify-content: center; /* Center the cards */
+  margin-top: 20px;
+}
+
 .input-box {
   padding: 10px;
   border: 1px solid #ccc;

@@ -9,6 +9,8 @@ const userRoutes= require('./Routes/UserRoutes');
 const ContactRoutes= require('./Routes/ContactRoutes');
 const errorMiddleware = require('./Middlewares/errorMiddleware');
 const issueRoutes = require('./Routes/IssueRoutes');
+const dashboard=require('./Routes/DashBoard')
+const returnRoutes = require('./Routes/ReturnRoutes');
 
 require('dotenv').config();
 
@@ -28,7 +30,9 @@ app.use('/admin',AdminRouter);
 app.use('/api/books', bookRoutes);
 app.use('/api', userRoutes);
 app.use('/api',ContactRoutes);
-app.use('/api/issues', issueRoutes);
+app.use('/api/issue', issueRoutes);
+app.use('/api/dashboard', dashboard);
+app.use('/api/return', returnRoutes);
 
 // Error handling middleware
 app.use(errorMiddleware);

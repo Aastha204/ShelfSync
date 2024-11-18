@@ -60,3 +60,20 @@ exports.getBooks = async (req, res) => {
     res.status(500).json({ message: 'Error fetching books', error });
   }
 };
+
+// Search Books
+exports.searchBooks = async (req, res) => {
+  try {
+    const { name, author } = req.query; // Extract query parameters
+    const criteria = {};
+
+    if (name) criteria.name = new RegExp(name, 'i'); // Case-insensitive search
+    if (author) criteria.author = new RegExp(author, 'i'); // Case-insensitive search
+
+    const books = await Book.find(criteria);
+    res.status(200).json(books);
+  } catch (error) {
+    console.error('Error fetching search results:', error);
+    res.status(500).json({ message: 'Error fetching search results', error });
+  }
+};

@@ -39,7 +39,8 @@ const login = async(req,res)=>{
         success:true,
         jwtToken,
         email,
-        name:user.name
+        name:user.name,
+        userId: user._id,
     })
     }catch(err){
         console.log(err)

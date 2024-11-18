@@ -15,4 +15,6 @@ router.put('/update/:id', bookController.updateBook);
 // Get All Books
 router.get('/', bookController.getBooks);
 
+router.get('/search', bookController.searchBooks);
+
 module.exports = router;

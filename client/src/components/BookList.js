@@ -20,11 +20,30 @@ const BookList = () => {
     }
   };
 
-  const handleIssue = (bookId) => {
-    console.log(`Issued book with ID: ${bookId}`);
-    toast.success('Book issued successfully');
-  };
+  const handleIssue = async (bookId) => {
+    try {
+      const userEmail = localStorage.getItem('loggedInUserEmail'); // Assuming email is saved in local storage
+      if (!userEmail) {
+        toast.error('User not logged in');
+        return; // Exit if userEmail is not available
+      }
 
+      const payload = {
+        userEmail,
+        bookID: bookId,
+      };
+      console.log('Issuing Book with Payload:', payload); // Log the payload
+
+      const response = await axios.post('http://localhost:3001/api/issue/add', payload);
+      console.log(response.data); // This will help you debug
+
+      toast.success('Book issued successfully');
+      fetchBooks(); // Refresh the list of books after issuing
+    } catch (error) {
+      toast.error('Error issuing book');
+      console.error('Error issuing book:', error.response ? error.response.data : error); // More detailed error output
+    }
+  };
   return (
     <div className="bg-[#2b1700] min-h-screen p-8">
       <h1 className="text-3xl font-bold mb-6 text-[#fafafa] border-b-4 border-[#fafafa] pb-2">Available Books 📚</h1>

@@ -28,7 +28,11 @@ const issueSchema = new mongoose.Schema({
       const issueDate = this.issueDate || Date.now();
       return new Date(issueDate.getTime() + 30 * 24 * 60 * 60 * 1000); // Add 30 days in milliseconds
     }
-  }
+  },
+  returned: {
+    type: Boolean,
+    default: false, // Default to false when the book is issued
+  },
 });
 
 // Apply the auto-incrementing plugin to the issue schema
