@@ -35,6 +35,8 @@ import AdminLogin from './components/AdminLogin'
 import AdminSignup from './components/AdminSignUp'
 import BookList from './components/BookList';
 import CardsAnimate from "./components/CardsAnimate";
+import BestFictionalBooks from './components/BestFictionBook';
+
 
 
 // const ProtectedRoute = ({ children }) => {
@@ -84,6 +86,8 @@ function App() {
         <Route path="/adminsignup" element={<AdminSignup/>}/>
         <Route path='/booklist' element={<BookList/>}/>
         <Route path='/CardsAnimate' element={<CardsAnimate/>}/>
+        <Route path='/bestfiction' element={<BestFictionalBooks/>}/>
+        <Route path='/bestauthor' element={<BestAuthorBooks/>}/>
       </Routes>
     
     </div>

@@ -73,7 +73,7 @@ const Filter = () => {
     }
   
     try {
-      const response = await axios.post('http://localhost:3001/api/issues/issue', {
+      const response = await axios.post('http://localhost:3001/api/issues/add', {
         userEmail,
         bookID,
       });

@@ -30,7 +30,7 @@ app.use('/admin',AdminRouter);
 app.use('/api/books', bookRoutes);
 app.use('/api', userRoutes);
 app.use('/api',ContactRoutes);
-app.use('/api/issue', issueRoutes);
+app.use('/api/issues', issueRoutes);
 app.use('/api/dashboard', dashboard);
 app.use('/api/return', returnRoutes);
 
