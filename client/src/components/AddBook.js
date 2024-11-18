@@ -141,13 +141,20 @@ const BookManager = () => {
             onChange={e => setBookData({ ...bookData, bookCoverImageUrl: e.target.value })}
             className="input-field"
           />
-          <input
+          <select
             type="text"
             placeholder="Genre"
             value={bookData.genre}
             onChange={e => setBookData({ ...bookData, genre: e.target.value })}
             className="input-field"
-          />
+            >
+            <option value="Romance">Romance</option>
+            <option value="Comics">Comics</option>
+            <option value="Thriller">Thriller</option>
+            <option value="History">History</option>
+            <option value="Children">Children</option>
+            <option value="Fiction">Fiction</option>
+            </select>
 
           {/* Language Dropdown */}
           <select

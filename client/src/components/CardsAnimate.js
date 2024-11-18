@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "../styles/CardsAnimate.css";
+import { useNavigate } from "react-router-dom";
 
 const CardsAnimate = () => {
   const [position, setPosition] = useState(1);
-
+  const navigate = useNavigate();
+  const handleIssue = () => {
+    navigate("/books");
+  };
   const books = [
     {
         image: "https://marketplace.canva.com/EAFf0E5urqk/1/0/1003w/canva-blue-and-green-surreal-fiction-book-cover-53S3IzrNxvY.jpg",
@@ -120,7 +124,7 @@ const CardsAnimate = () => {
               <div className="description">
                 <h3>{book.title}</h3>
                 <p>by {book.author}</p>
-                <button className="issue-button">Issue</button>
+                <button className="issue-button" onClick={handleIssue}>Issue</button>
               </div>
             </div>
           </div>
