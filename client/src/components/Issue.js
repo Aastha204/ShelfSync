@@ -29,6 +29,8 @@ const Issue = () => {
               <th className="p-4 text-left">Book Name</th>
               <th className="p-4 text-left">Author Name</th>
               <th className="p-4 text-left">Book Type</th>
+              <th className="p-4 text-left">Issued Date</th>
+              <th className="p-4 text-left">Due Date</th>
               <th className="p-4 text-left">Action</th>
             </tr>
           </thead>
