@@ -1,0 +1,134 @@
+.carousel-container {
+    height: 600px;
+    display: grid;
+    grid-template-rows: 500px auto;
+    grid-template-columns: 50px 1fr 50px;
+    align-items: center;
+    justify-items: center;
+  }
+  
+  main#carousel {
+    grid-column: 2 / 3;
+    width: 100%;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    perspective: 600px;
+    --items: 5;
+    --middle: 3;
+    --position: 1;
+  }
+  
+  div.item {
+    position: absolute;
+    width: 300px;
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+    --r: calc(var(--position) - var(--offset));
+    --abs: max(calc(var(--r) * -1), var(--r));
+    transition: all 0.25s linear;
+    transform: rotateY(calc(-10deg * var(--r))) translateX(calc(-300px * var(--r)));
+    z-index: calc((var(--position) - var(--abs)));
+    pointer-events: auto;
+  }
+  
+  div.item .overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  div.item:hover .overlay {
+    opacity: 1;
+  }
+  
+  div.item .description h3 {
+    font-size: 18px;
+    margin: 0;
+  }
+  
+  div.item .description p {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  div.item .issue-button {
+    background-color: white;
+    color: black;
+    border: 3px solid #056eaf;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  
+  div.item .issue-button:hover {
+    background-color: #0c6975;
+    color: white;
+    border: 2px solid white;
+    box-shadow: 0 0 10px white;
+  }
+  
+  .arrow {
+    font-size: 50px;
+    color: rgb(199, 21, 21);
+    border: none;
+    display: flex;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    grid-row: 1 / 2;
+    align-self: center;
+    z-index: 5;
+    transform: translateY(-50%);
+  }
+  
+  .arrow:hover {
+    color: black;
+  }
+  
+  .left-arrow {
+    grid-column: 1 / 2;
+    left: 20px;
+  }
+  
+  .right-arrow {
+    grid-column: 3 / 4;
+    right: 20px;
+  }
+  
+  .dots-container {
+    grid-column: 2 / 3;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .dots-container input[type="radio"] {
+    width: 10px;
+    height: 10px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    background-color: white;
+    appearance: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .dots-container input[type="radio"]:checked {
+    background-color: #ff9770;
+    transform: scale(1.2);
+  }
+  

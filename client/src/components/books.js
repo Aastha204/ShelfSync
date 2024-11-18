@@ -1,4 +1,3 @@
-// Filter.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -14,7 +13,7 @@ const Filter = () => {
   // Filter states
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('');
-  const [priceRange, setPriceRange] = useState(100);
+  const [priceRange, setPriceRange] = useState(10000);
   const [selectedRating, setSelectedRating] = useState(null);
   const [selectedAvailability, setSelectedAvailability] = useState('');
 
@@ -41,6 +40,8 @@ const Filter = () => {
 
     if (selectedCategory) {
       updatedBooks = updatedBooks.filter((book) => book.genre === selectedCategory);
+    } else {
+      updatedBooks = books; // Show all books when "All Categories" is selected
     }
 
     if (selectedLanguage) {
@@ -77,11 +78,11 @@ const Filter = () => {
         bookID,
       });
   
-      toast.success(response.data.message); // Display success message
+      toast.success(response.data.message);
     } catch (error) {
       console.error(error);
       if (error.response && error.response.data && error.response.data.error === 'Book already issued by you') {
-        toast.info('Book already issued by you'); // Display specific error message
+        toast.info('Book already issued by you');
       } else {
         toast.error('Failed to issue book');
       }
@@ -118,7 +119,7 @@ const Filter = () => {
           <input
             type="range"
             min="10"
-            max="100"
+            max="10000"
             value={priceRange}
             onChange={(e) => setPriceRange(e.target.value)}
           />
@@ -163,6 +164,7 @@ const Filter = () => {
             <div className="custom-card-content">
               <h3 className="custom-book-title">{book.name}</h3>
               <p className="custom-book-author">{book.author}</p>
+              <p className="custom-book-genre"><b>{book.genre}</b></p>
               <div className="custom-card-footer">
                 <span className="custom-book-price">₹{book.ratePerMonth}</span>
                 <span className="custom-book-rating">
@@ -171,11 +173,10 @@ const Filter = () => {
                   ))}
                 </span>
               </div>
-              {/* Button text based on availability */}
               <button
                 className="add-btn"
                 disabled={book.available === 0}
-                onClick={() => handleIssueBook(book._id)} // Pass the bookID to the function
+                onClick={() => handleIssueBook(book._id)}
               >
                 {book.available > 0 ? 'Issue' : 'Not Available'}
               </button>

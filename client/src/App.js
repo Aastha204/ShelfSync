@@ -34,6 +34,7 @@ import CustomCards from './components/CustomCards';
 import AdminLogin from './components/AdminLogin'
 import AdminSignup from './components/AdminSignUp'
 import BookList from './components/BookList';
+import CardsAnimate from "./components/CardsAnimate";
 
 
 // const ProtectedRoute = ({ children }) => {
@@ -82,6 +83,7 @@ function App() {
         <Route path="/adminlogin" element={<AdminLogin/>}/>
         <Route path="/adminsignup" element={<AdminSignup/>}/>
         <Route path='/booklist' element={<BookList/>}/>
+        <Route path='/CardsAnimate' element={<CardsAnimate/>}/>
       </Routes>
     
     </div>

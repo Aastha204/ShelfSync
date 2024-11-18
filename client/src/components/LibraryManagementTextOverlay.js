@@ -17,6 +17,7 @@ import Comics from './comics';
 import BookType from './booktypes';
 import Preloader from './Preloader';
 import TopThreeBook from './top3book';
+import CardsAnimate from "./CardsAnimate";
 // import { use } from '../../../server/Routes/AuthRouter';
 import { FaUserAlt } from 'react-icons/fa';
 
@@ -215,7 +216,7 @@ const LibraryManagementTextOverlay = () => {
       <div id="newrelease">
         <NewReleases />
       </div>
-      <div id="bestauthor">
+      {/* <div id="bestauthor">
         <BestAuthor />
       </div>
       <div id="bestfiction">
@@ -223,8 +224,8 @@ const LibraryManagementTextOverlay = () => {
       </div>
       <div id="amazonseller">
         <Amazonseller />
-      </div>
-      <div id="children">
+      </div> */}
+      {/* <div id="children">
         <Children />
       </div>
       <div id="history">
@@ -241,6 +242,9 @@ const LibraryManagementTextOverlay = () => {
       </div>
       <div id="comics">
         <Comics />
+      </div> */}
+      <div id="cards-animate">
+        <CardsAnimate />
       </div>
       <div id="footer">
         <Footer />
