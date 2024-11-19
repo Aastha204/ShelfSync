@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaSearch } from 'react-icons/fa'; // Import the search icon
 import '../styles/book.css';
 import BookCards from './cards';
 
@@ -9,6 +10,11 @@ const Filter = () => {
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [editing, setEditing] = useState(null);
+
+  // Search states
+  const [bookName, setBookName] = useState('');
+  const [authorName, setAuthorName] = useState('');
+  const [message, setMessage] = useState('');
 
   // Filter states
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -35,13 +41,50 @@ const Filter = () => {
     }
   };
 
+  const debouncedSearch = (fn, delay) => {
+    let timeoutId;
+    return (...args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => fn(...args), delay);
+    };
+  };
+
+  const searchBooks = async (name, author) => {
+    if (!name.trim() && !author.trim()) {
+      setFilteredBooks(books); // Show all books if no search criteria
+      return;
+    }
+
+    setMessage('');
+    try {
+      const response = await axios.get('http://localhost:3001/api/books/search', {
+        params: { name, author },
+      });
+      setFilteredBooks(response.data);
+    } catch (error) {
+      console.error('Error fetching search results:', error.message);
+    }
+  };
+
+  const debouncedSearchBooks = debouncedSearch(searchBooks, 300);
+
+  const handleBookNameChange = (e) => {
+    const value = e.target.value;
+    setBookName(value);
+    debouncedSearchBooks(value, authorName);
+  };
+
+  const handleAuthorNameChange = (e) => {
+    const value = e.target.value;
+    setAuthorName(value);
+    debouncedSearchBooks(bookName, value);
+  };
+
   const applyFilters = () => {
     let updatedBooks = books;
 
     if (selectedCategory) {
       updatedBooks = updatedBooks.filter((book) => book.genre === selectedCategory);
-    } else {
-      updatedBooks = books; // Show all books when "All Categories" is selected
     }
 
     if (selectedLanguage) {
@@ -71,13 +114,13 @@ const Filter = () => {
       toast.error('Please log in to issue a book');
       return;
     }
-  
+
     try {
       const response = await axios.post('http://localhost:3001/api/issues/add', {
         userEmail,
         bookID,
       });
-  
+
       toast.success(response.data.message);
     } catch (error) {
       console.error(error);
@@ -88,7 +131,7 @@ const Filter = () => {
       }
     }
   };
-  
+
   return (
     <div className="filter-page-container">
       {/* Sidebar Filter */}
@@ -152,9 +195,38 @@ const Filter = () => {
 
       {/* Book List */}
       <div className="book-list-container">
+        
         <div>
           <BookCards />
         </div>
+
+        <div className="search-bar mb-6 flex items-center">
+          <input
+            type="text"
+            placeholder="Book Name"
+            value={bookName}
+            onChange={handleBookNameChange}
+            className="input-box mb-2 mr-2"
+          />
+          <input
+            type="text"
+            placeholder="Author Name"
+            value={authorName}
+            onChange={handleAuthorNameChange}
+            className="input-box mb-2 mr-2"
+          />
+          <button
+            onClick={() => debouncedSearchBooks(bookName, authorName)}
+            className="search-icon"
+          >
+            <FaSearch
+              className="text-[brown] transform -translate-y-1"
+              size={32}
+            />
+          </button>
+        </div>
+
+        {message && <p className="message text-[#ff0000]">{message}</p>}
 
         {filteredBooks.map((book) => (
           <div key={book._id} className={`custom-book-card ${book._id === editing ? 'custom-highlighted' : ''}`}>

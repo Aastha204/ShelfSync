@@ -207,15 +207,9 @@ const LibraryManagementTextOverlay = () => {
       <div id="browse">
         <BookType />
       </div>
-      <div>
+      {/* <div>
         <BookCards />
-      </div>
-      <div>
-        <TopThreeBook/>
-      </div>
-      <div id="newrelease">
-        <NewReleases />
-      </div>
+      </div> */}
       {/* <div id="bestauthor">
         <BestAuthor />
       </div>

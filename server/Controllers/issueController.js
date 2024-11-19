@@ -54,7 +54,7 @@ exports.addIssuedBook=async (req, res) => {
   exports.getBookToUser=async (req, res) => {
     try {
       const { userId } = req.params;
-      const userIssues = await Issue.find({ userID: userId }).populate('bookID', 'name author type available'); // Populate book details
+      const userIssues = await Issue.find({ userID: userId }).populate('bookID', 'name author genre available'); // Populate book details
       res.json(userIssues);
     } catch (error) {
       console.error('Error fetching user issues:', error);
@@ -69,7 +69,7 @@ exports.addIssuedBook=async (req, res) => {
   exports.getBookToAdmin= async (req, res) => {
     try {
       const adminIssues = await Issue.find().populate('userID', 'name email') // Populate user details
-        .populate('bookID', 'name author type available'); // Populate book details
+        .populate('bookID', 'name author genre available'); // Populate book details
       res.json(adminIssues);
     } catch (error) {
       console.error('Error fetching admin issues:', error);

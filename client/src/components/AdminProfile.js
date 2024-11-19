@@ -218,7 +218,7 @@ const AdminProfilePage = () => {
 
   useEffect(() => {
     if (activeSection === 'issueReturn') {
-      axios.get('http://localhost:3001/api/issue/getBooks') // Fetch issued books data from the backend
+      axios.get('http://localhost:3001/api/issues/getBooks') // Fetch issued books data from the backend
         .then((response) => setIssueReturnData(response.data))
         .catch((error) => console.error('Error fetching issued books:', error));
     }
@@ -240,6 +240,9 @@ const AdminProfilePage = () => {
           </li> */}
           <li>
            <a href='/add'>Book Management</a> 
+          </li>
+          <li>
+           <a href='/booklist'>BookList</a>
           </li>
           <li onClick={() => handleSectionClick('issueReturn')} className={activeSection === 'issueReturn' ? 'active' : ''}>
             Issue & Return
