@@ -1,8 +1,22 @@
 import '../styles/ContactUs.css'; 
 import React, { useState } from 'react';
 import { FaWhatsapp, FaPhoneAlt, FaEnvelope, FaMapMarkedAlt, FaHome, FaArrowAltCircleUp } from 'react-icons/fa';
+import { handleError, handleSuccess } from './utils'
+import {ToastContainer} from 'react-toastify'
 
 const ContactPage = () => {
+
+    const validateName = (name) => {
+        const regex = /^[a-zA-Z]+(?:[.'-]?[a-zA-Z]+)(?: [a-zA-Z]+(?:[.'-]?[a-zA-Z]+))*$/;
+        return regex.test(name);
+      };
+      
+      
+      // Email validation function
+      const validateEmail = (email) => {
+        const regex=/^[a-zA-Z0-9._%+-]+@(gmail\.com|outlook\.com|yahoo\.com|hotmail\.com|live\.com|icloud\.com)$/;
+        return regex.test(email);
+      };
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -15,35 +29,40 @@ const ContactPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const { name, email, message } = formData;
+    
+        if (!name || !email || !message.trim()) {
+            return handleError("All fields (Name, Email, Message) are required.");
+        }
+    
+        if (!validateName(name)) {
+            return handleError("Name must contain only letters and spaces.");
+        }
+    
+        if (!validateEmail(email)) {
+            return handleError("Email must be a valid email address.");
+        }
     
         try {
-            const response = await fetch('http://localhost:3001/api/contact', { // Ensure this URL matches the backend port
+            const response = await fetch('http://localhost:3001/api/contact', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
             });
     
             if (response.ok) {
                 const result = await response.json();
-                console.log(result.message);
-                alert('Your message has been sent successfully!');
-    
-                // Clear form fields
-                setFormData({
-                    name: '',
-                    email: '',
-                    message: ''
-                });
+                handleSuccess("Your message has been sent successfully!");
+                setFormData({ name: '', email: '', message: '' }); // Clear form
             } else {
-                alert('Failed to send message. Please try again later.');
+                handleError("Failed to send the message. Please try again later.");
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred. Please try again later.');
+            handleError("An error occurred. Please try again later.");
         }
     };
+    
     
     return (
         <>
@@ -173,6 +192,7 @@ const ContactPage = () => {
                     <a href="/contact"><FaArrowAltCircleUp/></a>
                 </div>
             </div> {/* Closing the colorized section div */}
+            <ToastContainer/>
         </>
     );
 };

@@ -51,31 +51,59 @@ exports.addIssuedBook=async (req, res) => {
     }
   }
 
-  exports.getBookToUser=async (req, res) => {
+  exports.getBookToUser = async (req, res) => {
     try {
       const { userId } = req.params;
-      const userIssues = await Issue.find({ userID: userId }).populate('bookID', 'name author genre available'); // Populate book details
+      const userIssues = await Issue.find({ userID: userId, returned: false }) // Filter by `returned: false`
+        .populate('bookID', 'name author genre available'); // Populate book details
+  
       res.json(userIssues);
     } catch (error) {
       console.error('Error fetching user issues:', error);
       res.status(500).json({ error: 'Failed to fetch user issues' });
     }
-  }
+  };
 
 
   
   // GET route to fetch all issued books (for admin)
 
-  exports.getBookToAdmin= async (req, res) => {
+  // exports.getBookToAdmin= async (req, res) => {
+  //   try {
+  //     const adminIssues = await Issue.find().populate('userID', 'name email') // Populate user details
+  //       .populate('bookID', 'name author type available'); // Populate book details
+  //     res.json(adminIssues);
+  //   } catch (error) {
+  //     console.error('Error fetching admin issues:', error);
+  //     res.status(500).json({ error: 'Failed to fetch admin issues' });
+  //   }
+  // }
+
+  exports.getBookToAdmin = async (req, res) => {
+    const { status } = req.query; // Get the status query parameter
     try {
-      const adminIssues = await Issue.find().populate('userID', 'name email') // Populate user details
-        .populate('bookID', 'name author genre available'); // Populate book details
-      res.json(adminIssues);
+        let adminIssues;
+
+        if (status === 'issued') {
+            // Fetch only issued books
+            adminIssues = await Issue.find({ returned: false })
+                .populate('userID', 'name email') // Populate user details
+                .populate('bookID', 'name author genre available'); // Populate book details
+        } else if (status === 'returned') {
+            // Fetch only returned books
+            adminIssues = await Return.find()
+                .populate('userID', 'name email') // Populate user details
+                .populate('bookID', 'name author genre available') // Populate book details
+                .select('userID bookID returnDate');
+        } 
+
+        res.json(adminIssues);
     } catch (error) {
-      console.error('Error fetching admin issues:', error);
-      res.status(500).json({ error: 'Failed to fetch admin issues' });
+        console.error('Error fetching admin issues:', error);
+        res.status(500).json({ error: 'Failed to fetch admin issues' });
     }
-  }
+};
+
   
 
   exports.returnBook = async (req, res) => {
@@ -101,10 +129,7 @@ exports.addIssuedBook=async (req, res) => {
         returnDate: new Date(), // Current date as return date
       });
       issue.returned = true;  
-      await returnedBook.save(); // Save the return record
-  
-      // Mark the issue as returned and delete it from the Issue collection
-      await Issue.findByIdAndDelete(issueId);
+      await Promise.all([issue.save(), returnedBook.save()]);
   
       // Increment the available count in the Book model
       const book = await Book.findById(issue.bookID._id);
@@ -119,4 +144,25 @@ exports.addIssuedBook=async (req, res) => {
       res.status(500).json({ error: 'Failed to return book' });
     }
   };
+  // Add this to your issueController.js
+
+exports.getBestSellers = async (req, res) => {
+  try {
+    // Aggregate books based on issue count
+    const bestSellers = await Issue.aggregate([
+      { $group: { _id: '$bookID', issueCount: { $sum: 1 } } }, // Group by bookID and count issues
+      { $match: { issueCount: { $gte: 3 } } }, // Filter books with issue count >= 3
+    ]);
+
+    // Populate book details
+    const bookIds = bestSellers.map((entry) => entry._id);
+    const books = await Book.find({ _id: { $in: bookIds } });
+
+    res.json(books);
+  } catch (error) {
+    console.error('Error fetching bestsellers:', error);
+    res.status(500).json({ error: 'Failed to fetch bestsellers' });
+  }
+};
+
   

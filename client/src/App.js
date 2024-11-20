@@ -36,6 +36,7 @@ import AdminSignup from './components/AdminSignUp'
 import BookList from './components/BookList';
 import CardsAnimate from "./components/CardsAnimate";
 import BestFictionalBooks from './components/BestFictionBook';
+import BestSellerBooks from './components/bestSeller';
 
 
 
@@ -88,6 +89,7 @@ function App() {
         <Route path='/CardsAnimate' element={<CardsAnimate/>}/>
         <Route path='/bestfiction' element={<BestFictionalBooks/>}/>
         <Route path='/bestauthor' element={<BestAuthorBooks/>}/>
+        <Route path='/bestseller' element={<BestSellerBooks/>}/>
       </Routes>
     
     </div>

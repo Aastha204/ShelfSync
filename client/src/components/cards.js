@@ -17,7 +17,7 @@ function BookCards() {
             <img src="/images/bestfict.png" alt="Book 2" />
           </div>
         </a>
-        <a href="#amazonseller" className="card1">
+        <a href="/bestseller" className="card1">
           <div className="card1-title">Our Bestsellers Books</div>
           <div className="card1-image">
             <img src="/images/besttrph.png" alt="Book 3" />
