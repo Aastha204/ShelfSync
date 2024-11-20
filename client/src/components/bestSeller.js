@@ -9,6 +9,7 @@ const BestSellerBooks = () => {
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const [priceRange, setPriceRange] = useState(10000);
   const [selectedRating, setSelectedRating] = useState(null);
@@ -18,12 +19,17 @@ const BestSellerBooks = () => {
     const fetchBestSellers = async () => {
       try {
         const response = await axios.get('http://localhost:3001/api/issues/bestsellers');
-        setBooks(response.data);
-        setFilteredBooks(response.data);
+        if (response.data && Array.isArray(response.data)) {
+          setBooks(response.data);
+          setFilteredBooks(response.data);  // Set initial filtered books as all fetched books
+        } else {
+          toast.error('Invalid response format');
+        }
         setLoading(false);
       } catch (error) {
         console.error('Error fetching bestsellers:', error);
         toast.error('Failed to load bestsellers');
+        setLoading(false);
       }
     };
 
@@ -33,6 +39,10 @@ const BestSellerBooks = () => {
   useEffect(() => {
     const applyFilters = () => {
       let updatedBooks = books;
+
+      if (selectedCategory) {
+        updatedBooks = updatedBooks.filter((book) => book.genre === selectedCategory);
+      }
 
       if (selectedLanguage) {
         updatedBooks = updatedBooks.filter((book) => book.Language === selectedLanguage);
@@ -56,7 +66,7 @@ const BestSellerBooks = () => {
     };
 
     applyFilters();
-  }, [books, selectedLanguage, priceRange, selectedRating, selectedAvailability]);
+  }, [books, selectedCategory, selectedLanguage, priceRange, selectedRating, selectedAvailability]);
 
   const handleIssueBook = async (bookID) => {
     const userEmail = localStorage.getItem('loggedInUserEmail');
@@ -93,6 +103,15 @@ const BestSellerBooks = () => {
         {/* Sidebar Filter */}
         <div className="sidebar-filter">
           <h2>Filter</h2>
+          <div className="filter-section">
+            <h3>By Category</h3>
+            <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+              <option value="">All Categories</option>
+              {['Fiction', 'Romance', 'Children', 'Thriller', 'History', 'Comics'].map((category) => (
+                <option key={category} value={category}>{category}</option>
+              ))}
+            </select>
+          </div>
           <div className="filter-section">
             <h3>Language</h3>
             <select value={selectedLanguage} onChange={(e) => setSelectedLanguage(e.target.value)}>
@@ -136,41 +155,43 @@ const BestSellerBooks = () => {
         {/* Book Cards */}
         <div className="best-books-container">
           <h2 className="section-heading">Best Seller Books</h2>
-          {filteredBooks.length > 0 ? (
-            filteredBooks.map((book) => (
-              <div key={book._id} className="book-card-wide">
-                <div className="book-image-container">
-                  <img
-                    src={book.bookCoverImageUrl || 'placeholder.jpg'}
-                    alt={`${book.name} cover`}
-                    className="book-cover-image-wide"
-                  />
-                </div>
-                <div className="book-card-content-wide">
-                  <h3 className="book-title-wide">{book.name}</h3>
-                  <p className="book-author-wide">{book.author}</p>
-                  <p className="book-genre-wide"><b>{book.genre}</b></p>
-                  <div className="book-card-footer-wide">
-                    <span className="book-price-wide">₹{book.ratePerMonth}</span>
-                    <span className="book-rating-wide">
-                      {Array(book.star).fill('⭐').map((star, index) => (
-                        <span key={index}>{star}</span>
-                      ))}
-                    </span>
+          <div className="best-main-books-container">
+            {filteredBooks.length > 0 ? (
+              filteredBooks.map((book) => (
+                <div key={book._id} className="book-card-wide">
+                  <div className="book-image-container">
+                    <img
+                      src={book.bookCoverImageUrl || 'placeholder.jpg'}
+                      alt={`${book.name} cover`}
+                      className="book-cover-image-wide"
+                    />
                   </div>
-                  <button
-                    className="add-btn-wide"
-                    disabled={book.available === 0}
-                    onClick={() => handleIssueBook(book._id)}
-                  >
-                    {book.available > 0 ? 'Issue' : 'Not Available'}
-                  </button>
+                  <div className="book-card-content-wide">
+                    <h3 className="book-title-wide">{book.name}</h3>
+                    <p className="book-author-wide">{book.author}</p>
+                    <p className="book-genre-wide"><b>{book.genre}</b></p>
+                    <div className="book-card-footer-wide">
+                      <span className="book-price-wide">₹{book.ratePerMonth}</span>
+                      <span className="book-rating-wide">
+                        {Array(book.star).fill('⭐').map((star, index) => (
+                          <span key={index}>{star}</span>
+                        ))}
+                      </span>
+                    </div>
+                    <button
+                      className="add-btn-wide"
+                      disabled={book.available === 0}
+                      onClick={() => handleIssueBook(book._id)}
+                    >
+                      {book.available > 0 ? 'Issue' : 'Not Available'}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <p>No matching books found.</p>
-          )}
+              ))
+            ) : (
+              <p>No matching books found.</p>
+            )}
+          </div>
         </div>
       </div>
     </div>
