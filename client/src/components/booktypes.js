@@ -53,7 +53,8 @@ function BookType() {
   return (
     <div className="booktype">
       <div className="book-types">
-        <h1>Book Types</h1>
+        <p>"Discover a world of bestselling books across genres like thrillers, romance, fantasy, and more—stories that captivate, inspire, and entertain!"</p>
+        <h1>SELECT YOUR GENRE</h1>
         <div className="icons">
           {['Children', 'History', 'Fiction', 'Thriller', 'Romance', 'Comics'].map((type) => (
             <div className="icon-container" key={type} onClick={handleIconClick}>
@@ -62,6 +63,9 @@ function BookType() {
             </div>
           ))}
         </div>
+        <br></br>
+        <br></br>
+        <p>"Explore top books in every genre—your next favorite read awaits!"</p>
       </div>
     </div>
   );

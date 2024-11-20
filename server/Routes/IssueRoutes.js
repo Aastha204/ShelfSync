@@ -11,4 +11,7 @@ router.get('/getBooks',issueController.getBookToAdmin);
 
 router.put('/return/:issueId', issueController.returnBook);
 
+router.get('/bestsellers', issueController.getBestSellers);
+
+
 module.exports = router;
