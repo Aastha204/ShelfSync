@@ -112,8 +112,9 @@ const BestAuthorBooks = () => {
   }
 
   return (
-    <div className="filter-page-container">
-      <ToastContainer />
+    <div className='parent-container'>
+   
+     
 
       {/* Sidebar Filter */}
       <div className="sidebar-filter">
@@ -172,44 +173,48 @@ const BestAuthorBooks = () => {
 
       {/* Best Fictional Books */}
       <div className="best-books-container">
-        <h2 className="section-heading">Best Authors Books</h2>
-        {filteredBooks.length > 0 ? (
-          filteredBooks.map((book) => (
-            <div key={book._id} className="book-card-wide">
-              <div className="book-image-container">
-                <img
-                  src={book.bookCoverImageUrl || 'placeholder.jpg'}
-                  alt={`${book.name} cover`}
-                  className="book-cover-image-wide"
-                />
-              </div>
-              <div className="book-card-content-wide">
-                <h3 className="book-title-wide">{book.name}</h3>
-                <p className="book-author-wide">{book.author}</p>
-                <p className="book-genre-wide"><b>{book.genre}</b></p>
-                <div className="book-card-footer-wide">
-                  <span className="book-price-wide">₹{book.ratePerMonth}</span>
-                  <span className="book-rating-wide">
-                    {Array(book.star).fill('⭐').map((star, index) => (
-                      <span key={index}>{star}</span>
-                    ))}
-                  </span>
+          <h2 className="section-heading">Best Author Books</h2>
+            <div className='best-main-books-container'>
+            {filteredBooks.length > 0 ? (
+              filteredBooks.map((book) => (
+                <div key={book._id} className="book-card-wide">
+                  <div className="book-image-container">
+                    <img
+                      src={book.bookCoverImageUrl || 'placeholder.jpg'}
+                      alt={`${book.name} cover`}
+                      className="book-cover-image-wide"
+                    />
+                  </div>
+                  <div className="book-card-content-wide">
+                    <h3 className="book-title-wide">{book.name}</h3>
+                    <p className="book-author-wide">{book.author}</p>
+                    <p className="book-genre-wide"><b>{book.genre}</b></p>
+                    <div className="book-card-footer-wide">
+                      <span className="book-price-wide">₹{book.ratePerMonth}</span>
+                      <span className="book-rating-wide">
+                        {Array(book.star).fill('⭐').map((star, index) => (
+                          <span key={index}>{star}</span>
+                        ))}
+                      </span>
+                    </div>
+                    <button
+                      className="add-btn-wide"
+                      disabled={book.available === 0}
+                      onClick={() => handleIssueBook(book._id)}
+                    >
+                      {book.available > 0 ? 'Issue' : 'Not Available'}
+                    </button>
+                  </div>
                 </div>
-                <button
-                  className="add-btn-wide"
-                  disabled={book.available === 0}
-                  onClick={() => handleIssueBook(book._id)}
-                >
-                  {book.available > 0 ? 'Issue' : 'Not Available'}
-                </button>
-              </div>
+              ))
+            ) : (
+              <p className="no-books-message">Uh-Oh! No matching books found.</p>
+            )}
             </div>
-          ))
-        ) : (
-          <p>No matching books found.</p>
-        )}
-      </div>
     </div>
+    <ToastContainer />
+    </div>
+    
   );
 };
 

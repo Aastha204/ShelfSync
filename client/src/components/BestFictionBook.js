@@ -115,14 +115,19 @@ const BestFictionalBooks = () => {
     };
   
     if (loading) {
-      return <p>Loading books...</p>;
-    }
+      return (
+          <div className="loading-container">
+              <div className="spinner"></div>
+              <p>Loading books...</p>
+          </div>
+      );
+  }
   
     return (
 
       <div className="parent-container">
       
-        <ToastContainer />
+       
         <div className="container">
           {/* Sidebar Filter */}
           <div className="sidebar-filter" style={{ marginRight: '0px', height: '100vh' }}>
@@ -171,8 +176,10 @@ const BestFictionalBooks = () => {
           </div>
     
           {/* Best Fictional Books */}
+          
           <div className="best-books-container">
-            <h2 className="section-heading">Best Fictional Books</h2>
+          <h2 className="section-heading">Best Fictional Books</h2>
+            <div className='best-main-books-container'>
             {filteredBooks.length > 0 ? (
               filteredBooks.map((book) => (
                 <div key={book._id} className="book-card-wide">
@@ -206,10 +213,12 @@ const BestFictionalBooks = () => {
                 </div>
               ))
             ) : (
-              <p>No matching books found.</p>
+              <p className="no-books-message">Uh-Oh! No matching books found.</p>
             )}
+            </div>
           </div>
         </div>
+        <ToastContainer />
       </div>
     );
     

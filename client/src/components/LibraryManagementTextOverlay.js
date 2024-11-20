@@ -6,7 +6,7 @@ import BookCards from './cards';
 import Footer from './Footer';
 import NewReleases from './newRelease';
 import BestAuthor from './bestauthorbooks';
-import BestFictional from './listofbestfictionbooks';
+// import BestFictional from './listofbestfictionbooks';
 import Amazonseller from './amazonbestsellersbooks';
 import Children from './children';
 import History from './history';
