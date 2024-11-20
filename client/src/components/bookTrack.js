@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import axios from "axios";
 import "../styles/bookTrack.css";
 
 const ImageCard = ({ image, title, description, bookNumber, onClick }) => {
@@ -18,66 +19,73 @@ const ImageCard = ({ image, title, description, bookNumber, onClick }) => {
 
 const BookTracker = () => {
   const [selectedCard, setSelectedCard] = useState(null);
+  const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const cards = [
+  const [cards, setCards] = useState([
     { 
       id: 'totalIssued', 
       image: '/images/book6.jpeg', 
       title: 'Total Issued Books', 
       description: 'Total Books Issued by you till now',
-      bookNumber: '56' 
+      bookNumber: 0 // Initially set to 0
     },
     { 
       id: 'totalReturn', 
       image: '/images/book1.jpeg', 
       title: 'Total Return Book', 
       description: 'Total Return Books by you',
-      bookNumber: '50'
+      bookNumber: 0 // Initially set to 0
     },
     { 
       id: 'currentIssued', 
       image: '/images/book4.jpeg', 
       title: 'Current Issued Book', 
       description: 'Currently Issued Books by you',
-      bookNumber: '6'
+      bookNumber: 0 // Initially set to 0
     },
-    { 
-      id: 'dueBooks', 
-      image: '/images/book9.jpeg', 
-      title: 'Due Books', 
-      description: 'Currently Due Books',
-      bookNumber: '2'
-    },
-  ];
+  ]);
 
-  const tableData = {
-    totalIssued: [
-      { sNo: 1, bookName: 'The Great Gatsby', authorName: 'F. Scott Fitzgerald', issueDate: '2024-08-01' },
-      { sNo: 2, bookName: 'Harry Potter', authorName: 'J.K. Rowling', issueDate: '2024-07-10' },
-    ],
-    totalReturn: [
-      { sNo: 1, bookName: 'The Great Gatsby', authorName: 'F. Scott Fitzgerald', returnDate: '2024-08-15' },
-      { sNo: 2, bookName: 'Harry Potter', authorName: 'J.K. Rowling', returnDate: '2024-07-24' },
-    ],
-    currentIssued: [
-      { sNo: 1, bookName: 'The Great Gatsby', authorName: 'F. Scott Fitzgerald', issueDate: '2024-08-01', returnDate: '2024-08-15' },
-    ],
-    dueBooks: [
-      { sNo: 1, bookName: 'The Great Gatsby', authorName: 'F. Scott Fitzgerald', dueDate: '2024-08-15', fine: '10' },
-    ],
+  const fetchBooks = async (endpoint) => {
+    setLoading(true);
+    const userId = localStorage.getItem('loggedInUserId');
+    try {
+      const { data } = await axios.get(`http://localhost:3001/api/bookTracker/${endpoint}/${userId}`);
+      setTableData(data);
+
+      setCards(prevCards =>
+        prevCards.map(card =>
+          card.id === endpoint
+            ? { ...card, bookNumber: data.length } // Set the number of books for the selected section
+            : card
+        )
+      );
+    } catch (error) {
+      console.error('Error fetching books:', error);
+      setTableData([]);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    if (selectedCard) {
+      fetchBooks(selectedCard);
+    }
+  }, [selectedCard]);
+  const columns = {
+    totalIssued: ['S.No', 'Book Name', 'Author Name', 'Issue Date'],
+    totalReturn: ['S.No', 'Book Name', 'Author Name', 'Return Date'],
+    currentIssued: ['S.No', 'Book Name', 'Author Name', 'Issue Date'],
+  // dueBooks: ['S.No', 'Book Name', 'Author Name', 'Due Date', 'Fine'],
+};
+
+
 
   const renderTable = () => {
     if (!selectedCard) return null;
 
-    const columns = {
-      totalIssued: ['S.No', 'Book Name', 'Author Name', 'Issue Date'],
-      totalReturn: ['S.No', 'Book Name', 'Author Name', 'Return Date'],
-      currentIssued: ['S.No', 'Book Name', 'Author Name', 'Issue Date', 'Return Date'],
-      dueBooks: ['S.No', 'Book Name', 'Author Name', 'Due Date', 'Fine'],
-    };
-
-    const rows = tableData[selectedCard];
+    
 
     return (
       <table className="book-table">
@@ -91,13 +99,11 @@ const BookTracker = () => {
         <tbody>
           {rows.map((row, index) => (
             <tr key={index}>
-              <td>{row.sNo}</td>
-              <td>{row.bookName}</td>
-              <td>{row.authorName}</td>
-              {row.issueDate && <td>{row.issueDate}</td>}
-              {row.returnDate && <td>{row.returnDate}</td>}
-              {row.dueDate && <td>{row.dueDate}</td>}
-              {row.fine && <td>{row.fine}</td>}
+              <td>{index + 1}</td>
+              <td>{row.bookID.name}</td>
+              <td>{row.bookID.author}</td>
+              {row.issueDate && <td>{new Date(row.issueDate).toLocaleDateString()}</td>}
+              {row.returnDate && <td>{new Date(row.returnDate).toLocaleDateString()}</td>}
             </tr>
           ))}
         </tbody>
@@ -119,7 +125,7 @@ const BookTracker = () => {
           />
         ))}
       </div>
-      {renderTable()}
+      {loading ? <p>Loading...</p> : renderTable()}
     </div>
   );
 };

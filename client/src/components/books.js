@@ -5,8 +5,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FaSearch } from 'react-icons/fa'; // Import the search icon
 import '../styles/book.css';
 import BookCards from './cards';
+import {FaHome} from 'react-icons/fa';
 
 const Filter = () => {
+  
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [editing, setEditing] = useState(null);
@@ -131,13 +133,25 @@ const Filter = () => {
       }
     }
   };
+  const resetFilters = () => {
+    setSelectedCategory('');
+    setSelectedLanguage('');
+    setPriceRange(10000);
+    setSelectedRating(null);
+    setSelectedAvailability('');
+    setFilteredBooks(books); // Reset the filtered books to all books
+  };
+  
 
   return (
     <div className="filter-page-container">
+    
       {/* Sidebar Filter */}
       <div className="sidebar-filter">
         <h2>Filter</h2>
-
+        <div className="home-icon">
+                    <a href="/"><FaHome /></a>
+                </div>
         <div className="filter-section">
           <h3>By Category</h3>
           <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
@@ -191,7 +205,11 @@ const Filter = () => {
             <option value="not-available">Not Available</option>
           </select>
         </div>
+        <button onClick={resetFilters} className="reset-filters-btn">
+  Reset Filters
+</button>
       </div>
+      
 
       {/* Book List */}
       <div className="book-list-container">
@@ -220,7 +238,7 @@ const Filter = () => {
             className="search-icon"
           >
             <FaSearch
-              className="text-[brown] transform -translate-y-1"
+              className="text-[white] transform -translate-y-1"
               size={32}
             />
           </button>
