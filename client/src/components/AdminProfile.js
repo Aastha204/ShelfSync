@@ -332,7 +332,8 @@ const AdminProfilePage = () => {
               </div>
             </div>
             <div className='home1'>
-      
+         </div>
+         <div>
       <Create onTaskAdded={addTodo} />
       {
         todos.length === 0 ? (
@@ -351,7 +352,7 @@ const AdminProfilePage = () => {
           ))
         )
       }
-    </div>
+      </div>
           </div>
 
           

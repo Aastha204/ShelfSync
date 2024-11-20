@@ -29,7 +29,7 @@
 
 
 /* Home Icon */
-.home-icon {
+.home-icon-contact {
     position: fixed;
     top: 0;
     left: 15px;
@@ -43,7 +43,7 @@
     transition: background-color 0.3s;
 }
 
-.home-icon:hover {
+.home-icon-contact:hover {
    color: #ffffff95;
 }
 
@@ -481,3 +481,5 @@ transform: translateX(-100%); /* Move to outside the left edge */
         width: 100%;
     }
 }
+
+  
