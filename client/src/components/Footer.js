@@ -10,7 +10,7 @@ const Footer = () => {
       <div className="flex-1">
         <h2 className="font-bold mb-4 text-lg text-yellow-400">Let us help you</h2>
         <Link to="/account" className="block mb-2 hover:text-yellow-300 cursor-pointer">ShelfSync@gmail.com</Link>
-        <Link to="/books" className="block hover:text-yellow-300 cursor-pointer">Your Books</Link>
+        {/* <Link to="/issue" className="block hover:text-yellow-300 cursor-pointer">Your Books</Link> */}
       </div>
 
       {/* Contact Information */}

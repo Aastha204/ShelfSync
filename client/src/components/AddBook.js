@@ -38,6 +38,12 @@ const BookManager = () => {
   }, [bookName, authorName, books]);
 
   const debouncedSearch = debounce((name, author) => {
+    if (!name && !author) {
+      // Reset to all books if both inputs are empty
+      setFilteredBooks(books);
+      return;
+    }
+  
     const results = books.filter(
       (book) =>
         book.name.toLowerCase().includes(name.toLowerCase()) &&
@@ -45,6 +51,7 @@ const BookManager = () => {
     );
     setFilteredBooks(results);
   }, 300);
+  
 
   const fetchBooks = async () => {
     try {

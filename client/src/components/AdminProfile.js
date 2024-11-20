@@ -229,7 +229,7 @@ const AdminProfilePage = () => {
     let url = '';
     if (activeSection === 'issueReturn') {
       // Depending on the status, adjust the URL accordingly
-      url = `http://localhost:3001/api/issue/getBooks?status=${status}`;
+      url = `http://localhost:3001/api/issues/getBooks?status=${status}`;
     }
     // Add more conditions if you have other sections for fetching data
 

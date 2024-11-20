@@ -144,4 +144,25 @@ exports.addIssuedBook=async (req, res) => {
       res.status(500).json({ error: 'Failed to return book' });
     }
   };
+  // Add this to your issueController.js
+
+exports.getBestSellers = async (req, res) => {
+  try {
+    // Aggregate books based on issue count
+    const bestSellers = await Issue.aggregate([
+      { $group: { _id: '$bookID', issueCount: { $sum: 1 } } }, // Group by bookID and count issues
+      { $match: { issueCount: { $gte: 3 } } }, // Filter books with issue count >= 3
+    ]);
+
+    // Populate book details
+    const bookIds = bestSellers.map((entry) => entry._id);
+    const books = await Book.find({ _id: { $in: bookIds } });
+
+    res.json(books);
+  } catch (error) {
+    console.error('Error fetching bestsellers:', error);
+    res.status(500).json({ error: 'Failed to fetch bestsellers' });
+  }
+};
+
   

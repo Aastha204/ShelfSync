@@ -18,6 +18,7 @@ import BookType from './booktypes';
 import Preloader from './Preloader';
 import TopThreeBook from './top3book';
 import CardsAnimate from "./CardsAnimate";
+import ChooseUs from "./chooseUs";
 // import { use } from '../../../server/Routes/AuthRouter';
 import { FaUserAlt } from 'react-icons/fa';
 
@@ -239,6 +240,9 @@ const LibraryManagementTextOverlay = () => {
       </div> */}
       <div id="cards-animate">
         <CardsAnimate />
+      </div>
+      <div id="chooseus">
+        <ChooseUs/>
       </div>
       <div id="footer">
         <Footer />

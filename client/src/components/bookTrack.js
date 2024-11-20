@@ -97,7 +97,7 @@ const BookTracker = () => {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, index) => (
+          {tableData.map((row, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
               <td>{row.bookID.name}</td>
