@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/bookTrack.css";
 
-const ImageCard = ({ image, title, description, bookNumber }) => {
+const ImageCard = ({ image, title, description, bookNumber, onClick }) => {
   return (
-    <div className="card-booktrack">
+    <div className="card-booktrack" onClick={onClick}>
       <img src={image} alt={title} className="card-booktrack-image" />
       <div className="card-booktrack-number">{bookNumber}</div>
       <div className="card-booktrack-overlay">
@@ -17,26 +17,32 @@ const ImageCard = ({ image, title, description, bookNumber }) => {
 };
 
 const BookTracker = () => {
+  const [selectedCard, setSelectedCard] = useState(null);
+
   const cards = [
     { 
+      id: 'totalIssued', 
       image: '/images/book6.jpeg', 
       title: 'Total Issued Books', 
       description: 'Total Books Issued by you till now',
       bookNumber: '56' 
     },
     { 
+      id: 'totalReturn', 
       image: '/images/book1.jpeg', 
       title: 'Total Return Book', 
       description: 'Total Return Books by you',
       bookNumber: '50'
     },
     { 
+      id: 'currentIssued', 
       image: '/images/book4.jpeg', 
       title: 'Current Issued Book', 
       description: 'Currently Issued Books by you',
       bookNumber: '6'
     },
     { 
+      id: 'dueBooks', 
       image: '/images/book9.jpeg', 
       title: 'Due Books', 
       description: 'Currently Due Books',
@@ -44,68 +50,76 @@ const BookTracker = () => {
     },
   ];
 
-  const tableData = [
-    // { 
-    //   sNo: 1, 
-    //   bookName: 'The Great Gatsby', 
-    //   authorName: 'F. Scott Fitzgerald', 
-    //   type: 'Fiction', 
-    //   issueDate: '2024-08-01', 
-    //   dueDate: '2024-08-15', 
-    //   fine: '0'
-    // },
-    // { 
-    //   sNo: 2, 
-    //   bookName: 'Harry Potter', 
-    //   authorName: 'J.K Rowling', 
-    //   type: 'Fiction', 
-    //   issueDate: '2024-07-10', 
-    //   dueDate: '2024-07-24', 
-    //   fine: '2'
-    // },
-    // // Add more rows as needed
-  ];
+  const tableData = {
+    totalIssued: [
+      { sNo: 1, bookName: 'The Great Gatsby', authorName: 'F. Scott Fitzgerald', issueDate: '2024-08-01' },
+      { sNo: 2, bookName: 'Harry Potter', authorName: 'J.K. Rowling', issueDate: '2024-07-10' },
+    ],
+    totalReturn: [
+      { sNo: 1, bookName: 'The Great Gatsby', authorName: 'F. Scott Fitzgerald', returnDate: '2024-08-15' },
+      { sNo: 2, bookName: 'Harry Potter', authorName: 'J.K. Rowling', returnDate: '2024-07-24' },
+    ],
+    currentIssued: [
+      { sNo: 1, bookName: 'The Great Gatsby', authorName: 'F. Scott Fitzgerald', issueDate: '2024-08-01', returnDate: '2024-08-15' },
+    ],
+    dueBooks: [
+      { sNo: 1, bookName: 'The Great Gatsby', authorName: 'F. Scott Fitzgerald', dueDate: '2024-08-15', fine: '10' },
+    ],
+  };
 
-  return (
-    <div className="full-page-background">
-      <div className="image-card-container">
-        {cards.map((card, index) => (
-          <ImageCard 
-            key={index} 
-            image={card.image} 
-            title={card.title} 
-            description={card.description} 
-            bookNumber={card.bookNumber} 
-          />
-        ))}
-      </div>
+  const renderTable = () => {
+    if (!selectedCard) return null;
 
+    const columns = {
+      totalIssued: ['S.No', 'Book Name', 'Author Name', 'Issue Date'],
+      totalReturn: ['S.No', 'Book Name', 'Author Name', 'Return Date'],
+      currentIssued: ['S.No', 'Book Name', 'Author Name', 'Issue Date', 'Return Date'],
+      dueBooks: ['S.No', 'Book Name', 'Author Name', 'Due Date', 'Fine'],
+    };
+
+    const rows = tableData[selectedCard];
+
+    return (
       <table className="book-table">
         <thead>
           <tr>
-            <th>S.No</th>
-            <th>Book Name</th>
-            <th>Author Name</th>
-            <th>Type</th>
-            <th>Issue Date</th>
-            <th>Due Date</th>
-            <th>Fine</th>
+            {columns[selectedCard].map((col, index) => (
+              <th key={index}>{col}</th>
+            ))}
           </tr>
         </thead>
         <tbody>
-          {tableData.map((row, index) => (
+          {rows.map((row, index) => (
             <tr key={index}>
               <td>{row.sNo}</td>
               <td>{row.bookName}</td>
               <td>{row.authorName}</td>
-              <td>{row.type}</td>
-              <td>{row.issueDate}</td>
-              <td>{row.dueDate}</td>
-              <td>{row.fine}</td>
+              {row.issueDate && <td>{row.issueDate}</td>}
+              {row.returnDate && <td>{row.returnDate}</td>}
+              {row.dueDate && <td>{row.dueDate}</td>}
+              {row.fine && <td>{row.fine}</td>}
             </tr>
           ))}
         </tbody>
       </table>
+    );
+  };
+
+  return (
+    <div className="full-page-background">
+      <div className="image-card-container">
+        {cards.map((card) => (
+          <ImageCard 
+            key={card.id} 
+            image={card.image} 
+            title={card.title} 
+            description={card.description} 
+            bookNumber={card.bookNumber} 
+            onClick={() => setSelectedCard(card.id)} 
+          />
+        ))}
+      </div>
+      {renderTable()}
     </div>
   );
 };
