@@ -5,7 +5,7 @@ exports.getBookToUser=async (req, res) => {
     try {
       const { userId } = req.params;
       console.log('User ID:', userId);
-      const userReturn = await Return.find({ userID: userId }).populate('bookID', 'name author type available').lean(); // Populate book details
+      const userReturn = await Return.find({ userID: userId }).populate('bookID', 'name author genre available').lean(); // Populate book details
       res.json(userReturn);
     } catch (error) {
       console.error('Error fetching user return:', error);
