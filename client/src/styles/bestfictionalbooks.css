@@ -1,0 +1,258 @@
+.books-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.book-card-wide {
+  background-color: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 280px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.book-card-wide:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.book-cover-image-wide {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 5px;
+}
+
+.book-card-content-wide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.book-title-wide {
+  font-size: 16px;
+  margin: 8px 0;
+}
+
+.book-author-wide {
+  font-size: 14px;
+  color: #555;
+}
+
+.book-genre-wide {
+  font-size: 14px;
+  color: #777;
+}
+
+.book-card-footer-wide {
+  margin-top: 8px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.book-price-wide {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1b1b1b;
+  margin-right: auto;
+}
+
+.book-rating-wide {
+  color: #ff9800;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.add-btn-wide {
+  margin-top: 10px;
+  background-color: #3f0d04;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 14px;
+}
+
+.add-btn-wide:hover {
+  background-color: #6e372e;
+}
+
+.section-heading {
+  font-size: 64px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: black;
+  width: 100%;
+  text-align: center;
+}
+
+.best-books-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 10px;
+  /* background-color: #f5f5dc; */
+  width:100%;
+  /* height:100vh; */
+
+}
+/* Main container for layout */
+.container {
+  display: flex;
+  /* justify-content:flex-start; */
+  /* padding: 20px; */
+}
+
+/* Sidebar filter (fixed on the left) */
+.sidebar-filter {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  /* background-color: #fff8e7; Light beige */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  overflow-y: auto;
+  margin-right:0px;
+  z-index: 10;
+}
+
+.sidebar-filter h2 {
+  font-size: 24px;
+  color: #3f0d04; /* Brown color */
+  margin-bottom: 15px;
+}
+
+.filter-section {
+  margin-bottom: 20px;
+}
+
+.filter-section h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #6e372e;
+}
+
+.filter-section select,
+.filter-section input[type="range"] {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.filter-section span {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Best Fictional Books (on the right) */
+.best-books-container {
+  margin-left: 270px; /* Offset for sidebar */
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+  padding: 20px;
+  /* background-color: #f5f5dc; */
+}
+
+.section-heading {
+  font-size: 64px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: black;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  margin-left: 100px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Main container for layout */
+.container {
+  display: flex;
+  padding: 0; /* Remove padding */
+  width: 100%;
+  
+}
+.parent-container {
+  background-image: url('../../public/images/issuebg.jpg');
+
+  
+}
+/* Sidebar filter (fixed on the left) */
+.sidebar-filter {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  /* background-color: #fff8e7; Light beige */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+/* Best Fictional Books (on the right) */
+.best-books-container {
+  margin-left: 0; /* Remove the left margin */
+  padding: 10px;
+  /* background-color: #f5f5dc; */
+  width: calc(100% - 250px); /* Ensure it takes up full remaining width */
+}
+
+/* Sidebar filter (adjust filter width if needed) */
+.sidebar-filter h2 {
+  font-size: 24px;
+  color: #3f0d04; /* Brown color */
+  margin-bottom: 15px;
+}
+
+/* Adjust the best book container section for full width */
+.best-books-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 10px;
+  /* background-color: #f5f5dc; */
+  width: 100%; /* Ensure full width */
+}
+
+/* Adjust book card layout */
+.book-card-wide {
+  background-color: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 280px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Prevent sidebar from overlapping */
+.container {
+  position: relative;
+  z-index: 1;
+}

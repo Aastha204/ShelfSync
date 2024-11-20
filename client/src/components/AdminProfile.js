@@ -268,6 +268,9 @@ const AdminProfilePage = () => {
           <li>
            <a href='/add'>Book Management</a> 
           </li>
+          <li>
+           <a href='/booklist'>BookList</a>
+          </li>
           <li onClick={() => handleSectionClick('issueReturn')} className={activeSection === 'issueReturn' ? 'active' : ''}>
             Issue & Return
           </li>
