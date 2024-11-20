@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/AdminProfile.css';
 import { ToastContainer } from 'react-toastify';
 import { handleSuccess } from "./utils";
+import Create from './Create';
+import { BsCircleFill, BsFillCheckCircleFill, BsFillTrashFill } from 'react-icons/bs';
+import '../styles/create.css'; 
 
 const AdminProfilePage = () => {
   const [activeSection, setActiveSection] = useState('profile');
@@ -34,6 +37,34 @@ const AdminProfilePage = () => {
     booksReturned: 0,
     booksLeft: 0,
   });
+
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/todos/get")
+      .then(result => setTodos(result.data))
+      .catch(err => console.log(err));
+  }, []);
+
+  const handleEdit = (id) => {
+    axios.put(`http://localhost:3001/todos/update/${id}`)
+      .then((result) => {
+        setTodos(todos.map(todo => todo._id === id ? { ...todo, done: true } : todo));
+      })
+      .catch(err => console.log(err));
+  };
+
+  const handleDelete = (id) => {
+    axios.delete(`http://localhost:3001/todos/delete/${id}`)
+      .then((result) => {
+        setTodos(todos.filter(todo => todo._id !== id));
+      })
+      .catch(err => console.log(err));
+  };
+
+  const addTodo = (newTodo) => {
+    setTodos([...todos, newTodo]);
+  };
 
   useEffect(() => {
     // Fetch the dashboard data when the component mounts
@@ -229,7 +260,7 @@ const AdminProfilePage = () => {
     let url = '';
     if (activeSection === 'issueReturn') {
       // Depending on the status, adjust the URL accordingly
-      url = `http://localhost:3001/api/issue/getBooks?status=${status}`;
+      url = `http://localhost:3001/api/issues/getBooks?status=${status}`;
     }
     // Add more conditions if you have other sections for fetching data
 
@@ -300,7 +331,30 @@ const AdminProfilePage = () => {
                 <h4>Date of Birth: 01/01/1989</h4>
               </div>
             </div>
+            <div className='home1'>
+      
+      <Create onTaskAdded={addTodo} />
+      {
+        todos.length === 0 ? (
+          <div> <h2 className='heading3'>No Record</h2> </div>
+        ) : (
+          todos.map(todo => (
+            <div className='task1' key={todo._id}>
+              <div className='checkbox1' onClick={() => handleEdit(todo._id)}>
+                {todo.done ? <BsFillCheckCircleFill className='icon1' /> : <BsCircleFill className='icon1' />}
+                <p className={todo.done ? "line_through1" : "none1"}>{todo.task}</p>
+              </div>
+              <div>
+                <span><BsFillTrashFill className='icon1' onClick={() => handleDelete(todo._id)} /></span>
+              </div>
+            </div>
+          ))
+        )
+      }
+    </div>
           </div>
+
+          
         )}
 
         {activeSection === 'dashboard' && (
