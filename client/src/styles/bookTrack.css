@@ -86,7 +86,7 @@
   width: 100%;
   margin-top: 20px;
   border-collapse: collapse;
-  background-color: white;
+  
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -98,7 +98,7 @@
 
 .book-table th {
   background-color: #771111;
-  color: white;
+  
   font-size: 18px;
 }
 

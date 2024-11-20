@@ -25,7 +25,7 @@ const AdminProfilePage = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [bookToDelete, setBookToDelete] = useState(null);
   const [recentlyDeleted, setRecentlyDeleted] = useState(null);
-
+ 
   const navigate = useNavigate();
 
   const [dashboardData, setDashboardData] = useState({
@@ -216,14 +216,41 @@ const AdminProfilePage = () => {
     }
   }, [activeSection]);
 
+  // useEffect(() => {
+  //   if (activeSection === 'issueReturn') {
+  //     axios.get('http://localhost:3001/api/issue/getBooks') // Fetch issued books data from the backend
+  //       .then((response) => setIssueReturnData(response.data))
+  //       .catch((error) => console.error('Error fetching issued books:', error));
+  //   }
+  // }, [activeSection]);
+
+  const [issueFilterStatus,setIssueFilterStatus]=useState('issued');
+  const fetchBooks = (status) => {
+    let url = '';
+    if (activeSection === 'issueReturn') {
+      // Depending on the status, adjust the URL accordingly
+      url = `http://localhost:3001/api/issue/getBooks?status=${status}`;
+    }
+    // Add more conditions if you have other sections for fetching data
+
+    // Fetch data only if URL is set
+    if (url) {
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => setIssueReturnData(data))
+        .catch((error) => console.error('Error fetching books:', error));
+    }
+  };
+
+  // UseEffect to fetch books data based on activeSection
   useEffect(() => {
     if (activeSection === 'issueReturn') {
-      axios.get('http://localhost:3001/api/issue/getBooks') // Fetch issued books data from the backend
-        .then((response) => setIssueReturnData(response.data))
-        .catch((error) => console.error('Error fetching issued books:', error));
+      fetchBooks(issueFilterStatus); // Initial fetch to get all books
     }
-  }, [activeSection]);
+    // Add other conditions for fetching data for different activeSections if necessary
+  }, [activeSection,issueFilterStatus]);
 
+  
   return (
     <div className="admin-container">
       <div className="sidebar1">
@@ -335,32 +362,50 @@ const AdminProfilePage = () => {
         )}
 
         {activeSection === 'issueReturn' && (
-          <div className="issue-return-section">
+          <div >
             <h2 className="section-title">Issue & Return Management</h2>
-            <p>Manage issued and returned books here.</p>
-            <table className="min-w-full border-collapse bg-brown-700 rounded-lg overflow-hidden">
-          <thead className="bg-brown-800 text-white">
+            
+
+             {/* Filter buttons */}
+          <div className="filter-buttons">
+        <button onClick={() => {
+              setIssueFilterStatus('issued');  // Set filter status to 'issued'
+            }} className={issueFilterStatus === 'issued' ? 'active' : ''}>Issued Books</button>
+        <button onClick={() => {
+              setIssueFilterStatus('returned');  // Set filter status to 'issued'
+            }} className={issueFilterStatus === 'returned' ? 'active' : ''}>Returned Books</button>
+
+          </div>
+
+            <table className="queries-table">
+          <thead className="">
             <tr>
               <th className="p-4 text-left">S.No.</th>
               <th className="p-4 text-left">User Name</th>
               <th className="p-4 text-left">User Email</th>
               <th className="p-4 text-left">Book Name</th>
               <th className="p-4 text-left">Author</th>
-              <th className="p-4 text-left">Issue Date</th>
-              <th className="p-4 text-left">Return Date</th>
+              <th className="p-4 text-left">
+              {issueFilterStatus === 'issued' ? 'Issue Date' : 'Return Date'}
+          </th>
+              
               
             </tr>
           </thead>
-          <tbody className="text-white">
+          <tbody className="">
             {issueReturnData.map((issue, index) => (
-              <tr key={issue._id} className={`bg-brown-600 ${index % 2 === 0 ? 'bg-brown-500' : 'bg-brown-600'} hover:bg-brown-700`}>
+              <tr key={issue._id} >
                 <td className="p-4 text-left">{index + 1}</td>
                 <td className="p-4 text-left">{issue.userID.name}</td>
                 <td className="p-4 text-left">{issue.userID.email}</td>
                 <td className="p-4 text-left">{issue.bookID.name}</td>
                 <td className="p-4 text-left">{issue.bookID.author}</td>
-                <td className="p-4 text-left">{new Date(issue.issueDate).toLocaleDateString()}</td>
-                <td className="p-4 text-left">{new Date(issue.dueDate).toLocaleDateString()}</td>
+                <td className="p-4 text-left"> {issueFilterStatus === 'issued'
+                ? new Date(issue.issueDate).toLocaleDateString()
+                : issue.returnDate
+                ? new Date(issue.returnDate).toLocaleDateString()
+                : 'N/A'}</td>
+                
               </tr>
             ))}
           </tbody>

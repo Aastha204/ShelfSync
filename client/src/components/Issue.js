@@ -92,11 +92,7 @@ const UserIssues = () => {
       const response = await axios.put(`http://localhost:3001/api/issue/return/${issueId}`);
       toast.success(response.data.message);
 
-      // Move the returned book to the 'returnedBooks' list
-      const returnedBook = userIssues.find((issue) => issue._id === issueId);
-      setReturnedBooks((prevBooks) => [...prevBooks, returnedBook]);
-
-      // Remove the returned book from the 'userIssues' state
+      // Remove the returned book from the `userIssues` list
       setUserIssues((prevIssues) => prevIssues.filter((issue) => issue._id !== issueId));
     } catch (error) {
       console.error('Error returning book:', error.response?.data || error.message);
