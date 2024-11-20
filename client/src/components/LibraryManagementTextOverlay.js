@@ -7,7 +7,7 @@ import Footer from './Footer';
 import NewReleases from './newRelease';
 import BestAuthor from './bestauthorbooks';
 // import BestFictional from './listofbestfictionbooks';
-import Amazonseller from './amazonbestsellersbooks';
+// import Amazonseller from './amazonbestsellersbooks';
 import Children from './children';
 import History from './history';
 import Fiction from './fiction';
