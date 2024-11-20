@@ -291,3 +291,66 @@ justify-content: flex-start; /* Start at the top */
   margin-right: auto;
 }
 
+/* no books message illustration */
+.no-books-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: rgb(252, 237, 237);
+}
+
+.no-books-message {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* reset button  */
+.reset-filters-btn {
+  background-color: #d9534f; /* Red button background */
+  color: #fff; /* White text */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px 20px; /* Padding for the button */
+  font-size: 14px; /* Font size */
+  font-weight: bold; /* Bold text */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: all 0.3s ease; /* Smooth hover transition */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.reset-filters-btn:hover {
+  background-color: #c9302c; /* Darker red on hover */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.reset-filters-btn:focus {
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 8px rgba(217, 83, 79, 0.5); /* Glow effect on focus */
+}
+
+.reset-filters-btn:active {
+  transform: translateY(1px); /* Button presses down slightly */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+}
+.arrow-icon {
+  position: fixed;
+  top: 0;
+  left: 9px;
+  font-size: 2.0rem;
+  color: #300909;
+  /* background-color: #261717; */
+  padding: 10px;
+  border-radius: 60%;
+  /* cursor: pointer; */
+  /* z-index: 1000; */
+  transition: background-color 0.3s;
+}
+
+.arrow-icon:hover {
+ color: #df4646bb;
+}

@@ -3,6 +3,8 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/bestfictionalbooks.css'; // For styling
+import { MdSentimentDissatisfied } from 'react-icons/md';
+import {FaArrowLeft} from 'react-icons/fa';
 
 const bestFictionalBooks = [
   { name: '1984', author: 'George Orwell' },
@@ -122,16 +124,25 @@ const BestFictionalBooks = () => {
           </div>
       );
   }
+  const resetFilters = () => {
+    setSelectedLanguage('');
+    setPriceRange(10000);
+    setSelectedRating(null);
+    setSelectedAvailability('');
+    setFilteredBooks(books); // Reset the filtered books to all books
+  };
   
     return (
 
       <div className="parent-container">
-      
-       
         <div className="container">
           {/* Sidebar Filter */}
+          
           <div className="sidebar-filter" style={{ marginRight: '0px', height: '100vh' }}>
   <h2>Filter</h2>
+  <div className="arrow-icon">
+                    <a href="/books"><FaArrowLeft /></a>
+                </div>
             <div className="filter-section">
               <h3>Language</h3>
               <select value={selectedLanguage} onChange={(e) => setSelectedLanguage(e.target.value)}>
@@ -172,7 +183,11 @@ const BestFictionalBooks = () => {
                 <option value="available">Available</option>
                 <option value="not-available">Not Available</option>
               </select>
+
             </div>
+            <button onClick={resetFilters} className="reset-filters-btn">
+  Reset Filters
+</button>
           </div>
     
           {/* Best Fictional Books */}
@@ -213,7 +228,10 @@ const BestFictionalBooks = () => {
                 </div>
               ))
             ) : (
-              <p className="no-books-message">Uh-Oh! No matching books found.</p>
+              <div className="no-books-container">
+    <MdSentimentDissatisfied size={50} color="white" />
+    <p className="no-books-message">Uh-Oh! No matching books found.</p>
+  </div>
             )}
             </div>
           </div>
