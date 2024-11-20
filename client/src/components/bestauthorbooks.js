@@ -4,14 +4,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/bestfictionalbooks.css'; // For styling
 import { MdSentimentDissatisfied } from 'react-icons/md';
-import {FaArrowLeft} from 'react-icons/fa';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const bestAuthors = [
   "William Shakespeare",
   "Jane Austen",
   "Leo Tolstoy",
   "Mark Twain",
-  "J.K. Rowling",
+  "JK Rowling",
   "George Orwell",
   "Ernest Hemingway",
   "Charles Dickens",
@@ -43,12 +43,10 @@ const BestAuthorBooks = () => {
     try {
       const response = await axios.get('http://localhost:3001/api/books');
       const matchedBooks = response.data.filter((book) =>
-        bestAuthors.some(
-          (author) => author.toLowerCase() === book.author.toLowerCase()
-        )
+        bestAuthors.some((author) => author.toLowerCase() === book.author.toLowerCase())
       );
       setBooks(matchedBooks);
-      setFilteredBooks(matchedBooks); // Initialize filtered books
+      setFilteredBooks(matchedBooks);
     } catch (error) {
       console.error('Error fetching books:', error);
       toast.error('Failed to fetch books. Please try again later.');
@@ -68,7 +66,7 @@ const BestAuthorBooks = () => {
       updatedBooks = updatedBooks.filter((book) => book.Language === selectedLanguage);
     }
 
-    if (selectedRating !== undefined && selectedRating !== null) {
+    if (selectedRating) {
       updatedBooks = updatedBooks.filter((book) => book.star >= selectedRating);
     }
 
@@ -76,119 +74,114 @@ const BestAuthorBooks = () => {
       updatedBooks = updatedBooks.filter((book) => book.ratePerMonth <= priceRange);
     }
 
-    if (selectedAvailability !== '') {
-      updatedBooks = updatedBooks.filter((book) => {
-        return selectedAvailability === 'available' ? book.available > 0 : book.available === 0;
-      });
+    if (selectedAvailability) {
+      updatedBooks = updatedBooks.filter((book) =>
+        selectedAvailability === 'available' ? book.available > 0 : book.available === 0
+      );
     }
 
     setFilteredBooks(updatedBooks);
   };
 
   const handleIssueBook = async (bookID) => {
-    const userEmail = localStorage.getItem('loggedInUserEmail');
-    if (!userEmail) {
-      toast.error('Please log in to issue a book');
+    const userId = localStorage.getItem('userId'); // Updated key
+    if (!userId) {
+      toast.error('Please log in to issue a book.');
       return;
     }
 
     try {
       const response = await axios.post('http://localhost:3001/api/issues/add', {
-        userEmail,
+        userId,
         bookID,
       });
-
       toast.success(response.data.message);
     } catch (error) {
       console.error(error);
       if (error.response?.data?.error === 'Book already issued by you') {
         toast.info('Book already issued by you');
       } else {
-        toast.error('Failed to issue book');
+        toast.error('Failed to issue book.');
       }
     }
+  };
+
+  const resetFilters = () => {
+    setSelectedCategory('');
+    setSelectedLanguage('');
+    setPriceRange(10000);
+    setSelectedRating(null);
+    setSelectedAvailability('');
+    setFilteredBooks(books);
   };
 
   if (loading) {
     return <p>Loading books...</p>;
   }
-  const resetFilters = () => {
-    setSelectedLanguage('');
-    setPriceRange(10000);
-    setSelectedRating(null);
-    setSelectedAvailability('');
-    setFilteredBooks(books); // Reset the filtered books to all books
-  };
+
   return (
-    <div className='parent-container'>
-   
-     
-
-      {/* Sidebar Filter */}
-      <div className="sidebar-filter">
-        <h2>Filter</h2>
-        <div className="arrow-icon">
-                    <a href="/books"><FaArrowLeft /></a>
-                </div>
-        <div className="filter-section">
-          <h3>By Category</h3>
-          <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-            <option value="">All Categories</option>
-            {['Fiction', 'Romance', 'Children', 'Thriller', 'History', 'Comics'].map((category) => (
-              <option key={category} value={category}>{category}</option>
-            ))}
-          </select>
+    <div className="parent-container">
+      <ToastContainer />
+      <div className="container">
+        {/* Sidebar Filter */}
+        <div className="sidebar-filter">
+          <h2>Filter</h2>
+          <div className="arrow-icon">
+            <a href="/books"><FaArrowLeft /></a>
+          </div>
+          <div className="filter-section">
+            <h3>By Category</h3>
+            <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+              <option value="">All Categories</option>
+              {['Fiction', 'Romance', 'Children', 'Thriller', 'History', 'Comics'].map((category) => (
+                <option key={category} value={category}>{category}</option>
+              ))}
+            </select>
+          </div>
+          <div className="filter-section">
+            <h3>Language</h3>
+            <select value={selectedLanguage} onChange={(e) => setSelectedLanguage(e.target.value)}>
+              <option value="">All</option>
+              <option value="English">English</option>
+              <option value="Hindi">Hindi</option>
+            </select>
+          </div>
+          <div className="filter-section">
+            <h3>Price</h3>
+            <input
+              type="range"
+              min="10"
+              max="10000"
+              value={priceRange}
+              onChange={(e) => setPriceRange(e.target.value)}
+            />
+            <span>Up to ₹{priceRange}</span>
+          </div>
+          <div className="filter-section">
+            <h3>Rating</h3>
+            <select value={selectedRating || ''} onChange={(e) => setSelectedRating(Number(e.target.value))}>
+              <option value="">All Ratings</option>
+              <option value="1">1 Star & above</option>
+              <option value="2">2 Stars & above</option>
+              <option value="3">3 Stars & above</option>
+              <option value="4">4 Stars & above</option>
+              <option value="5">5 Stars</option>
+            </select>
+          </div>
+          <div className="filter-section">
+            <h3>Availability</h3>
+            <select value={selectedAvailability} onChange={(e) => setSelectedAvailability(e.target.value)}>
+              <option value="">All</option>
+              <option value="available">Available</option>
+              <option value="not-available">Not Available</option>
+            </select>
+          </div>
+          <button onClick={resetFilters} className="reset-filters-btn">Reset Filters</button>
         </div>
-        <div className="filter-section">
-          <h3>Language</h3>
-          <select value={selectedLanguage} onChange={(e) => setSelectedLanguage(e.target.value)}>
-            <option value="">All</option>
-            <option value="English">English</option>
-            <option value="Hindi">Hindi</option>
-          </select>
-        </div>
-
-        <div className="filter-section">
-          <h3>Price</h3>
-          <input
-            type="range"
-            min="10"
-            max="10000"
-            value={priceRange}
-            onChange={(e) => setPriceRange(e.target.value)}
-          />
-          <span>Up to ₹{priceRange}</span>
-        </div>
-
-        <div className="filter-section">
-          <h3>Rating</h3>
-          <select value={selectedRating || ''} onChange={(e) => setSelectedRating(Number(e.target.value))}>
-            <option value="">All Ratings</option>
-            <option value="1">1 Star & above</option>
-            <option value="2">2 Stars & above</option>
-            <option value="3">3 Stars & above</option>
-            <option value="4">4 Stars & above</option>
-            <option value="5">5 Stars</option>
-          </select>
-        </div>
-
-        <div className="filter-section">
-          <h3>Availability</h3>
-          <select value={selectedAvailability} onChange={(e) => setSelectedAvailability(e.target.value)}>
-            <option value="">All</option>
-            <option value="available">Available</option>
-            <option value="not-available">Not Available</option>
-          </select>
-        </div>
-        <button onClick={resetFilters} className="reset-filters-btn">
-  Reset Filters
-</button>
-      </div>
-
-      {/* Best Fictional Books */}
-      <div className="best-books-container">
+        {/* Best Fictional Books */}
+        <div className="best-books-container">
           <h2 className="section-heading">Best Author Books</h2>
-            <div className='best-main-books-container'>
+          <div className="best-main-books-container">
             {filteredBooks.length > 0 ? (
               filteredBooks.map((book) => (
                 <div key={book._id} className="book-card-wide">
@@ -223,15 +216,14 @@ const BestAuthorBooks = () => {
               ))
             ) : (
               <div className="no-books-container">
-    <MdSentimentDissatisfied size={50} color="white" />
-    <p className="no-books-message">Uh-Oh! No matching books found.</p>
-  </div>
+                <MdSentimentDissatisfied size={50} color="white" />
+                <p className="no-books-message">Uh-Oh! No matching books found.</p>
+              </div>
             )}
-            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <ToastContainer />
-    </div>
-    
   );
 };
 

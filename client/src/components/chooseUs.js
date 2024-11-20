@@ -23,6 +23,8 @@ const ChooseUs = () => {
           </ul>
         </div>
       </div>
+      <p class="signup-text"><a href="/custom">Sign up</a> today and begin your exciting journey with us!</p>
+
     </div>
   );
 };

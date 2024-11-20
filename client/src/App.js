@@ -14,7 +14,7 @@ import Invoice from './components/Invoice';
 import ContactPage from './components/contactUs';
 import BestAuthorBooks from './components/bestauthorbooks';
 // import ListOfBestFictionBooks from './components/listofbestfictionbooks';
-import AmazonBestsellersBooks from './components/amazonbestsellersbooks';
+// import AmazonBestsellersBooks from './components/amazonbestsellersbooks';
 import Children from './components/children';
 import History from './components/history';
 import Fiction from './components/fiction';
@@ -70,7 +70,7 @@ function App() {
         <Route path="/contact" element={<ContactPage/>}/>
         <Route path="/bestauthorbooks" element={<BestAuthorBooks/>}/>
         {/* <Route path="/listofbestfictionbooks" element={<ListOfBestFictionBooks/>}/> */}
-        <Route path="/amazonbestsellersbooks" element={<AmazonBestsellersBooks/>}/>
+        {/* <Route path="/amazonbestsellersbooks" element={<AmazonBestsellersBooks/>}/> */}
         <Route path="/children" element={<Children/>}/>
         <Route path="/history" element={<History/>}/>
         <Route path="/fiction" element={<Fiction/>}/>
