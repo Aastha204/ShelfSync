@@ -1,10 +1,44 @@
 import '../styles/ContactUs.css'; 
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { FaWhatsapp, FaPhoneAlt, FaEnvelope, FaMapMarkedAlt, FaHome, FaArrowAltCircleUp } from 'react-icons/fa';
 import { handleError, handleSuccess } from './utils'
 import {ToastContainer} from 'react-toastify'
 
 const ContactPage = () => {
+    const [scrollDirection, setScrollDirection] = useState("down"); // Initial arrow points down
+    const [lastScrollY, setLastScrollY] = useState(0); // Track last scroll position
+  
+    useEffect(() => {
+      const handleScroll = () => {
+        const currentScrollY = window.scrollY;
+  
+        if (currentScrollY > lastScrollY) {
+          // Scrolling down
+          setScrollDirection("down");
+        } else if (currentScrollY < lastScrollY) {
+          // Scrolling up
+          setScrollDirection("up");
+        }
+  
+        setLastScrollY(currentScrollY);
+      };
+  
+      window.addEventListener("scroll", handleScroll);
+  
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }, [lastScrollY]);
+  
+    const handleScrollClick = () => {
+      if (scrollDirection === "down") {
+        // Scroll to bottom
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      } else {
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+}
 
     const validateName = (name) => {
         const regex = /^[a-zA-Z]+(?:[.'-]?[a-zA-Z]+)(?: [a-zA-Z]+(?:[.'-]?[a-zA-Z]+))*$/;
@@ -62,13 +96,13 @@ const ContactPage = () => {
             handleError("An error occurred. Please try again later.");
         }
     };
-    
+
     
     return (
         <>
             <div className="contact-page">
                 {/* Home Icon */}
-                <div className="home-icon">
+                <div className="home-icon-contact">
                     <a href="/"><FaHome /></a>
                 </div>
 
@@ -169,10 +203,7 @@ const ContactPage = () => {
                         <FaMapMarkedAlt /> Our Location
                     </a>
                 </div>
-                {/* Up Arrow Icon */}
-                <div className="up-arrow-icon" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                    <i className="fas fa-arrow-up"></i>
-                </div>
+               
 
                 <div className="footer-container">
                     <div className="marquee">
@@ -188,9 +219,45 @@ const ContactPage = () => {
                     </div>
                     <p><b>© ShelfSync All Rights Reserved</b></p>
                 </div>
-                <div className='ArrowUp'>
-                    <a href="/contact"><FaArrowAltCircleUp/></a>
-                </div>
+                <div
+  className="scroll-button"
+  style={{
+    position: "fixed",
+    bottom: "20px",
+    right: "20px",
+  }}
+>
+  <button
+    onClick={handleScrollClick}
+    title={scrollDirection === "down" ? "Scroll to Bottom" : "Scroll to Top"}
+    style={{
+      background: "#fff",
+      border: "3px solid #ccc",
+      borderRadius: "50%",
+      padding: "15px",
+      fontSize: "0", // Hide text-based arrow
+      cursor: "pointer",
+      width: "70px",
+      height: "70px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+    }}
+  >
+    <div
+      style={{
+        width: "20px",
+        height: "20px",
+        border: "solid brown",
+        borderWidth: "0 5px 5px 0",
+        transform: scrollDirection === "down" ? "rotate(45deg)" : "rotate(-135deg)",
+        display: "inline-block",
+      }}
+    ></div>
+  </button>
+</div>
+
             </div> {/* Closing the colorized section div */}
             <ToastContainer/>
         </>

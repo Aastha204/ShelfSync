@@ -13,8 +13,8 @@ import Return from './components/Return';
 import Invoice from './components/Invoice';
 import ContactPage from './components/contactUs';
 import BestAuthorBooks from './components/bestauthorbooks';
-import ListOfBestFictionBooks from './components/listofbestfictionbooks';
-import AmazonBestsellersBooks from './components/amazonbestsellersbooks';
+// import ListOfBestFictionBooks from './components/listofbestfictionbooks';
+// import AmazonBestsellersBooks from './components/amazonbestsellersbooks';
 import Children from './components/children';
 import History from './components/history';
 import Fiction from './components/fiction';
@@ -38,6 +38,7 @@ import CardsAnimate from "./components/CardsAnimate";
 import BestFictionalBooks from './components/BestFictionBook';
 import BestSellerBooks from './components/bestSeller';
 import BookIssueReceipt from './components/BookIssueReceipt'
+
 
 
 
@@ -70,8 +71,8 @@ function App() {
         <Route path="/invoice" element={<Invoice/>}/>
         <Route path="/contact" element={<ContactPage/>}/>
         <Route path="/bestauthorbooks" element={<BestAuthorBooks/>}/>
-        <Route path="/listofbestfictionbooks" element={<ListOfBestFictionBooks/>}/>
-        <Route path="/amazonbestsellersbooks" element={<AmazonBestsellersBooks/>}/>
+        {/* <Route path="/listofbestfictionbooks" element={<ListOfBestFictionBooks/>}/> */}
+        {/* <Route path="/amazonbestsellersbooks" element={<AmazonBestsellersBooks/>}/> */}
         <Route path="/children" element={<Children/>}/>
         <Route path="/history" element={<History/>}/>
         <Route path="/fiction" element={<Fiction/>}/>
@@ -92,6 +93,7 @@ function App() {
         <Route path='/bestauthor' element={<BestAuthorBooks/>}/>
         <Route path='/bestseller' element={<BestSellerBooks/>}/>
         <Route path='/receipt' element={<BookIssueReceipt/>}/>
+
       </Routes>
     
     </div>

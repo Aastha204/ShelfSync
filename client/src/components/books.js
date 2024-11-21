@@ -21,8 +21,8 @@ const Filter = () => {
   // Filter states
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('');
-  const [priceRange, setPriceRange] = useState(10000);
-  const [selectedRating, setSelectedRating] = useState(null);
+  const [priceRange, setPriceRange] = useState(1000);
+  const [selectedRating, setSelectedRating] = useState('');
   const [selectedAvailability, setSelectedAvailability] = useState('');
 
   useEffect(() => {
@@ -83,32 +83,33 @@ const Filter = () => {
   };
 
   const applyFilters = () => {
-    let updatedBooks = books;
+  let updatedBooks = books;
 
-    if (selectedCategory) {
-      updatedBooks = updatedBooks.filter((book) => book.genre === selectedCategory);
-    }
+  if (selectedCategory) {
+    updatedBooks = updatedBooks.filter((book) => book.genre === selectedCategory);
+  }
 
-    if (selectedLanguage) {
-      updatedBooks = updatedBooks.filter((book) => book.Language === selectedLanguage);
-    }
+  if (selectedLanguage) {
+    updatedBooks = updatedBooks.filter((book) => book.Language === selectedLanguage);
+  }
 
-    if (selectedRating !== undefined && selectedRating !== null) {
-      updatedBooks = updatedBooks.filter((book) => book.star >= selectedRating);
-    }
+  if (selectedRating) {
+    updatedBooks = updatedBooks.filter((book) => book.star === selectedRating);
+  }
 
-    if (priceRange) {
-      updatedBooks = updatedBooks.filter((book) => book.ratePerMonth <= priceRange);
-    }
+  if (priceRange) {
+    updatedBooks = updatedBooks.filter((book) => book.ratePerMonth <= priceRange);
+  }
 
-    if (selectedAvailability !== '') {
-      updatedBooks = updatedBooks.filter((book) => {
-        return selectedAvailability === 'available' ? book.available > 0 : book.available === 0;
-      });
-    }
+  if (selectedAvailability !== '') {
+    updatedBooks = updatedBooks.filter((book) => {
+      return selectedAvailability === 'available' ? book.available > 0 : book.available === 0;
+    });
+  }
 
-    setFilteredBooks(updatedBooks);
-  };
+  setFilteredBooks(updatedBooks);
+};
+
 
   const handleIssueBook = async (bookID) => {
     const userEmail = localStorage.getItem('loggedInUserEmail');
@@ -126,17 +127,18 @@ const Filter = () => {
       toast.success(response.data.message);
     } catch (error) {
       console.error(error);
-      if (error.response && error.response.data && error.response.data.error === 'Book already issued by you') {
-        toast.info('Book already issued by you');
+      if (error.response && error.response.data && error.response.data.error === 'Book already issued by you and not yet returned') {
+        toast.info('Book already issued by you and not yet returned');
       } else {
         toast.error('Failed to issue book');
       }
     }
-  };
+};
+
   const resetFilters = () => {
     setSelectedCategory('');
     setSelectedLanguage('');
-    setPriceRange(10000);
+    setPriceRange(1000);
     setSelectedRating(null);
     setSelectedAvailability('');
     setFilteredBooks(books); // Reset the filtered books to all books
@@ -176,7 +178,7 @@ const Filter = () => {
           <input
             type="range"
             min="10"
-            max="10000"
+            max="1000"
             value={priceRange}
             onChange={(e) => setPriceRange(e.target.value)}
           />
@@ -188,10 +190,10 @@ const Filter = () => {
           <h3>Rating</h3>
           <select value={selectedRating || ''} onChange={(e) => setSelectedRating(Number(e.target.value))}>
             <option value="">All Ratings</option>
-            <option value="1">1 Star & above</option>
-            <option value="2">2 Stars & above</option>
-            <option value="3">3 Stars & above</option>
-            <option value="4">4 Stars & above</option>
+            <option value="1">1 Star</option>
+            <option value="2">2 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="4">4 Stars</option>
             <option value="5">5 Stars</option>
           </select>
         </div>

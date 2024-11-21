@@ -6,8 +6,8 @@ import BookCards from './cards';
 import Footer from './Footer';
 import NewReleases from './newRelease';
 import BestAuthor from './bestauthorbooks';
-import BestFictional from './listofbestfictionbooks';
-import Amazonseller from './amazonbestsellersbooks';
+// import BestFictional from './listofbestfictionbooks';
+// import Amazonseller from './amazonbestsellersbooks';
 import Children from './children';
 import History from './history';
 import Fiction from './fiction';
@@ -18,6 +18,7 @@ import BookType from './booktypes';
 import Preloader from './Preloader';
 import TopThreeBook from './top3book';
 import CardsAnimate from "./CardsAnimate";
+import ReviewCard from './ReviewCard';
 import ChooseUs from "./chooseUs";
 // import { use } from '../../../server/Routes/AuthRouter';
 import { FaUserAlt } from 'react-icons/fa';
@@ -243,6 +244,9 @@ const LibraryManagementTextOverlay = () => {
       </div>
       <div id="chooseus">
         <ChooseUs/>
+      </div>
+      <div id="review">
+        <ReviewCard />
       </div>
       <div id="footer">
         <Footer />

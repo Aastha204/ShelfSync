@@ -26,6 +26,34 @@ const Return = () => {
     }
   }, []);
 
+  const handleIssueBook = async (bookID) => {
+    const userEmail = localStorage.getItem('loggedInUserEmail');
+    if (!userEmail) {
+      toast.error('Please log in to issue a book');
+      return;
+    }
+  
+    try {
+      const response = await axios.post('http://localhost:3001/api/issues/add', {
+        userEmail,
+        bookID, // Ensure this is the correct ID of the book
+      });
+  
+      toast.success(response.data.message);
+    } catch (error) {
+      console.error(error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.error === 'Book already issued by you and not yet returned'
+      ) {
+        toast.info('Book already issued by you and not yet returned');
+      } else {
+        toast.error('Failed to issue book');
+      }
+    }
+  };
+  
   return (
     <div
       className="min-h-screen bg-cover bg-center p-8"
@@ -51,6 +79,8 @@ const Return = () => {
               <th className="p-4 text-left">Author Name</th>
               <th className="p-4 text-left">Book Type</th>
               <th className="p-4 text-left">Return Date</th>
+              <th className="p-4 text-left">ReIssue</th>
+
             </tr>
           </thead>
           <tbody className="text-white">
@@ -66,6 +96,11 @@ const Return = () => {
                 <td className="p-4 text-left">{book.bookID.author}</td>
                 <td className="p-4 text-left">{book.bookID.genre}</td>
                 <td className="p-4 text-left">{new Date(book.returnDate).toLocaleDateString()}</td>
+                <td className="p-4 text-left">
+            <button onClick={() => handleIssueBook(book.bookID._id)} className="px-7 py-3 rounded text-white bg-green-600 hover:bg-green-500">
+              Issue
+            </button>
+          </td>
               </tr>
             ))}
           </tbody>

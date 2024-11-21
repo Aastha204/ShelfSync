@@ -21,10 +21,10 @@ exports.addIssuedBook=async (req, res) => {
       }
   
       // Check if the book is already issued by this user
-      const existingIssue = await Issue.findOne({ userID: user._id, bookID });
+      const existingIssue = await Issue.findOne({ userID: user._id, bookID, returned: false });
       if (existingIssue) {
-        return res.status(400).json({ error: 'Book already issued by you' });
-      }
+      return res.status(400).json({ error: 'Book already issued by you and not yet returned' });
+    }
   
       // Decrease the available count by 1 if the book is available
       const book = await Book.findById(bookID);
