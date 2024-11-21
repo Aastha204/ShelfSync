@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
-import { FaSearch } from "react-icons/fa"; // Import the search icon from react-icons
-import debounce from "lodash.debounce"; // Import debounce from lodash
+import { useNavigate, useParams } from "react-router-dom"; // Import useParams for dynamic routing
+import { FaSearch } from "react-icons/fa"; 
+import debounce from "lodash.debounce"; 
 import "../styles/AddBook.css";
 
 const BookManager = () => {
@@ -17,55 +17,46 @@ const BookManager = () => {
     ratePerMonth: "",
     bookCoverImageUrl: "",
     genre: "",
-    Language: "English", // Default language choice
+    Language: "English",
     star: "",
   });
-  const [editing, setEditing] = useState(null);
+  const [editing, setEditing] = useState(null);  // Keep track of the book being edited
   const [bookName, setBookName] = useState("");
   const [authorName, setAuthorName] = useState("");
   const navigate = useNavigate();
+  const { id } = useParams();  // Use useParams to get the book ID from the URL
 
+  // Fetch all books and the book to edit (if in edit mode)
   useEffect(() => {
-    fetchBooks();
-  }, []);
-
-  useEffect(() => {
-    if (bookName || authorName) {
-      debouncedSearch(bookName, authorName);
-    } else {
-      setFilteredBooks(books); // Reset to all books if no search query
+    if (id) {  // Check if we are editing a book
+      fetchBookData(id);  // Fetch the book data based on ID
     }
-  }, [bookName, authorName, books]);
+    fetchBooks();  // Fetch all books
+  }, [id]);
 
-  const debouncedSearch = debounce((name, author) => {
-    if (!name && !author) {
-      // Reset to all books if both inputs are empty
-      setFilteredBooks(books);
-      return;
-    }
-  
-    const results = books.filter(
-      (book) =>
-        book.name.toLowerCase().includes(name.toLowerCase()) &&
-        book.author.toLowerCase().includes(author.toLowerCase())
-    );
-    setFilteredBooks(results);
-  }, 300);
-  
-
+  // Fetch all books
   const fetchBooks = async () => {
     try {
       const response = await axios.get("http://localhost:3001/api/books");
       setBooks(response.data);
-      setFilteredBooks(response.data); // Initialize filteredBooks
+      setFilteredBooks(response.data); 
     } catch (error) {
       toast.error("Error fetching books");
     }
   };
 
-  const validateAuthorName = (name) => /^[A-Za-z\s]+$/.test(name);
-  const validateStarRating = (rating) => rating >= 0 && rating <= 5;
+  // Fetch specific book data by ID for editing
+  const fetchBookData = async (id) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/api/books/${id}`);
+      setBookData(response.data);  // Populate the form with the book's existing data
+      setEditing(id);  // Set the book as being edited
+    } catch (error) {
+      toast.error("Error fetching book data");
+    }
+  };
 
+  // Handle book data (add or update)
   const handleAddOrUpdate = async () => {
     if (bookData.ratePerMonth < 0) {
       toast.error("Rate per month cannot be negative");
@@ -110,14 +101,11 @@ const BookManager = () => {
       }
       resetForm();
     } catch (error) {
-      if (error.response?.data.message === "Book already exists") {
-        toast.error("Book already exists");
-      } else {
-        toast.error("Error adding/updating book");
-      }
+      toast.error("Error adding/updating book");
     }
   };
 
+  // Reset form fields
   const resetForm = () => {
     setBookData({
       name: "",
@@ -131,15 +119,27 @@ const BookManager = () => {
     });
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:3001/api/books/delete/${id}`);
-      toast.success("Book deleted successfully");
-      setBooks((prevBooks) => prevBooks.filter((book) => book._id !== id));
-    } catch (error) {
-      toast.error("Error deleting book");
-    }
+  // Validation for star rating (must be between 0 and 5)
+  const validateStarRating = (rating) => {
+    return rating >= 0 && rating <= 5;
   };
+
+  // Validate author name (only letters and spaces)
+  const validateAuthorName = (name) => {
+    return /^[a-zA-Z\s]+$/.test(name);
+  };
+
+  // Handle searching through books by name and author
+  const handleSearch = debounce((e) => {
+    const value = e.target.value.toLowerCase();
+    setBookName(value);
+    const filtered = books.filter(
+      (book) =>
+        book.name.toLowerCase().includes(value) ||
+        book.author.toLowerCase().includes(value)
+    );
+    setFilteredBooks(filtered);
+  }, 500);
 
   return (
     <div className="book-manager-container">
@@ -148,6 +148,19 @@ const BookManager = () => {
       </button>
       <h1 className="book-manager-heading">Book Manager</h1>
 
+      {/* Search Box */}
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search by name or author"
+          value={bookName}
+          onChange={handleSearch}
+          className="search-box"
+        />
+        <FaSearch className="search-icon" />
+      </div>
+
+      {/* Book Form */}
       <div className="book-form-container">
         <div className="book-form-image">
           <img
@@ -246,70 +259,29 @@ const BookManager = () => {
         </div>
       </div>
 
-      <div className="search-bar mb-7 flex items-center text-1xl font-bold mb-6 text-[brown] border-b-4 border-[brown] pb-2">
-        <input
-          type="text"
-          placeholder="Book Name"
-          value={bookName}
-          onChange={(e) => setBookName(e.target.value)}
-          className="input-box mb-2 mr-2"
-        />
-
-        <input
-          type="text"
-          placeholder="Author Name"
-          value={authorName}
-          onChange={(e) => setAuthorName(e.target.value)}
-          className="input-box mb-2 mr-2"
-        />
-        <button
-          onClick={() => debouncedSearch(bookName, authorName)}
-          className="search-icon"
-        >
-          <FaSearch
-            className="text-[white] transform -translate-y-1"
-            size={32}
-          />
-        </button>
-      </div>
-
+      {/* Display Books */}
       <div className="book-list-container">
         {filteredBooks.map((book) => (
-          <div
-            key={book._id}
-            className={`custom-book-card ${
-              book._id === editing ? "custom-highlighted" : ""
-            }`}
-          >
-            <div className="custom-image-container">
-              <img
-                src={book.bookCoverImageUrl || "placeholder.jpg"}
-                alt={`${book.name} cover`}
-                className="custom-book-cover-image"
-              />
-            </div>
-            <div className="custom-card-content">
-              <h3 className="custom-book-title">{book.name}</h3>
-              <p className="custom-book-author">{book.author}</p>
-              <div className="custom-card-footer">
-                <span className="custom-book-price">₹{book.ratePerMonth}</span>
-                <span className="custom-book-rating">
-                  {Array.from({ length: book.star }, (_, index) => (
-                    <span key={index}>⭐</span>
-                  ))}
-                </span>
-              </div>
-            </div>
-            <div className="custom-button-group">
+          <div key={book._id} className="book-card">
+            <img
+              src={book.bookCoverImageUrl}
+              alt={book.name}
+              className="book-image"
+            />
+            <div className="book-info">
+              <h3>{book.name}</h3>
+              <p>Author: {book.author}</p>
+              <p>Genre: {book.genre}</p>
+              <p>Available: {book.available}</p>
               <button
-                onClick={() => setEditing(book._id)}
-                className="bg-blue-500 text-white py-2 px-8 rounded hover:bg-blue-600"
+                onClick={() => navigate(`/edit-book/${book._id}`)}
+                className="edit-button"
               >
                 Edit
               </button>
               <button
                 onClick={() => handleDelete(book._id)}
-                className="bg-red-800 text-white py-2 px-8 rounded hover:bg-red-900"
+                className="delete-button"
               >
                 Delete
               </button>

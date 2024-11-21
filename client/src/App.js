@@ -37,6 +37,7 @@ import BookList from './components/BookList';
 import CardsAnimate from "./components/CardsAnimate";
 import BestFictionalBooks from './components/BestFictionBook';
 import BestSellerBooks from './components/bestSeller';
+import BookIssueReceipt from './components/BookIssueReceipt'
 
 
 
@@ -59,7 +60,7 @@ function App() {
         <Route path="/cards" element={<CardComponent/>}/>
         <Route path="/newrelease" element={<NewRelease/>}/>
         <Route path="/booktrack" element={<BookTrack/>}/>
-        <Route path="/receipt" element={<ReceiptManager/>}/>
+        <Route path="/receipt1" element={<ReceiptManager/>}/>
         <Route path="/footer" element={<Footer/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
@@ -90,6 +91,7 @@ function App() {
         <Route path='/bestfiction' element={<BestFictionalBooks/>}/>
         <Route path='/bestauthor' element={<BestAuthorBooks/>}/>
         <Route path='/bestseller' element={<BestSellerBooks/>}/>
+        <Route path='/receipt' element={<BookIssueReceipt/>}/>
       </Routes>
     
     </div>
