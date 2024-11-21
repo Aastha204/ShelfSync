@@ -67,8 +67,8 @@ exports.searchBooks = async (req, res) => {
     const { name, author } = req.query; // Extract query parameters
     const criteria = {};
 
-    if (name) criteria.name = new RegExp(name, 'i'); // Case-insensitive search
-    if (author) criteria.author = new RegExp(author, 'i'); // Case-insensitive search
+    if (name) criteria.name = new RegExp(`^${name}`, 'i'); // Match strings starting with 'name'
+    if (author) criteria.author = new RegExp(`^${author}`, 'i'); // Match strings starting with 'author'
 
     const books = await Book.find(criteria);
     res.status(200).json(books);

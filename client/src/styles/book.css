@@ -150,7 +150,7 @@
   top: 0;
   left: 4px;
   bottom:2;
-  font-size: 2 rem;
+  font-size: 2rem;
   color: #4d2121;
   /* background-color: #261717; */
   padding: 4px;
@@ -229,4 +229,8 @@ input[type="range"]::-moz-range-thumb {
   background: #4a2c18; /* Darker brown for the thumb */
   cursor: pointer;
   border-radius: 50%; /* Rounded thumb */
+}
+
+.price-manual-input label{
+  color:#3c1414;
 }

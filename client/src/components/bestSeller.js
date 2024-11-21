@@ -13,8 +13,8 @@ const BestSellerBooks = () => {
 
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('');
-  const [priceRange, setPriceRange] = useState(10000);
-  const [selectedRating, setSelectedRating] = useState(null);
+  const [priceRange, setPriceRange] = useState(1000);
+  const [selectedRating, setSelectedRating] = useState('');
   const [selectedAvailability, setSelectedAvailability] = useState('');
 
   useEffect(() => {
@@ -50,8 +50,8 @@ const BestSellerBooks = () => {
         updatedBooks = updatedBooks.filter((book) => book.Language === selectedLanguage);
       }
 
-      if (selectedRating !== undefined && selectedRating !== null) {
-        updatedBooks = updatedBooks.filter((book) => book.star >= selectedRating);
+      if (selectedRating) {
+        updatedBooks = updatedBooks.filter((book) => book.star === selectedRating);
       }
 
       if (priceRange) {
@@ -73,8 +73,8 @@ const BestSellerBooks = () => {
   const resetFilters = () => {
     setSelectedCategory('');
     setSelectedLanguage('');
-    setPriceRange(10000);
-    setSelectedRating(null);
+    setPriceRange(1000);
+    setSelectedRating('');
     setSelectedAvailability('');
     setFilteredBooks(books);
   };
@@ -95,8 +95,8 @@ const BestSellerBooks = () => {
       toast.success(response.data.message);
     } catch (error) {
       console.error(error);
-      if (error.response?.data?.error === 'Book already issued by you') {
-        toast.info('Book already issued by you');
+      if (error.response && error.response.data && error.response.data.error === 'Book already issued by you and not yet returned') {
+        toast.info('Book already issued by you and not yet returned');
       } else {
         toast.error('Failed to issue book');
       }
@@ -139,7 +139,7 @@ const BestSellerBooks = () => {
             <input
               type="range"
               min="10"
-              max="10000"
+              max="1000"
               value={priceRange}
               onChange={(e) => setPriceRange(Number(e.target.value))}
             />
@@ -149,10 +149,10 @@ const BestSellerBooks = () => {
             <h3>Rating</h3>
             <select value={selectedRating || ''} onChange={(e) => setSelectedRating(Number(e.target.value))}>
               <option value="">All Ratings</option>
-              <option value="1">1 Star & above</option>
-              <option value="2">2 Stars & above</option>
-              <option value="3">3 Stars & above</option>
-              <option value="4">4 Stars & above</option>
+              <option value="1">1 Star</option>
+              <option value="2">2 Stars</option>
+              <option value="3">3 Stars</option>
+              <option value="4">4 Stars</option>
               <option value="5">5 Stars</option>
             </select>
           </div>

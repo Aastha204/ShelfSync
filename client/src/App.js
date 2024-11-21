@@ -40,6 +40,7 @@ import BestSellerBooks from './components/bestSeller';
 
 
 
+
 // const ProtectedRoute = ({ children }) => {
 //   const token = localStorage.getItem('token');
 //   return token ? children : <Navigate to="/" />;
@@ -90,6 +91,7 @@ function App() {
         <Route path='/bestfiction' element={<BestFictionalBooks/>}/>
         <Route path='/bestauthor' element={<BestAuthorBooks/>}/>
         <Route path='/bestseller' element={<BestSellerBooks/>}/>
+
       </Routes>
     
     </div>
