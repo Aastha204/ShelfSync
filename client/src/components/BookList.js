@@ -12,6 +12,9 @@ const BookList = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [message, setMessage] = useState("");
   const [filter, setFilter] = useState("all"); // State for filter (all, available, not available)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentBookId, setCurrentBookId] = useState(null);
+  const [availableBooks, setAvailableBooks] = useState("");
 
   useEffect(() => {
     fetchBooks();
@@ -24,6 +27,35 @@ const BookList = () => {
       setSearchResults(response.data); // Initialize search results with all books
     } catch (error) {
       toast.error("Error fetching books");
+    }
+  };
+
+  const handleRestockClick = (id) => {
+    setCurrentBookId(id);
+    setIsModalOpen(true);
+  };
+
+  const handleRestockUpdate = async () => {
+    const count = parseInt(availableBooks, 10);
+
+    if (isNaN(count) || count <= 0) {
+      toast.error("Please enter a valid number");
+      return;
+    }
+
+    try {
+      const response = await axios.put(`http://localhost:3001/api/books/restock/${currentBookId}`, { available: count });
+      toast.success("Books restocked successfully");
+      setBooks((prevBooks) =>
+        prevBooks.map((book) =>
+          book._id === currentBookId ? { ...book, available: response.data.available } : book
+        )
+      );
+      setIsModalOpen(false);
+      setAvailableBooks("");
+    } catch (error) {
+      console.error("Error restocking books:", error.message);
+      toast.error("Error restocking books");
     }
   };
 
@@ -156,10 +188,48 @@ const BookList = () => {
                 <p className="text-gray-700">
                   <strong>Rate Per Month:</strong> ₹{book.ratePerMonth}
                 </p>
+                <div className="custom-button-group">
+                  {book.available === 0 && (
+                    <button
+                      onClick={() => handleRestockClick(book._id)}
+                      className="bg-green-600 text-white py-2 px-8 rounded hover:bg-green-700"
+                      style={{ position: "absolute", bottom: "10px", right: "10px" }}
+                    >
+                      Restock
+                    </button>
+                  )}
+                </div>
               </div>
             ))
           : !message && <p>No results found</p>}
       </div>
+
+      {isModalOpen && (
+        <div className="fixed p-60 inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-3xl text-black font-semibold mb-4">Update Available Books</h2>
+            <input
+              type="text"
+              value={availableBooks}
+              onChange={(e) => setAvailableBooks(e.target.value)}
+              placeholder="Enter number of books"
+              className="border p-2 rounded w-full mb-4"
+            />
+            <button
+              onClick={handleRestockUpdate}
+              className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 mr-2"
+            >
+              Update
+            </button>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
 
       <ToastContainer />
     </div>
