@@ -52,21 +52,53 @@ function BookType() {
 
   return (
     <div className="booktype">
+    <p>"Discover a world of bestselling books across genres like thrillers, romance, fantasy, and more—stories that captivate, inspire, and entertain!"</p>
+    <h1>SELECT YOUR GENRE</h1>
       <div className="book-types">
-        <p>"Discover a world of bestselling books across genres like thrillers, romance, fantasy, and more—stories that captivate, inspire, and entertain!"</p>
-        <h1>SELECT YOUR GENRE</h1>
         <div className="icons">
-          {['Children', 'History', 'Fiction', 'Thriller', 'Romance', 'Comics'].map((type) => (
-            <div className="icon-container" key={type} onClick={handleIconClick}>
-              <div className={`icon ${type.toLowerCase()}`}></div>
-              <span>{type}</span>
-            </div>
-          ))}
+          <div className="icon-container">
+            <a href="#children">
+              <div className="icon children"></div>
+              <span>Children</span>
+            </a>
+          </div>
+          <div className="icon-container">
+            <a href="#history">
+              <div className="icon history"></div>
+              <span>History</span>
+            </a>
+          </div>
+          <div className="icon-container">
+            <a href="#fiction">
+              <div className="icon fiction"></div>
+              <span>Fiction</span>
+            </a>
+          </div>
+          <div className="icon-container">
+            <a href="#thriller">
+              <div className="icon thriller"></div>
+              <span>Thriller</span>
+            </a>
+          </div>
+          <div className="icon-container">
+            <a href="#romance">
+              <div className="icon romance"></div>
+              <span>Romance</span>
+            </a>
+          </div>
+          <div className="icon-container">
+            <a href="#comics">
+              <div className="icon comics"></div>
+              <span>Comics</span>
+            </a>
+          </div>
         </div>
-        <br></br>
-        <br></br>
-        <p>"Explore top books in every genre—your next favorite read awaits!"</p>
       </div>
+        <br></br>
+        <br></br>
+        
+        <p>"Explore top books in every genre—your next favorite read awaits!"</p>
+      
     </div>
   );
 }

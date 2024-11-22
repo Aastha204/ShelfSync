@@ -17,7 +17,8 @@ router.get('/', bookController.getBooks);
 
 router.get('/search', bookController.searchBooks);
 
-router.get('/api/books', bookController.getBooks);
-router.get('/get/:id',bookController.getBook);
+router.put('/restock/:id', bookController.bookrestock);
+
+  
 
 module.exports = router;

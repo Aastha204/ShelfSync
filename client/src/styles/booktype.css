@@ -53,7 +53,7 @@
   letter-spacing: 2px; /* Increased letter spacing */
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Added a subtle text shadow */
 }
-.book-types p {
+.booktype p {
   /* font-family: 'Bookman Old Style'; */
   font-size: 20px; /* Increased font size */
   font-weight: bold; /* Made the text bold */
