@@ -39,23 +39,32 @@ const ContactPage = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 }
-
-    const validateName = (name) => {
-        const regex = /^[a-zA-Z]+(?:[.'-]?[a-zA-Z]+)(?: [a-zA-Z]+(?:[.'-]?[a-zA-Z]+))*$/;
-        return regex.test(name);
-      };
-      
-      
-      // Email validation function
-      const validateEmail = (email) => {
-        const regex=/^[a-zA-Z0-9._%+-]+@(gmail\.com|outlook\.com|yahoo\.com|hotmail\.com|live\.com|icloud\.com)$/;
-        return regex.test(email);
-      };
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         message: ''
     });
+
+    const validateName = (name) => {
+        if (!name) return "Name is required.";
+        if (/\d/.test(name)) return "Name must contain only letters and spaces.";
+        if (name.length < 3 || name.length > 15) return "Name length must be between 3 and 15 characters.";
+        const regex = /^[a-zA-Z]+(?:[.'-]?[a-zA-Z]+)*(?: [a-zA-Z]+(?:[.'-]?[a-zA-Z]+)*)*$/;
+        if (!regex.test(name)) return "Invalid name format.";
+        return "";
+    };
+
+    const validateEmail = (email) => {
+        if (!email) return "Email is required.";
+        const regex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|outlook\.com|yahoo\.com|hotmail\.com|live\.com|icloud\.com)$/;
+        if (!regex.test(email)) return "Email must be a valid email address.";
+        return "";
+    };
+
+    const validateMessage = (message) => {
+        if (!message.trim()) return "Message is required.";
+        return "";
+    };
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -64,30 +73,30 @@ const ContactPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { name, email, message } = formData;
-    
-        if (!name || !email || !message.trim()) {
-            return handleError("All fields (Name, Email, Message) are required.");
+
+        // Validate all fields and collect errors
+        const nameError = validateName(name);
+        const emailError = validateEmail(email);
+        const messageError = validateMessage(message);
+
+        if (nameError || emailError || messageError) {
+            // Display all errors at once
+            if (nameError) handleError(nameError);
+            if (emailError) handleError(emailError);
+            if (messageError) handleError(messageError);
+            return;
         }
-    
-        if (!validateName(name)) {
-            return handleError("Name must contain only letters and spaces.");
-        }
-    
-        if (!validateEmail(email)) {
-            return handleError("Email must be a valid email address.");
-        }
-    
+
         try {
             const response = await fetch('http://localhost:3001/api/contact', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
             });
-    
+
             if (response.ok) {
-                const result = await response.json();
                 handleSuccess("Your message has been sent successfully!");
-                setFormData({ name: '', email: '', message: '' }); // Clear form
+                setFormData({ name: '', email: '', message: '' });
             } else {
                 handleError("Failed to send the message. Please try again later.");
             }
@@ -96,6 +105,7 @@ const ContactPage = () => {
             handleError("An error occurred. Please try again later.");
         }
     };
+
 
     
     return (

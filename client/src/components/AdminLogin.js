@@ -98,10 +98,10 @@ const handleLogin= async (e)=>{
                   <button type='submit' className="w-full bg-brown-600 hover:bg-brown-700 text-white font-bold py-2 px-4 rounded-lg mt-6">Login</button>
                 </form>
 
-                <Link to="/adminsignup" className="text-sm text-center mt-4">
+                {/* <Link to="/adminsignup" className="text-sm text-center mt-4">
                 
                   Don't have an account? <span className="text-brown-600 hover:text-brown-700 cursor-pointer" >Sign up</span>
-                </Link>                
+                </Link>                 */}
               </div>
             </div>  
         </div>

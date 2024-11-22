@@ -52,7 +52,7 @@ const LibraryManagementTextOverlay = () => {
   const handleLogout = () => {
     localStorage.clear();
     setIsLoggedIn(false);
-    navigate('/login');
+    // navigate('/login');
   };
 
   useEffect(() => {
@@ -129,23 +129,24 @@ const LibraryManagementTextOverlay = () => {
             <a href="#browse" className="hover:text-white-400 hover:underline text-lg">Browse</a>
             <a href="/contact" className="hover:text-white-400 hover:underline text-lg">Contact</a>
             {isLoggedIn ? (
-                <div className="flex items-center space-x-4">
-                  <Link
-                    to="/userprofile"
-                    className="block text-white text-lg hover:underline"
-                  >
-                    <FaUserAlt />
-                  </Link>
-                  
-                </div>
-              ) : (
-                <Link
-                  to="/custom"
-                  className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold transform transition-transform hover:scale-105 text-lg"
-                >
-                  Login
-                </Link>
-              )}
+            // **Show Profile and Logout buttons if logged in**
+            <div className="flex items-center space-x-4">
+              <Link to="/userprofile" className="block text-white text-lg hover:underline">
+                <FaUserAlt /> {/* **Profile icon** */}
+              </Link>
+              <button
+                onClick={handleLogout} // **Logout functionality**
+                className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            // **Show Login button if not logged in**
+            <Link to="/custom" className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg">
+              Login
+            </Link>
+          )}
           </div>
         </nav>
 
@@ -177,7 +178,7 @@ const LibraryManagementTextOverlay = () => {
               </div>
             ) : (
               <Link
-                to="/login"
+                to="/custom"
                 className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg"
               >
                 Login
@@ -209,36 +210,7 @@ const LibraryManagementTextOverlay = () => {
       <div id="browse">
         <BookType />
       </div>
-      {/* <div>
-        <BookCards />
-      </div> */}
-      {/* <div id="bestauthor">
-        <BestAuthor />
-      </div>
-      <div id="bestfiction">
-        <BestFictional />
-      </div>
-      <div id="amazonseller">
-        <Amazonseller />
-      </div> */}
-      {/* <div id="children">
-        <Children />
-      </div>
-      <div id="history">
-        <History />
-      </div>
-      <div id="fiction">
-        <Fiction />
-      </div>
-      <div id="thriller">
-        <Thriller />
-      </div>
-      <div id="romance">
-        <Romance />
-      </div>
-      <div id="comics">
-        <Comics />
-      </div> */}
+      
       <div id="cards-animate">
         <CardsAnimate />
       </div>

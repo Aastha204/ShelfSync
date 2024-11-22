@@ -35,8 +35,12 @@ exports.getTotalIssued = async (req, res) => {
   exports.getCurrentIssued = async (req, res) => {
     try {
       const { userId } = req.params;
-      const userIssues = await Issue.find({ userID: userId, returned: false })
-        .populate('bookID', 'name author genre available'); // Populate book details
+      // Ensuring that the returned field is explicitly false
+      const userIssues = await Issue.find({ 
+        userID: userId, 
+        returned: false  // This should correctly filter books that are not returned
+      })
+        .populate('bookID', 'name author genre available');  // Populate book details
   
       res.json(userIssues);
     } catch (error) {
@@ -44,3 +48,4 @@ exports.getTotalIssued = async (req, res) => {
       res.status(500).json({ error: 'Failed to fetch current issued books' });
     }
   };
+  

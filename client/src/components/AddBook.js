@@ -63,6 +63,18 @@ const BookManager = () => {
     }
   };
 
+  const fetchBookDetails = async (id) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/api/books/get/${id}`
+      );
+      setBookData(response.data);
+      setEditing(id);
+    } catch (error) {
+      toast.error("Error fetching book details");
+    }
+  };
+
   const validateAuthorName = (name) => /^[A-Za-z\s]+$/.test(name);
   const validateStarRating = (rating) => rating >= 0 && rating <= 5;
 
@@ -302,7 +314,7 @@ const BookManager = () => {
             </div>
             <div className="custom-button-group">
               <button
-                onClick={() => setEditing(book._id)}
+                onClick={() => fetchBookDetails(book._id)}
                 className="bg-blue-500 text-white py-2 px-8 rounded hover:bg-blue-600"
               >
                 Edit

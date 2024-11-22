@@ -5,7 +5,6 @@ import '../styles/changeUserProfile.css';
 const FormComponent = () => {
     const [formData, setFormData] = useState({
         phone: '',
-        age: '',
         address: '',
         gender: '',
         dob: ''
@@ -14,10 +13,11 @@ const FormComponent = () => {
     const navigate = useNavigate();
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value
+        }));
     };
 
     const handleSubmit = (e) => {
@@ -30,13 +30,26 @@ const FormComponent = () => {
             return;
         }
 
+        // Calculate age from dob
+        const today = new Date();
+        const birthDate = new Date(formData.dob);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+            age--; // Adjust if the birthday hasn't occurred yet this year
+        }
+
+        // Include calculated age in the form data
+        const updatedFormData = { ...formData, age, email: userEmail };
+
         fetch(`http://localhost:3001/api/userProfile`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ ...formData, email: userEmail })
+            body: JSON.stringify(updatedFormData)
         })
         .then(response => {
             if (!response.ok) {
@@ -47,7 +60,7 @@ const FormComponent = () => {
         .then(data => {
             console.log('User profile updated successfully:', data);
             alert('Profile updated successfully!');
-            navigate('/userprofile');  // Navigate after successful form submission
+            navigate('/userprofile'); // Navigate after successful form submission
         })
         .catch(error => {
             console.error('Error updating profile:', error);
@@ -76,17 +89,6 @@ const FormComponent = () => {
                             required
                             pattern="\d{10}"
                             title="Please enter a 10-digit phone number"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="age">Age</label>
-                        <input
-                            type="number"
-                            id="age"
-                            name="age"
-                            value={formData.age}
-                            onChange={handleChange}
-                            required
                         />
                     </div>
                     <div className="form-group">
