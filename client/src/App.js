@@ -38,6 +38,7 @@ import CardsAnimate from "./components/CardsAnimate";
 import BestFictionalBooks from './components/BestFictionBook';
 import BestSellerBooks from './components/bestSeller';
 import BookIssueReceipt from './components/BookIssueReceipt'
+import OptionCards from './components/OptionCards';
 
 
 
@@ -81,6 +82,7 @@ function App() {
         <Route path="/comics" element={<Comics/>}/>
         <Route path="/admin" element={<AdminProfilePage/>}/>
         <Route path='/add' element={<AddBook/>}/>
+        <Route path='/optioncards' element={<OptionCards/>}/>
        
         <Route path="/books" element={<AllBooks/>}/>
         <Route path="/changeUserProfile" element={<ChangeUserProfile/>}/>

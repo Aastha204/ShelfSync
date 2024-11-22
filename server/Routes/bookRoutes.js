@@ -18,5 +18,6 @@ router.get('/', bookController.getBooks);
 router.get('/search', bookController.searchBooks);
 
 router.get('/api/books', bookController.getBooks);
+router.get('/get/:id',bookController.getBook);
 
 module.exports = router;

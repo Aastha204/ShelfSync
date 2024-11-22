@@ -52,15 +52,17 @@ exports.updateBook = async (req, res) => {
 };
 
 // Get Book By ID
-exports.getBookById = async (req, res) => {
+exports.getBook = async (req, res) => {
   try {
-    const book = await Book.findById(req.params.id);
+    const bookId = req.params.id;
+    const book = await Book.findById(bookId);
     if (!book) {
       return res.status(404).json({ message: 'Book not found' });
     }
-    res.status(200).json(book);
+    res.json(book);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching book', error });
+    console.error('Error fetching book:', error);
+    res.status(500).json({ message: 'Error fetching book' });
   }
 };
 // Get All Books
