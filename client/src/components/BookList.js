@@ -11,6 +11,7 @@ const BookList = () => {
   const [authorName, setAuthorName] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [message, setMessage] = useState("");
+  const [filter, setFilter] = useState("all"); // State for filter (all, available, not available)
 
   useEffect(() => {
     fetchBooks();
@@ -19,7 +20,6 @@ const BookList = () => {
   const fetchBooks = async () => {
     try {
       const response = await axios.get("http://localhost:3001/api/books");
-      console.log(response.data); // Debug to check the response structure
       setBooks(response.data);
       setSearchResults(response.data); // Initialize search results with all books
     } catch (error) {
@@ -29,7 +29,7 @@ const BookList = () => {
 
   const debouncedSearch = debounce(async (name, author) => {
     if (!name.trim() && !author.trim()) {
-      setSearchResults(books); // Show all books if no search criteria
+      setSearchResults(applyFilter(books)); // Show filtered books if no search criteria
       return;
     }
 
@@ -41,7 +41,7 @@ const BookList = () => {
           params: { name, author },
         }
       );
-      setSearchResults(response.data);
+      setSearchResults(applyFilter(response.data)); // Apply filter on search results
     } catch (error) {
       console.error("Error fetching search results:", error.message);
     }
@@ -59,35 +59,18 @@ const BookList = () => {
     debouncedSearch(bookName, value);
   };
 
-  const handleIssue = async (bookId) => {
-    try {
-      const userEmail = localStorage.getItem("loggedInUserEmail"); // Assuming email is saved in local storage
-      if (!userEmail) {
-        toast.error("User not logged in");
-        return; // Exit if userEmail is not available
-      }
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+    setSearchResults(applyFilter(books, newFilter)); // Apply filter on the current list of books
+  };
 
-      const payload = {
-        userEmail,
-        bookID: bookId,
-      };
-      console.log("Issuing Book with Payload:", payload); // Log the payload
-
-      const response = await axios.post(
-        "http://localhost:3001/api/issue/add",
-        payload
-      );
-      console.log(response.data); // This will help you debug
-
-      toast.success("Book issued successfully");
-      fetchBooks(); // Refresh the list of books after issuing
-    } catch (error) {
-      toast.error("Error issuing book");
-      console.error(
-        "Error issuing book:",
-        error.response ? error.response.data : error
-      ); // More detailed error output
+  const applyFilter = (booksList, filterCriteria = filter) => {
+    if (filterCriteria === "available") {
+      return booksList.filter((book) => book.available > 0);
+    } else if (filterCriteria === "notAvailable") {
+      return booksList.filter((book) => book.available === 0);
     }
+    return booksList; // If filter is "all", return the complete list
   };
 
   return (
@@ -95,6 +78,35 @@ const BookList = () => {
       <h1 className="text-3xl font-bold mb-6 text-[#fafafa] border-b-4 border-[#fafafa] pb-2">
         All Books 📚
       </h1>
+
+      <div className="filter-bar mb-4 flex items-center">
+        <button
+          className={`px-4 py-2 mr-2 rounded ${
+            filter === "all" ? "bg-[#D8CBC4]" : "bg-[#4B2E2C] text-[#fafafa]"
+          }`}
+          onClick={() => handleFilterChange("all")}
+        >
+          All
+        </button>
+        <button
+          className={`px-4 py-2 mr-2 rounded ${
+            filter === "available" ? "bg-[#D8CBC4]" : "bg-[#4B2E2C] text-[#fafafa]"
+          }`}
+          onClick={() => handleFilterChange("available")}
+        >
+          Available
+        </button>
+        <button
+          className={`px-4 py-2 rounded ${
+            filter === "notAvailable"
+              ? "bg-[#D8CBC4]"
+              : "bg-[#4B2E2C] text-[#fafafa]"
+          }`}
+          onClick={() => handleFilterChange("notAvailable")}
+        >
+          Not Available
+        </button>
+      </div>
 
       <div className="search-bar mb-6 flex items-center">
         <input
