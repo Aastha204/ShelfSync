@@ -51,6 +51,20 @@ exports.updateBook = async (req, res) => {
   }
 };
 
+// Get Book By ID
+exports.getBook = async (req, res) => {
+  try {
+    const bookId = req.params.id;
+    const book = await Book.findById(bookId);
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+    res.json(book);
+  } catch (error) {
+    console.error('Error fetching book:', error);
+    res.status(500).json({ message: 'Error fetching book' });
+  }
+};
 // Get All Books
 exports.getBooks = async (req, res) => {
   try {
@@ -60,6 +74,31 @@ exports.getBooks = async (req, res) => {
     res.status(500).json({ message: 'Error fetching books', error });
   }
 };
+
+exports.bookrestock = async (req, res) => {
+  const { id } = req.params;
+  const { available } = req.body;
+
+  console.log("Restock request received:", { id, available });
+
+  if (!available || available <= 0) {
+    return res.status(400).json({ message: "Invalid restock count" });
+  }
+
+  try {
+    const book = await Book.findByIdAndUpdate(
+      id,
+      { $inc: { available } },
+      { new: true }
+    );
+    if (!book) return res.status(404).json({ message: "Book not found" });
+    res.json({ available: book.available });
+  } catch (error) {
+    console.error("Error during restocking:", error);
+    res.status(500).json({ message: "Error updating book availability" });
+  }
+};
+
 
 // Search Books
 exports.searchBooks = async (req, res) => {

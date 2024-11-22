@@ -31,26 +31,37 @@ const BookManager = () => {
 
   useEffect(() => {
     if (bookName || authorName) {
-      debouncedSearch(bookName, authorName);
+      debouncedSearchBooks(bookName, authorName);
     } else {
       setFilteredBooks(books); // Reset to all books if no search query
     }
   }, [bookName, authorName, books]);
 
-  const debouncedSearch = debounce((name, author) => {
-    if (!name && !author) {
-      // Reset to all books if both inputs are empty
-      setFilteredBooks(books);
+  const debouncedSearchBooks = debounce(async (name, author) => {
+    if (!name.trim() && !author.trim()) {
+      setFilteredBooks(books); // Show all books if no search criteria
       return;
     }
-  
-    const results = books.filter(
-      (book) =>
-        book.name.toLowerCase().includes(name.toLowerCase()) &&
-        book.author.toLowerCase().includes(author.toLowerCase())
-    );
-    setFilteredBooks(results);
+
+    try {
+      const response = await axios.get('http://localhost:3001/api/books/search', {
+        params: { name, author },
+      });
+      setFilteredBooks(response.data);
+    } catch (error) {
+      console.error('Error fetching search results:', error.message);
+    }
   }, 300);
+
+  const handleBookNameChange = (e) => {
+    const value = e.target.value;
+    setBookName(value);
+  };
+
+  const handleAuthorNameChange = (e) => {
+    const value = e.target.value;
+    setAuthorName(value);
+  };
   
 
   const fetchBooks = async () => {
@@ -247,25 +258,21 @@ const BookManager = () => {
       </div>
 
       <div className="search-bar mb-7 flex items-center text-1xl font-bold mb-6 text-[brown] border-b-4 border-[brown] pb-2">
-        <input
+      <input
           type="text"
           placeholder="Book Name"
           value={bookName}
-          onChange={(e) => setBookName(e.target.value)}
+          onChange={handleBookNameChange}
           className="input-box mb-2 mr-2"
         />
-
         <input
           type="text"
           placeholder="Author Name"
           value={authorName}
-          onChange={(e) => setAuthorName(e.target.value)}
+          onChange={handleAuthorNameChange}
           className="input-box mb-2 mr-2"
         />
-        <button
-          onClick={() => debouncedSearch(bookName, authorName)}
-          className="search-icon"
-        >
+        <button className="search-button">
           <FaSearch
             className="text-[white] transform -translate-y-1"
             size={32}

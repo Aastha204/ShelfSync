@@ -1,4 +1,5 @@
 import React from 'react'
+import '../index.css';
 const Invoice = () => {
   return (
     <div className="min-h-screen bg-brown-500 flex justify-center items-center py-10">

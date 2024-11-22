@@ -5,6 +5,9 @@ const Book = require('../Models/Book');
 const jwt = require('jsonwebtoken');
 const User = require('../Models/User');
 const Return = require('../Models/Return');
+const Receipt = require('../Models/Receipt');
+const issue=require('../Models/Issue')
+
 
 // POST route to issue a book
 exports.addIssuedBook=async (req, res) => {
@@ -18,10 +21,10 @@ exports.addIssuedBook=async (req, res) => {
       }
   
       // Check if the book is already issued by this user
-      const existingIssue = await Issue.findOne({ userID: user._id, bookID });
+      const existingIssue = await Issue.findOne({ userID: user._id, bookID, returned: false });
       if (existingIssue) {
-        return res.status(400).json({ error: 'Book already issued by you' });
-      }
+      return res.status(400).json({ error: 'Book already issued by you and not yet returned' });
+    }
   
       // Decrease the available count by 1 if the book is available
       const book = await Book.findById(bookID);
@@ -36,6 +39,18 @@ exports.addIssuedBook=async (req, res) => {
         email: user.email,
       };
       await book.save(); // Save the updated book
+
+    //   const receiptData = new Receipt({
+    //     receiptNo: issue._id.toString(),
+    //     borrowerName: issue.userID.name,
+    //     bookName: issue.bookID.name,
+    //     authorName: issue.bookID.author,
+    //     issueDate: issue.issueDate,
+    //     returnDate: new Date(),
+      
+    // });
+    
+    // await receiptData.save();
   
       // Create the issue if no previous record exists
       const newIssue = new Issue({
@@ -137,8 +152,8 @@ exports.addIssuedBook=async (req, res) => {
         book.available += 1; // Increment available count
         await book.save(); // Save updated book
       }
-  
-      res.json({ message: 'Book returned successfully', returnedBook });
+      
+      res.json({ message: 'Book returned successfully', returnedBook,receiptData });
     } catch (error) {
       console.error('Error returning book:', error);
       res.status(500).json({ error: 'Failed to return book' });

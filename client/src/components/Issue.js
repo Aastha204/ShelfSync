@@ -28,17 +28,40 @@ const UserIssues = () => {
 
   const handleReturnBook = async (issueId) => {
     try {
+      // Make the PUT request to return the book
       const response = await axios.put(`http://localhost:3001/api/issues/return/${issueId}`);
-      toast.success(response.data.message);
-
-      const returnedBook = userIssues.find((issue) => issue._id === issueId);
-      setReturnedBooks((prevBooks) => [...prevBooks, returnedBook]);
-      setUserIssues((prevIssues) => prevIssues.filter((issue) => issue._id !== issueId));
+  
+      // Check if the response contains the success message
+      if (response.status === 200 && response.data.message === 'Book returned successfully') {
+        toast.success('Book returned successfully'); // Display success message
+  
+        // Find the returned book from the userIssues array
+        const returnedBook = userIssues.find((issue) => issue._id === issueId);
+  
+        // Update the returnedBooks state to add the returned book
+        setReturnedBooks((prevBooks) => [...prevBooks, returnedBook]);
+  
+        // Update userIssues state to remove the returned book
+        setUserIssues((prevIssues) => prevIssues.filter((issue) => issue._id !== issueId));
+      } else {
+        // Handle unexpected response (if the API doesn't return the expected success message)
+        toast.error('Error: Unexpected response from server');
+      }
     } catch (error) {
-      console.error('Error returning book:', error.response?.data || error.message);
-      toast.error('Error returning book');
+      // Log the actual error for debugging purposes
+      console.error('Error returning book:', error);
+  
+      // Check if error response is available and show the message
+      if (error.response) {
+        toast.error(error.response?.data || 'Error returning book');
+      } else {
+        // If there's no response from the server, show a network error
+        toast.error('Network error: Please try again later');
+      }
     }
   };
+  
+  
 
   return (
     <div className="min-h-screen bg-cover bg-center p-8" style={{ backgroundImage: "url('./images/issuebg.jpg')" }}>

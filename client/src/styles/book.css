@@ -230,3 +230,7 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
   border-radius: 50%; /* Rounded thumb */
 }
+
+.price-manual-input label{
+  color:#3c1414;
+}
