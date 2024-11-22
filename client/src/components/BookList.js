@@ -108,7 +108,7 @@ const BookList = () => {
   return (
     <div className="bg-[#2b1700] min-h-screen p-8">
       <h1 className="text-3xl font-bold mb-6 text-[#fafafa] border-b-4 border-[#fafafa] pb-2">
-        All Books 📚
+        Books Stock 📚
       </h1>
 
       <div className="filter-bar mb-4 flex items-center">

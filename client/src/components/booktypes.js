@@ -54,6 +54,7 @@ function BookType() {
     <div className="booktype">
     <p>"Discover a world of bestselling books across genres like thrillers, romance, fantasy, and more—stories that captivate, inspire, and entertain!"</p>
     <h1>SELECT YOUR GENRE</h1>
+    <p>And Start <a href="/books"  class="underline text-brown-500 hover:text-brown-700">Reading</a></p>
       <div className="book-types">
         <div className="icons">
           <div className="icon-container">
