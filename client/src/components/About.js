@@ -8,7 +8,7 @@ const About = () => {
     <div className="flex flex-col lg:flex-row p-6 lg:p-12 bg-[#f7f7f7]">
       {/* Left Column */}
       <div className="lg:w-2/3 p-4 flex flex-col justify-center items-center lg:items-start lg:pr-12">
-        <h1 className="text-3xl font-bold mb-6 lg:text-6xl lg:mb-8 text-heading">
+        <h1 className="text-3xl font-bold mb-6 lg:text-6xl lg:mb-8 text-heading ">
           About Us
         </h1>
         <p className="mb-6 text-base lg:text-lg text-center lg:text-left text-paragraph leading-relaxed">

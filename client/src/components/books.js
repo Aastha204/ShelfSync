@@ -7,6 +7,7 @@ import '../styles/book.css';
 import BookCards from './cards';
 import {FaHome} from 'react-icons/fa';
 
+
 const Filter = () => {
   
   const [books, setBooks] = useState([]);
@@ -116,14 +117,42 @@ const Filter = () => {
       toast.error('Please log in to issue a book');
       return;
     }
-
+  
     try {
       const response = await axios.post('http://localhost:3001/api/issues/add', {
         userEmail,
         bookID,
       });
-
+  
+      // First toast: Success notification for book issuance
       toast.success(response.data.message);
+  
+      // Second toast: Prompt to review the book slip
+      setTimeout(() => {
+        toast.info(
+          <div>
+            <p>You can now review the issued book slip!</p>
+            <button
+              onClick={() => window.location.href = '/review-slip'}
+              style={{
+                backgroundColor: '#4CAF50',
+                color: 'white',
+                border: 'none',
+                padding: '5px 10px',
+                cursor: 'pointer',
+                borderRadius: '5px',
+                marginTop: '10px',
+              }}
+            >
+              Review Slip
+            </button>
+          </div>,
+          {
+            
+            autoClose: false, // Keeps it open until user dismisses or clicks
+          }
+        );
+      }, 3000); // Delay of 3 seconds before showing the second toast
     } catch (error) {
       console.error(error);
       if (error.response && error.response.data && error.response.data.error === 'Book already issued by you') {
@@ -133,6 +162,8 @@ const Filter = () => {
       }
     }
   };
+  
+  
   const resetFilters = () => {
     setSelectedCategory('');
     setSelectedLanguage('');

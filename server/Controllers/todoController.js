@@ -9,8 +9,11 @@ const getTodos = (req, res) => {
 
 // Add a new todo
 const addTodo = (req, res) => {
-  const { task } = req.body;
-  TodoModel.create({ task })
+  const { task, description } = req.body; // Get description from the request body
+  if (!task || !description) {
+    return res.status(400).json({ error: "Task and description are required." });
+  }
+  TodoModel.create({ task, description })
     .then(result => res.json(result))
     .catch(err => res.status(500).json(err));
 };
@@ -30,10 +33,37 @@ const deleteTodo = (req, res) => {
     .then(result => res.json(result))
     .catch(err => res.status(500).json(err));
 };
+// Temporarily store deleted tasks for undo
+let recentlyDeletedTask = null;
+
+exports.deleteTodo = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find the task before deleting it
+    const taskToDelete = await Todo.findById(id);
+    if (!taskToDelete) {
+      return res.status(404).send({ message: "Task not found" });
+    }
+
+    // Temporarily save the deleted task for undo
+    recentlyDeletedTask = taskToDelete;
+
+    // Perform deletion
+    await Todo.findByIdAndDelete(id);
+
+    res.status(200).send({ message: "Task deleted successfully", task: taskToDelete });
+  } catch (error) {
+    res.status(500).send({ message: "Error deleting task", error });
+  }
+};
+
+
 
 module.exports = {
   getTodos,
   addTodo,
   updateTodo,
   deleteTodo,
+ 
 };

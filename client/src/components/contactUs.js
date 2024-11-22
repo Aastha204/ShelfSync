@@ -3,8 +3,10 @@ import React, { useState , useEffect} from 'react';
 import { FaWhatsapp, FaPhoneAlt, FaEnvelope, FaMapMarkedAlt, FaHome, FaArrowAltCircleUp } from 'react-icons/fa';
 import { handleError, handleSuccess } from './utils'
 import {ToastContainer} from 'react-toastify'
+import { FaQuestionCircle } from 'react-icons/fa';
 
 const ContactPage = () => {
+    
     const [scrollDirection, setScrollDirection] = useState("down"); // Initial arrow points down
     const [lastScrollY, setLastScrollY] = useState(0); // Track last scroll position
   
@@ -45,7 +47,12 @@ const ContactPage = () => {
         return regex.test(name);
       };
       
-      
+      const scrollToFAQ = () => {
+        const faqSection = document.querySelector('.faq-section');
+        if (faqSection) {
+            faqSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
       // Email validation function
       const validateEmail = (email) => {
         const regex=/^[a-zA-Z0-9._%+-]+@(gmail\.com|outlook\.com|yahoo\.com|hotmail\.com|live\.com|icloud\.com)$/;
@@ -101,7 +108,13 @@ const ContactPage = () => {
     return (
         <>
             <div className="contact-page">
-                {/* Home Icon */}
+                {/* Home Icon */}<div 
+                    className="faq-icon" 
+                    onClick={scrollToFAQ}
+                    title="Go to FAQ Section"
+                >
+                    <FaQuestionCircle />
+                </div>
                 <div className="home-icon-contact">
                     <a href="/"><FaHome /></a>
                 </div>

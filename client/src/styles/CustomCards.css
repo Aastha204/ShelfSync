@@ -15,6 +15,13 @@
     /* background-position: center;  */
 
        background: linear-gradient(to right, #20203e,#4a4a80, #18193b);
+       /* background: none;
+       background-image: url('https://static.vecteezy.com/system/resources/thumbnails/000/833/530/small_2x/black-abstract-background-with-various-corner-layers.jpg'); /* Replace with your image path 
+       background-size: cover;  Ensures the image covers the entire background 
+       background-position: center;  Centers the image 
+       background-attachment: fixed;  Keeps the background fixed during scrolling 
+       background-repeat: no-repeat; Prevents the image from repeating */
+
     
 
 } 
@@ -38,7 +45,7 @@
     padding: 0 36px;
     perspective: 2500px;
     margin: 0 20px;
-    background: none;
+  
 }
 
 .custom-cover-image {
