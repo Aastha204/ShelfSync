@@ -9,11 +9,11 @@ const CardsAnimate = () => {
     navigate("/books");
   };
   const books = [
-    {
-        image: "https://marketplace.canva.com/EAFf0E5urqk/1/0/1003w/canva-blue-and-green-surreal-fiction-book-cover-53S3IzrNxvY.jpg",
-        title: "Surreal Fiction",
-        author: "John Doe",
-      },
+    // {
+    //     image: "https://marketplace.canva.com/EAFf0E5urqk/1/0/1003w/canva-blue-and-green-surreal-fiction-book-cover-53S3IzrNxvY.jpg",
+    //     title: "Surreal Fiction",
+    //     author: "John Doe",
+    //   },
       {
         image: "https://marketplace.canva.com/EAFwJNp8JNU/1/0/1003w/canva-purple-and-green-romance-novel-book-cover-uxus8p_qP8o.jpg",
         title: "Purple Romance",
@@ -24,11 +24,11 @@ const CardsAnimate = () => {
         title: "Garg's Journey",
         author: "Ankit Garg",
       },
-      {
-        image: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/book-cover-design-template-c53c1125486782d8f6927ffcba9811c4_screen.jpg?ts=1637036672",
-        title: "Creative Covers",
-        author: "Alex Roe",
-      },
+      // {
+      //   image: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/book-cover-design-template-c53c1125486782d8f6927ffcba9811c4_screen.jpg?ts=1637036672",
+      //   title: "Creative Covers",
+      //   author: "Alex Roe",
+      // },
       {
         image: "https://www.adazing.com/wp-content/uploads/2022/12/Harry-Potter-Book-Covers-Prisoner-of-Azkaban-15.jpg",
         title: "Harry Potter: Prisoner of Azkaban",
@@ -44,21 +44,21 @@ const CardsAnimate = () => {
         title: "Bound by Mystery",
         author: "Chris Evans",
       },
-      {
-        image: "https://images.squarespace-cdn.com/content/v1/5d603ac3c0d1340001ba9dad/1722197998145-2BKUA84NTVJBK2SMO2UV/image-asset.octet-stream?format=500w",
-        title: "Enchanted Journeys",
-        author: "Emily Stone",
-      },
+      // {
+      //   image: "https://images.squarespace-cdn.com/content/v1/5d603ac3c0d1340001ba9dad/1722197998145-2BKUA84NTVJBK2SMO2UV/image-asset.octet-stream?format=500w",
+      //   title: "Enchanted Journeys",
+      //   author: "Emily Stone",
+      // },
       {
         image: "https://www.adobe.com/express/create/cover/media_19d5e212dbe8553614c3a9fbabd4d7f219ab01c85.png?width=750&format=png&optimize=medium",
         title: "Lost in the Unknown",
         author: "Liam Carter",
       },
-      {
-        image: "https://marketplace.canva.com/EAEw1ooWHhA/1/0/1003w/canva-black-and-pink-romantic-floral-book-cover-2Zxee9M0kjQ.jpg",
-        title: "Romantic Blossoms",
-        author: "Sophia Jones",
-      },
+      // {
+      //   image: "https://marketplace.canva.com/EAEw1ooWHhA/1/0/1003w/canva-black-and-pink-romantic-floral-book-cover-2Zxee9M0kjQ.jpg",
+      //   title: "Romantic Blossoms",
+      //   author: "Sophia Jones",
+      // },
       {
         image: "https://miblart.com/wp-content/uploads/2020/12/Un-cour-de-renards-scaled-1-683x1024.jpeg",
         title: "Foxes in the Wild",
@@ -84,11 +84,11 @@ const CardsAnimate = () => {
         title: "Into the Mist",
         author: "James Taylor",
       },
-      {
-        image: "https://booksicedlattesblessed.wordpress.com/wp-content/uploads/2020/05/whatifafish.jpg?w=684",
-        title: "What If a Fish?",
-        author: "Daniella Rivera",
-      },
+      // {
+      //   image: "https://booksicedlattesblessed.wordpress.com/wp-content/uploads/2020/05/whatifafish.jpg?w=684",
+      //   title: "What If a Fish?",
+      //   author: "Daniella Rivera",
+      // },
   ];
 
   // Function to move to the next position
@@ -124,7 +124,7 @@ const CardsAnimate = () => {
               <div className="description">
                 <h3>{book.title}</h3>
                 <p>by {book.author}</p>
-                <button className="issue-button" onClick={handleIssue}>Issue</button>
+                
               </div>
             </div>
           </div>
@@ -147,6 +147,9 @@ const CardsAnimate = () => {
         ))}
       </div>
     </div>
+    
+    
+  
   );
 };
 

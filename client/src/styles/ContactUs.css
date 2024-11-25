@@ -483,7 +483,7 @@ transform: translateX(-100%); /* Move to outside the left edge */
 }
 .faq-icon {
     position: fixed;
-    top: 20px;
+    top: 710px;
     right: 20px;
     font-size: 24px;
     color: brown; /* Adjust color as needed */

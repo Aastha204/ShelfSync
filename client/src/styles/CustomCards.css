@@ -1,4 +1,5 @@
 /* Styles specifically for CustomCard component */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
 .custom-app {
     display: flex; /* Aligns custom cards in a row */
     justify-content: center; /* Centers the custom cards horizontally */
@@ -8,21 +9,16 @@
     width: 100%;
     padding: 50px 0; /* Adds padding to avoid cards touching the edges */
     height: 100vh;
+ 
+     background-size: cover;  
+       background-position: center;  
+       background-attachment: fixed;  
+       background-repeat: no-repeat;
     /* background-color: rgb(42, 42, 80); */
     /* Background image */
-    /* background-image: url('D:\ShelfSync\client\public\images\bookpage1..png'); */
+    background-image: url('../../public/images/customcardbg.jpg');
     /* background-size: cover; Ensures the image covers the entire background */
     /* background-position: center;  */
-
-       background: linear-gradient(to right, #20203e,#4a4a80, #18193b);
-       /* background: none;
-       background-image: url('https://static.vecteezy.com/system/resources/thumbnails/000/833/530/small_2x/black-abstract-background-with-various-corner-layers.jpg'); /* Replace with your image path 
-       background-size: cover;  Ensures the image covers the entire background 
-       background-position: center;  Centers the image 
-       background-attachment: fixed;  Keeps the background fixed during scrolling 
-       background-repeat: no-repeat; Prevents the image from repeating */
-
-    
 
 } 
 
@@ -140,3 +136,127 @@
     opacity: 1;
     transform: translate3d(0%, -30%, 100px);
 }
+
+  .home-icon-custom {
+    position: absolute;
+    top: 20px; /* Adjust spacing from the top */
+    left: 20px; /* Adjust spacing from the left */
+    font-size: 3rem; /* Icon size */
+    color: #dfbe92; /* Default color */
+    transition: transform 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .home-icon-custom:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+    color: #e6ecef; /* Change color on hover */
+  }
+  .query-section {
+    position: fixed;
+    bottom: 20px; /* Adjust distance from the bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #dee2e5;
+    font-weight: bold;
+  }
+  
+  .query-icon {
+    margin-left: 10px;
+    font-size: 2.3rem;
+    color: #fbfdff;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .query-icon:hover {
+    color: #eec10c;
+    transform: scale(1.1);
+  }
+  /* Container for the heading and line */
+.heading-container {
+    position: relative;
+    text-align: center;
+    margin: 50px 0;
+  }
+  
+  /* The horizontal line */
+  .heading-line {
+    width: 80%;
+    height: 2px;
+    background-color: #dfbe92; /* Line color */
+    margin: 0 auto;
+    position: relative;
+    animation: fadeInLine 2s ease-in-out forwards;
+  }
+  
+ 
+  
+  /* Top heading */
+  .heading-top {
+    font-size: 3.5rem;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-weight: bold;
+    color: #ffffff;
+    
+    animation: moveUp 2s ease-in-out forwards; /* 'forwards' ensures it stays */
+    /* animation-delay: 0.5s; Optional: Add delay for better effect */
+  }
+  
+ 
+  /* Bottom heading */
+  .heading-bottom {
+    font-size: 2rem;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-weight: bold;
+    color: #ffffff;
+    position: relative;
+    animation: moveDown 2s ease-in-out forwards; /* 'forwards' ensures it stays */
+    /* animation-delay: 0.5s; Optional: Add delay for better effect */
+  }
+  
+  @keyframes moveUp {
+    0% {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    80% {
+      transform: translateY(-30px);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-30px); /* Ensure it stays here */
+      opacity: 1;
+    }
+  }
+  
+  /* Animation keyframes for the bottom heading */
+  @keyframes moveDown {
+    0% {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    80% {
+      transform: translateY(30px);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(30px); /* Ensure it stays here */
+      opacity: 1;
+    }
+  }
+  
+  /* Animation for the line */
+  @keyframes fadeInLine {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 80%;
+    }
+  }
+  
+  

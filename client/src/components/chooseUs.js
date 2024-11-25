@@ -1,10 +1,20 @@
 import React from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import "../styles/chooseUs.css";
+import { useNavigate } from "react-router-dom";
+
 
 const ChooseUs = () => {
+  const navigate = useNavigate();
+  const handleIssue = () => {
+    navigate("/books");
+  };
   return (
+    
     <div className="ChooseUs Parent">
+
+     <p>Click here to discover our full collection and add your Favourites!</p>
+     <div> <button className="issue-button" onClick={handleIssue}>View Our Collection and issue your books</button></div> <br></br><br></br>
       <h1>Why Choose Us?</h1>
       <div className="ChooseUscontent">
         <div className="lottie-container">

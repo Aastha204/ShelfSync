@@ -105,4 +105,24 @@
   .ChooseUs.Parent:hover p{
     color: #353a06; /* Change color of the link text on hover */
   }
+  .issue-button {
+    background-color: rgb(13, 38, 6);
+    color: rgb(250, 250, 250);
+    border: 3px solid #0a4367;
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.3s ease;
+    margin-left: 1px;
+    box-shadow: 0 0 10px rgba(13, 74, 13, 0.6); /* Glowing effect */
+  }
+  
+  .issue-button:hover {
+    background-color: #fcfeff; /* Soft hover color */
+    color: rgb(13, 33, 38);
+    border: 2px solid #1e0f0f; /* Darker border on hover */
+    box-shadow: 0 0 20px 4px rgba(2, 18, 13, 0.8); /* Enhanced glowing effect */
+    transform: scale(1.05); /* Slight zoom effect for added interactivity */
+  }
   
