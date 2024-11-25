@@ -10,61 +10,67 @@ const issue=require('../Models/Issue')
 
 
 // POST route to issue a book
-exports.addIssuedBook=async (req, res) => {
-    const { userEmail, bookID } = req.body;
-  
-    try {
-      // Find the user's ObjectId by their email
-      const user = await User.findOne({ email: userEmail });
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-  
-      // Check if the book is already issued by this user
-      const existingIssue = await Issue.findOne({ userID: user._id, bookID, returned: false });
-      if (existingIssue) {
+exports.addIssuedBook = async (req, res) => {
+  const { userEmail, bookID } = req.body;
+
+  try {
+    // Find the user's ObjectId by their email
+    const user = await User.findOne({ email: userEmail });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Check if the book is already issued by this user
+    const existingIssue = await Issue.findOne({ userID: user._id, bookID, returned: false });
+    if (existingIssue) {
       return res.status(400).json({ error: 'Book already issued by you and not yet returned' });
     }
-  
-      // Decrease the available count by 1 if the book is available
-      const book = await Book.findById(bookID);
-      if (!book || book.available <= 0) {
-        return res.status(400).json({ error: 'Book is not available for issue' });
-      }
-  
-      book.available -= 1; // Reduce available count
-  
-      book.issuedTo = {
-        name: user.name,
-        email: user.email,
-      };
-      await book.save(); // Save the updated book
 
-    //   const receiptData = new Receipt({
-    //     receiptNo: issue._id.toString(),
-    //     borrowerName: issue.userID.name,
-    //     bookName: issue.bookID.name,
-    //     authorName: issue.bookID.author,
-    //     issueDate: issue.issueDate,
-    //     returnDate: new Date(),
-      
-    // });
-    
-    // await receiptData.save();
-  
-      // Create the issue if no previous record exists
-      const newIssue = new Issue({
-        userID: user._id,
-        bookID,
-      });
-  
-      await newIssue.save();
-      res.json({ message: 'Book issued successfully' });
-    } catch (error) {
-      console.error('Error issuing book:', error);
-      res.status(500).json({ error: 'Failed to issue book' });
+    // Decrease the available count by 1 if the book is available
+    const book = await Book.findById(bookID);
+    if (!book || book.available <= 0) {
+      return res.status(400).json({ error: 'Book is not available for issue' });
     }
+
+    book.available -= 1; // Reduce available count
+    book.issuedTo = {
+      name: user.name,
+      email: user.email,
+    };
+    await book.save(); // Save the updated book
+
+    const issueDate = existingIssue ? existingIssue.issueDate : new Date(); // Default to current date if no existing issue
+
+    // Calculate the returnDate (one month after the issueDate)
+    const returnDate = new Date(issueDate); // Create a copy of the issueDate
+    returnDate.setMonth(issueDate.getMonth() + 1);
+
+    const receipt = new Receipt({
+      userName: user.name,  // Assuming userName is same as userEmail for now, you may want to pull it from a user model
+      userEmail:user.email,
+      bookName: book.name,
+      authorName: book.author,
+      issueDate: issueDate,  // Default to current date if no existing issue
+      returnDate: returnDate,  // Default to null if no existing issue
+    });
+
+    // Save receipt
+    await receipt.save();
+
+    // Create the issue if no previous record exists
+    const newIssue = new Issue({
+      userID: user._id,
+      bookID,
+    });
+
+    await newIssue.save();
+    res.json({ message: 'Book issued successfully' });
+  } catch (error) {
+    console.error('Error issuing book:', error);
+    res.status(500).json({ error: 'Failed to issue book' });
   }
+};
+
 
   exports.getBookToUser = async (req, res) => {
     try {
@@ -153,7 +159,7 @@ exports.addIssuedBook=async (req, res) => {
         await book.save(); // Save updated book
       }
       
-      res.json({ message: 'Book returned successfully', returnedBook,receiptData });
+      res.json({ message: 'Book returned successfully', returnedBook });
     } catch (error) {
       console.error('Error returning book:', error);
       res.status(500).json({ error: 'Failed to return book' });
@@ -180,4 +186,39 @@ exports.getBestSellers = async (req, res) => {
   }
 };
 
-  
+
+exports.getDueBooks = async (req, res) => {
+  try {
+    const currentDate = new Date();
+
+    // Find all unreturned books with a due date in the past
+    const dueBooks = await Issue.find({
+      returned: false, // Book is not yet returned
+      dueDate: { $lt: currentDate }, // Past due date
+    }).populate('userID', 'name email') // Populate user details
+      .populate('bookID', 'title author'); // Populate book details
+
+    // Fine calculation logic
+    const finePerDay = 5; // Customize the fine amount per day
+    const booksWithFine = dueBooks.map((book) => {
+      const overdueDays = Math.ceil((currentDate - book.dueDate) / (1000 * 60 * 60 * 24)); // Calculate overdue days
+      const fine = overdueDays * finePerDay;
+
+      return {
+        issueId: book.issueId,
+        user: book.userID,
+        book: book.bookID,
+        issueDate: book.issueDate,
+        dueDate: book.dueDate,
+        overdueDays,
+        fine,
+      };
+    });
+
+    res.status(200).json({ success: true, data: booksWithFine });
+  } catch (error) {
+    console.error('Error fetching due books:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch due books.' });
+  }
+};
+

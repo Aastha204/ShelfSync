@@ -39,36 +39,82 @@ const BestSellerBooks = () => {
   }, []);
 
   useEffect(() => {
-    const applyFilters = () => {
-      let updatedBooks = books;
-
-      if (selectedCategory) {
-        updatedBooks = updatedBooks.filter((book) => book.genre === selectedCategory);
-      }
-
-      if (selectedLanguage) {
-        updatedBooks = updatedBooks.filter((book) => book.Language === selectedLanguage);
-      }
-
-      if (selectedRating) {
-        updatedBooks = updatedBooks.filter((book) => book.star === selectedRating);
-      }
-
-      if (priceRange) {
-        updatedBooks = updatedBooks.filter((book) => book.ratePerMonth <= priceRange);
-      }
-
-      if (selectedAvailability) {
-        updatedBooks = updatedBooks.filter((book) =>
-          selectedAvailability === 'available' ? book.available > 0 : book.available === 0
-        );
-      }
-
-      setFilteredBooks(updatedBooks);
-    };
-
     applyFilters();
-  }, [books, selectedCategory, selectedLanguage, priceRange, selectedRating, selectedAvailability]);
+  }, [
+    selectedLanguage,
+    priceRange,
+    selectedRating,
+    selectedAvailability,
+    books,
+  ]);
+
+  const applyFilters = () => {
+    let updatedBooks = books;
+
+    if (selectedLanguage) {
+      updatedBooks = updatedBooks.filter(
+        (book) => book.Language === selectedLanguage
+      );
+    }
+
+    if (selectedRating) {
+      updatedBooks = updatedBooks.filter((book) => book.star === selectedRating);
+    }
+    if (priceRange === 0) {
+      // Prevent all books or show an empty list
+      // Example:
+      setFilteredBooks([]);
+      return;
+    }
+
+    if (priceRange) {
+      updatedBooks = updatedBooks.filter(
+        (book) => book.ratePerMonth <= priceRange
+      );
+    }
+
+    if (selectedAvailability) {
+      updatedBooks = updatedBooks.filter((book) =>
+        selectedAvailability === "available"
+          ? book.available > 0
+          : book.available === 0
+      );
+    }
+
+    setFilteredBooks(updatedBooks);
+  };
+
+  // useEffect(() => {
+  //   const applyFilters = () => {
+  //     let updatedBooks = books;
+
+  //     if (selectedCategory) {
+  //       updatedBooks = updatedBooks.filter((book) => book.genre === selectedCategory);
+  //     }
+
+  //     if (selectedLanguage) {
+  //       updatedBooks = updatedBooks.filter((book) => book.Language === selectedLanguage);
+  //     }
+
+  //     if (selectedRating) {
+  //       updatedBooks = updatedBooks.filter((book) => book.star === selectedRating);
+  //     }
+
+  //     if (priceRange) {
+  //       updatedBooks = updatedBooks.filter((book) => book.ratePerMonth <= priceRange);
+  //     }
+
+  //     if (selectedAvailability) {
+  //       updatedBooks = updatedBooks.filter((book) =>
+  //         selectedAvailability === 'available' ? book.available > 0 : book.available === 0
+  //       );
+  //     }
+
+  //     setFilteredBooks(updatedBooks);
+  //   };
+
+  //   applyFilters();
+  // }, [books, selectedCategory, selectedLanguage, priceRange, selectedRating, selectedAvailability]);
 
   const resetFilters = () => {
     setSelectedCategory('');
@@ -135,16 +181,50 @@ const BestSellerBooks = () => {
             </select>
           </div>
           <div className="filter-section">
-            <h3>Price</h3>
-            <input
-              type="range"
-              min="10"
-              max="1000"
-              value={priceRange}
-              onChange={(e) => setPriceRange(Number(e.target.value))}
-            />
-            <span>Up to ₹{priceRange}</span>
-          </div>
+  <h3>Price</h3>
+  <div className="price-container">
+    {/* Price Slider */}
+    <input
+      type="range"
+      min="0"
+      max="1000"
+      value={priceRange}
+      onChange={(e) => {
+        const value = parseInt(e.target.value, 10); // Ensure it's a number
+        setPriceRange(value); // Update price range from slider
+        applyFilters(); // Apply filters based on the new price
+      }}
+    />
+    <span>₹{priceRange}</span>
+  </div>
+
+  {/* Price Input Box */}
+  <div className="price-input">
+    <label htmlFor="priceInput" className="sr-only">Price</label>
+    <input
+      id="priceInput"
+      type="text" // Allow string input (e.g., with commas)
+      value={priceRange === 0 ? "" : priceRange.toString()} // Convert price to string for display
+      onChange={(e) => {
+        let value = e.target.value;
+
+        // Remove non-numeric characters (including commas)
+        value = value.replace(/[^0-9]/g, "");
+
+        // Update price range based on cleaned string input
+        setPriceRange(value ? parseInt(value, 10) : 0); // Default to 0 if empty
+        applyFilters(); // Apply filters based on new value
+      }}
+      onBlur={() => {
+        // Optional: Apply any behavior when focus is lost (e.g., validate or format the number)
+        applyFilters(); // Apply filters after focus out
+      }}
+      placeholder="Enter Price"
+      className="price-textbox"
+    />
+  </div>
+</div>
+
           <div className="filter-section">
             <h3>Rating</h3>
             <select value={selectedRating || ''} onChange={(e) => setSelectedRating(Number(e.target.value))}>

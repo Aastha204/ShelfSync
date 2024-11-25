@@ -8,6 +8,7 @@ import { handleSuccess } from "./utils";
 import Create from './Create';
 import { BsCircleFill, BsFillCheckCircleFill, BsFillTrashFill } from 'react-icons/bs';
 import '../styles/create.css'; 
+import Dashboard from './Dashboard';
 
 const AdminProfilePage = () => {
   const [activeSection, setActiveSection] = useState('profile');
@@ -206,34 +207,6 @@ const AdminProfilePage = () => {
     book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  useEffect(() => {
-    if (activeSection === 'dashboard') {
-      const ctx = document.getElementById('dashboardChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Total Books', 'Books Issued', 'Books Returned', 'Books Left'],
-          datasets: [
-            {
-              label: 'Library Analytics',
-              data: [dashboardData.totalBooks, dashboardData.booksIssued, dashboardData.booksReturned, dashboardData.booksLeft],
-              backgroundColor: ['#8d6e63', '#a1887f', '#bcaaa4', '#d7ccc8'],
-              borderColor: '#4a3f35',
-              borderWidth: 2,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top',
-            },
-          },
-        },
-      });
-    }
-  }, [activeSection]);
 
   const handleAddBookClick = () => {
     setShowAddBookForm(true);
@@ -247,13 +220,6 @@ const AdminProfilePage = () => {
     }
   }, [activeSection]);
 
-  // useEffect(() => {
-  //   if (activeSection === 'issueReturn') {
-  //     axios.get('http://localhost:3001/api/issue/getBooks') // Fetch issued books data from the backend
-  //       .then((response) => setIssueReturnData(response.data))
-  //       .catch((error) => console.error('Error fetching issued books:', error));
-  //   }
-  // }, [activeSection]);
 
   const [issueFilterStatus,setIssueFilterStatus]=useState('issued');
   const fetchBooks = (status) => {
@@ -360,16 +326,7 @@ const AdminProfilePage = () => {
 
         {activeSection === 'dashboard' && (
           <div className="dashboard-section">
-            <h2 className="section-title">Dashboard</h2>
-            <div className="card-container">
-              <div className="dashboard-card">Total Books: {dashboardData.totalBooks}</div>
-              <div className="dashboard-card">Books Issued: {dashboardData.booksIssued}</div>
-              <div className="dashboard-card">Books Returned: {dashboardData.booksReturned}</div>
-              <div className="dashboard-card">Books Left: {dashboardData.booksLeft}</div>
-            </div>
-            <div className="chart-container">
-              <canvas id="dashboardChart"></canvas>
-            </div>
+            <Dashboard/>
           </div>
         )}
 

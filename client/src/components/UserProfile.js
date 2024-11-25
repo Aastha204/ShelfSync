@@ -114,7 +114,7 @@ const MemberProfile = () => {
           <div className="userprofile-clickable-card">
             <img src="/images/1.png" alt="Card 1" />
             <div className="userprofile-overlay-text">
-              <a href="/receipt">Manage Your Receipt</a>
+              <a href="receipt1">Manage Your Receipt</a>
             </div>
           </div>
           <div className="userprofile-clickable-card">
