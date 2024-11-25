@@ -234,3 +234,34 @@ input[type="range"]::-moz-range-thumb {
 .price-manual-input label{
   color:#3c1414;
 }
+
+.info-icon {
+  color: #882f0e; /* Or any color matching your theme */
+  cursor: pointer;
+  float: right;
+  margin-bottom: 2px;
+  transition: transform 0.2s;
+}
+
+.info-icon:hover {
+  transform: scale(1.2);
+}
+.custom-book-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem; /* Adjust as needed */
+  margin: 0;
+}
+
+.custom-book-title .info-icon {
+  cursor: pointer;
+  color: #555; /* Adjust the color if needed */
+  margin-left: 10px; /* Space between title and icon */
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.custom-book-title .info-icon:hover {
+  transform: scale(1.2); /* Slightly enlarge on hover */
+  color: #333; /* Darken the color on hover */
+}

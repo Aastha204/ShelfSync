@@ -1,35 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import About from './About';
-import AboutusCards from './aboutusCards';
-import BookCards from './cards';
-import Footer from './Footer';
-import NewReleases from './newRelease';
-import BestAuthor from './bestauthorbooks';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import About from "./About";
+import AboutusCards from "./aboutusCards";
+import BookCards from "./cards";
+import Footer from "./Footer";
+import NewReleases from "./newRelease";
+import BestAuthor from "./bestauthorbooks";
 // import BestFictional from './listofbestfictionbooks';
 // import Amazonseller from './amazonbestsellersbooks';
-import Children from './children';
-import History from './history';
-import Fiction from './fiction';
-import Thriller from './thriller';
-import Romance from './romance';
-import Comics from './comics';
-import BookType from './booktypes';
-import Preloader from './Preloader';
-import TopThreeBook from './top3book';
+import Children from "./children";
+import History from "./history";
+import Fiction from "./fiction";
+import Thriller from "./thriller";
+import Romance from "./romance";
+import Comics from "./comics";
+import BookType from "./booktypes";
+import Preloader from "./Preloader";
+import TopThreeBook from "./top3book";
 import CardsAnimate from "./CardsAnimate";
-import ReviewCard from './ReviewCard';
+import ReviewCard from "./ReviewCard";
 import ChooseUs from "./chooseUs";
 // import { use } from '../../../server/Routes/AuthRouter';
-import { FaUserAlt } from 'react-icons/fa';
-
+import { FaUserAlt } from "react-icons/fa";
 
 const LibraryManagementTextOverlay = () => {
   const texts = [
     "Empowering Knowledge: Seamless Library Management",
     "Streamline Your Library: Efficiently Manage Books and Resources",
     "Unlock the Future of Library Management",
-    "Your Digital Library, Organized and Accessible"
+    "Your Digital Library, Organized and Accessible",
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -37,13 +36,16 @@ const LibraryManagementTextOverlay = () => {
   const [isOpen, setIsOpen] = useState(false); // For hamburger menu toggle
   const [isLoading, setIsLoading] = useState(true); // For preloader
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate=useNavigate();
+  const [userType, setUserType] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if the user is logged in by checking localStorage
-    const token = localStorage.getItem('token');
-    if (token) {
+    const token = localStorage.getItem("token");
+    const userType = localStorage.getItem("userType"); // Assuming you save the user type in localStorage
+    if (token && userType) {
       setIsLoggedIn(true);
+      setUserType(userType); // Set the user type from localStorage
     } else {
       setIsLoggedIn(false);
     }
@@ -52,6 +54,7 @@ const LibraryManagementTextOverlay = () => {
   const handleLogout = () => {
     localStorage.clear();
     setIsLoggedIn(false);
+    setUserType("");
     // navigate('/login');
   };
 
@@ -123,30 +126,57 @@ const LibraryManagementTextOverlay = () => {
 
           {/* Desktop Menu */}
           <div className="hidden sm:flex space-x-8 text-white items-center">
-            <a href="/" className="hover:text-white-400 hover:underline text-lg">Home</a>
-            <a href="#about" className="hover:text-white-400 hover:underline text-lg">About</a>
+            <a
+              href="/"
+              className="hover:text-white-400 hover:underline text-lg"
+            >
+              Home
+            </a>
+            <a
+              href="#about"
+              className="hover:text-white-400 hover:underline text-lg"
+            >
+              About
+            </a>
             {/* <a href="/issue" className="hover:text-white-400 hover:underline text-lg">MyBooks</a> */}
-            <a href="#browse" className="hover:text-white-400 hover:underline text-lg">Browse</a>
-            <a href="/contact" className="hover:text-white-400 hover:underline text-lg">Contact</a>
+            <a
+              href="/books"
+              className="hover:text-white-400 hover:underline text-lg"
+            >
+              Browse
+            </a>
+            <a
+              href="/contact"
+              className="hover:text-white-400 hover:underline text-lg"
+            >
+              Contact
+            </a>
             {isLoggedIn ? (
-            // **Show Profile and Logout buttons if logged in**
-            <div className="flex items-center space-x-4">
-              <Link to="/userprofile" className="block text-white text-lg hover:underline">
-                <FaUserAlt /> {/* **Profile icon** */}
-              </Link>
-              <button
-                onClick={handleLogout} // **Logout functionality**
-                className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg"
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
-            // **Show Login button if not logged in**
-            <Link to="/custom" className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg">
-              Login
-            </Link>
-          )}
+  <div className="flex items-center space-x-2">
+    {/* Conditionally render Profile link */}
+    {userType === 'admin' ? (
+      <Link to="/admin" className="flex items-center text-white text-lg hover:underline">
+        <FaUserAlt className="mr-2" /> Admin Profile
+      </Link>
+    ) : (
+      <Link to="/userprofile" className="flex items-center text-white text-lg hover:underline">
+        <FaUserAlt className="mr-2" /> User Profile
+      </Link>
+    )}
+    <button
+      onClick={handleLogout} // **Logout functionality**
+      className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg"
+    >
+      Logout
+    </button>
+  </div>
+) : (
+  // **Show Login button if not logged in**
+  <Link to="/custom" className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg">
+    Login
+  </Link>
+)}
+
           </div>
         </nav>
 
@@ -156,34 +186,44 @@ const LibraryManagementTextOverlay = () => {
             isOpen ? "block" : "hidden"
           } sm:hidden mt-2 space-y-2 text-white bg-gray-800 p-4 rounded`}
         >
-          <a href="/" className="block hover:text-brown-400">Home</a>
-          <a href="#about" className="block hover:text-brown-400">About</a>
-          <a href="/issue" className="block hover:text-brown-400">MyBooks</a>
-          <a href="#browse" className="block hover:text-brown-400">Browse</a>
-          <a href="#" className="block hover:text-brown-400">Contact</a>
+          <a href="/" className="block hover:text-brown-400">
+            Home
+          </a>
+          <a href="#about" className="block hover:text-brown-400">
+            About
+          </a>
+          <a href="/issue" className="block hover:text-brown-400">
+            MyBooks
+          </a>
+          <a href="#browse" className="block hover:text-brown-400">
+            Browse
+          </a>
+          <a href="#" className="block hover:text-brown-400">
+            Contact
+          </a>
           {isLoggedIn ? (
-              <div className="flex items-center space-x-4">
-                <Link
-                  to="/userprofile"
-                  className="block text-white text-lg hover:underline"
-                >
-                  <FaUserAlt />
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg"
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
+            <div className="flex items-center space-x-4">
               <Link
-                to="/custom"
+                to="/userprofile"
+                className="block text-white text-lg hover:underline"
+              >
+                <FaUserAlt />
+              </Link>
+              <button
+                onClick={handleLogout}
                 className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg"
               >
-                Login
-              </Link>
-            )}
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/custom"
+              className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg"
+            >
+              Login
+            </Link>
+          )}
         </div>
 
         {/* Text Display */}
@@ -197,9 +237,6 @@ const LibraryManagementTextOverlay = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-0"></div>
       </div>
 
-     
-   
-  
       {/* Content Sections */}
       <div id="about">
         <About />
@@ -210,12 +247,12 @@ const LibraryManagementTextOverlay = () => {
       <div id="browse">
         <BookType />
       </div>
-      
+
       <div id="cards-animate">
         <CardsAnimate />
       </div>
       <div id="chooseus">
-        <ChooseUs/>
+        <ChooseUs />
       </div>
       <div id="review">
         <ReviewCard />

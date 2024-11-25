@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -6,13 +6,17 @@ import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa"; // Import the search icon from react-icons
 import debounce from "lodash.debounce"; // Import debounce from lodash
 import "../styles/AddBook.css";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 const BookManager = () => {
+  const formRef = useRef(null);
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [bookData, setBookData] = useState({
     name: "",
     author: "",
+    description:"",
     available: "",
     ratePerMonth: "",
     bookCoverImageUrl: "",
@@ -44,12 +48,15 @@ const BookManager = () => {
     }
 
     try {
-      const response = await axios.get('http://localhost:3001/api/books/search', {
-        params: { name, author },
-      });
+      const response = await axios.get(
+        "http://localhost:3001/api/books/search",
+        {
+          params: { name, author },
+        }
+      );
       setFilteredBooks(response.data);
     } catch (error) {
-      console.error('Error fetching search results:', error.message);
+      console.error("Error fetching search results:", error.message);
     }
   }, 300);
 
@@ -62,7 +69,6 @@ const BookManager = () => {
     const value = e.target.value;
     setAuthorName(value);
   };
-  
 
   const fetchBooks = async () => {
     try {
@@ -133,6 +139,7 @@ const BookManager = () => {
     setBookData({
       name: "",
       author: "",
+      description:"",
       available: "",
       ratePerMonth: "",
       bookCoverImageUrl: "",
@@ -140,15 +147,48 @@ const BookManager = () => {
       Language: "English",
       star: "",
     });
+    formRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:3001/api/books/delete/${id}`);
-      toast.success("Book deleted successfully");
-      setBooks((prevBooks) => prevBooks.filter((book) => book._id !== id));
-    } catch (error) {
-      toast.error("Error deleting book");
+  const handleDelete = (id) => {
+    confirmAlert({
+      title: "Confirm to delete",
+      message: "Are you sure you want to delete this book?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            try {
+              await axios.delete(`http://localhost:3001/api/books/delete/${id}`);
+              toast.success("Book deleted successfully");
+              setBooks((prevBooks) => prevBooks.filter((book) => book._id !== id));
+            } catch (error) {
+              toast.error("Error deleting book");
+            }
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {}, // No action
+        },
+      ],
+    });
+  };
+  const handleEdit = (book) => {
+    setEditing(book._id);
+    setBookData({
+      name: book.name,
+      author: book.author,
+      description:book.description,
+      available: book.available,
+      ratePerMonth: book.ratePerMonth,
+      bookCoverImageUrl: book.bookCoverImageUrl,
+      genre: book.genre,
+      Language: book.Language || "English", // Default to English if Language is undefined
+      star: book.star,
+    });
+    if (formRef.current) {
+      formRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -159,7 +199,7 @@ const BookManager = () => {
       </button>
       <h1 className="book-manager-heading">Book Manager</h1>
 
-      <div className="book-form-container">
+      <div ref={formRef} className="book-form-container">
         <div className="book-form-image">
           <img
             src="https://c1.wallpaperflare.com/preview/563/337/199/book-library-shelf-stack.jpg"
@@ -188,6 +228,15 @@ const BookManager = () => {
             className="input-field"
           />
           <input
+            type="text"
+            placeholder="description"
+            value={bookData.description}
+            onChange={(e) =>
+              setBookData({ ...bookData, description: e.target.value })
+            }
+            className="input-field"
+          />
+          <input
             type="number"
             placeholder="Rate Per Month"
             value={bookData.ratePerMonth}
@@ -195,6 +244,7 @@ const BookManager = () => {
               setBookData({ ...bookData, ratePerMonth: e.target.value })
             }
             className="input-field"
+            onWheel={(e) => e.target.blur()}
           />
           <input
             type="text"
@@ -238,6 +288,7 @@ const BookManager = () => {
             value={bookData.star}
             onChange={(e) => setBookData({ ...bookData, star: e.target.value })}
             className="input-field"
+            onWheel={(e) => e.target.blur()}
           />
           <input
             type="number"
@@ -247,6 +298,7 @@ const BookManager = () => {
               setBookData({ ...bookData, available: e.target.value })
             }
             className="input-field"
+            onWheel={(e) => e.target.blur()}
           />
           <button
             onClick={handleAddOrUpdate}
@@ -258,7 +310,7 @@ const BookManager = () => {
       </div>
 
       <div className="search-bar mb-7 flex items-center text-1xl font-bold mb-6 text-[brown] border-b-4 border-[brown] pb-2">
-      <input
+        <input
           type="text"
           placeholder="Book Name"
           value={bookName}
@@ -298,6 +350,9 @@ const BookManager = () => {
             <div className="custom-card-content">
               <h3 className="custom-book-title">{book.name}</h3>
               <p className="custom-book-author">{book.author}</p>
+              <p className="custom-book-genre-addbook">
+                <b>{book.genre}</b>
+              </p>
               <div className="custom-card-footer">
                 <span className="custom-book-price">₹{book.ratePerMonth}</span>
                 <span className="custom-book-rating">
@@ -309,11 +364,12 @@ const BookManager = () => {
             </div>
             <div className="custom-button-group">
               <button
-                onClick={() => setEditing(book._id)}
+                onClick={() => handleEdit(book)}
                 className="bg-blue-500 text-white py-2 px-8 rounded hover:bg-blue-600"
               >
                 Edit
               </button>
+
               <button
                 onClick={() => handleDelete(book._id)}
                 className="bg-red-800 text-white py-2 px-8 rounded hover:bg-red-900"

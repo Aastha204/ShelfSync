@@ -121,44 +121,51 @@ exports.addIssuedBook=async (req, res) => {
 
   
 
-  exports.returnBook = async (req, res) => {
-    try {
-      const { issueId } = req.params;
-  
-      // Find the issued book record by its ID and populate userID and bookID
-      const issue = await Issue.findById(issueId).populate('bookID').populate('userID');
-      if (!issue) {
-        return res.status(404).json({ error: 'Issue record not found' });
-      }
-      
-  
-      // Check if the book has already been returned
-      if (issue.returned) {
-        return res.status(400).json({ error: 'Book is already returned' });
-      }
-  
-      // Create a return record
-      const returnedBook = new Return({
-        userID: issue.userID._id, // UserID should be a reference to the User model
-        bookID: issue.bookID._id, // BookID should be a reference to the Book model
-        returnDate: new Date(), // Current date as return date
-      });
-      issue.returned = true;  
-      await Promise.all([issue.save(), returnedBook.save()]);
-  
-      // Increment the available count in the Book model
-      const book = await Book.findById(issue.bookID._id);
-      if (book) {
-        book.available += 1; // Increment available count
-        await book.save(); // Save updated book
-      }
-      
-      res.json({ message: 'Book returned successfully', returnedBook,receiptData });
-    } catch (error) {
-      console.error('Error returning book:', error);
-      res.status(500).json({ error: 'Failed to return book' });
+exports.returnBook = async (req, res) => {
+  try {
+    const { issueId } = req.params;
+
+    // Find the issued book record by its ID and populate userID and bookID
+    const issue = await Issue.findById(issueId).populate('bookID').populate('userID');
+    if (!issue) {
+      return res.status(404).json({ error: 'Issue record not found' });
     }
-  };
+
+    // Check if the book has already been returned
+    if (issue.returned) {
+      return res.status(400).json({ error: 'Book is already returned' });
+    }
+
+    // Create a return record
+    const returnedBook = new Return({
+      userID: issue.userID._id,
+      bookID: issue.bookID._id,
+      returnDate: new Date(),
+    });
+    issue.returned = true;
+    await Promise.all([issue.save(), returnedBook.save()]);
+
+    // Increment the available count in the Book model
+    const book = await Book.findById(issue.bookID._id);
+    if (book) {
+      book.available += 1;
+      await book.save();
+    }
+
+    // Construct optional receipt data
+    const receiptData = {
+      userName: issue.userID.name || 'Unknown User',
+      bookName: issue.bookID.name || 'Unknown Book',
+      returnDate: new Date().toLocaleDateString(),
+    };
+
+    res.json({ message: 'Book returned successfully', returnedBook, receiptData });
+  } catch (error) {
+    console.error('Error returning book:', error);
+    res.status(500).json({ error: 'Failed to return book' });
+  }
+};
+
   // Add this to your issueController.js
 
 exports.getBestSellers = async (req, res) => {

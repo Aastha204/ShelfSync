@@ -21,12 +21,12 @@
 /* Back Button */
 .back-button {
     position: absolute;
-    top: 19px;
+    top: 0px;
     left: 26px;
     background: none;
     border: none;
     color: #fff;
-    font-size: 3.5rem;
+    font-size: 4rem;
     cursor: pointer;
     transition: transform 0.2s;
 }
@@ -53,7 +53,7 @@
 
 .book-form-image img {
     width: 810px;
-    height: 565px;
+    height: 650px;
     object-fit: cover;
 }
 
@@ -63,7 +63,7 @@
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 450px;
-    height: 565px;
+    height: 650px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -328,4 +328,6 @@
     font-size: 14px;
     cursor: pointer;
   }
-  
+  .custom-book-genre-addbook{
+    color:black;
+  }

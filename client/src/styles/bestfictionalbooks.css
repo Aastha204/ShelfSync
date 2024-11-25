@@ -12,7 +12,7 @@
 
 .book-cover-image-wide {
   width: 100%;
-  height: 120px;
+  height: 150px;
   object-fit: contain;
   border-radius: 5px;
 }
@@ -25,13 +25,18 @@
 }
 
 .book-title-wide {
-  font-size: 16px;
-  margin: 8px 0;
+  /* font-size: 16px; */
+  margin: 0px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.4rem; 
+  /* margin: 0; */
 }
 
 .book-author-wide {
-  font-size: 14px;
-  color: #555;
+  font-size: 18px;
+  color: #0e0000;
 }
 
 .book-genre-wide {
@@ -353,4 +358,128 @@ justify-content: flex-start; /* Start at the top */
 
 .arrow-icon:hover {
  color: #df4646bb;
+}
+
+.book-title-wide .info-icon {
+  cursor: pointer;
+  color: #555; /* Adjust the color if needed */
+  margin-left: 10px; /* Space between title and icon */
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.book-title-wide.info-icon:hover {
+  transform: scale(1.2); /* Slightly enlarge on hover */
+  color: #333; /* Darken the color on hover */
+}
+
+/* Modal Overlay */
+.modal {
+  position: fixed;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Offset by 50% of its own size */
+  width: 70%; /* Adjust modal width */
+  height: auto; /* Adjust modal height */
+  background: rgba(37, 11, 11, 0.904); /* Semi-transparent background */
+  display: flex;
+  border-radius: 20px;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: scaleUp 0.3s ease-in-out; /* Smooth scale-up animation */
+}
+
+/* Animation */
+@keyframes scaleUp {
+  0% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Left Section for Image */
+.modal-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-book-image {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+/* Right Section for Content */
+.modal-right {
+  flex: 1.5;
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.modal-right h1 {
+  /* font-size: 1.8rem; */
+  color: #f8f2f2;
+  margin-bottom: 10px;
+}
+.modal-right h3 {
+  /* font-size: 1.8rem; */
+  color: #f8f2f2;
+  margin-bottom: 10px;
+}
+.modal-right h5 {
+  font-size: 1.2rem;
+  color: #f8f2f2;
+  margin-bottom: 10px;
+}
+
+.modal-right p {
+  font-size: 1.2rem;
+  color: #eeecec;
+  margin: 5px 0;
+}
+
+/* Issue Button */
+.issue-btn {
+  margin-top: 15px;
+  padding: 10px 15px;
+  background: linear-gradient(90deg, #a37355, #64140e);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.issue-btn:hover {
+  background: linear-gradient(90deg, #864a24, #460a06);
+}
+
+/* Close Button */
+.close-modal-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 12px;
+  background: #f44336;
+  border: none;
+  border-radius: 30%;
+  color: white;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.close-modal-btn:hover {
+  background: #d32f2f;
 }
