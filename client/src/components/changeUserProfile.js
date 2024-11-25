@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/changeUserProfile.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 const FormComponent = () => {
     const [formData, setFormData] = useState({
@@ -74,7 +76,7 @@ const FormComponent = () => {
 
     return (
         <div className="background-wrapper">
-            <button className="home-button" onClick={navigateHome}>Home</button>
+            <button className="home-button" onClick={navigateHome}><FontAwesomeIcon icon={faUser} /> Profile</button>
             <div className="form-container">
                 <h2>User Details Form</h2>
                 <form onSubmit={handleSubmit}>

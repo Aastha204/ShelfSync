@@ -44,9 +44,11 @@ const Login = () => {
       const { success, message, jwtToken, name, userId, error } = result;
       if (success) {
         handleSuccess(message);
-        localStorage.setItem('token', jwtToken);
-        localStorage.setItem('loggedInUserName', name);
-        localStorage.setItem('loggedInUserEmail', email);
+       
+        localStorage.setItem('token',jwtToken);
+        localStorage.setItem('userType', 'user');
+        localStorage.setItem('loggedInUserName',name);
+        localStorage.setItem('loggedInUserEmail',email);
         localStorage.setItem('loggedInUserId', userId);
         setTimeout(() => {
           navigate('/userprofile');

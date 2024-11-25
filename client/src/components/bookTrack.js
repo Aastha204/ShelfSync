@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { FaEye } from 'react-icons/fa';
 import "../styles/bookTrack.css";
 
 const ImageCard = ({ image, title, description, bookNumber, onClick }) => {
@@ -11,6 +12,10 @@ const ImageCard = ({ image, title, description, bookNumber, onClick }) => {
         <div className="card-booktrack-text">
           <h3 className="card-booktrack-title">{title}</h3>
           <p className="card-booktrack-description">{description}</p>
+          {/* Use the Preview (Eye) Icon */}
+          <div className="preview-icon-container" onClick={onClick}>
+            <FaEye className="preview-icon" />
+          </div>
         </div>
       </div>
     </div>
@@ -94,10 +99,41 @@ const BookTracker = () => {
 
   const renderTable = () => {
     if (!selectedCard) return null;
+
+    // Render the heading dynamically based on the selected card
+    const tableHeading = selectedCard === 'totalIssued'
+      ? 'Total Issued Books Till Now'
+      : selectedCard === 'totalReturn'
+      ? 'Total Returned Books'
+      : 'Currently Issued Books';
+
   
     console.log("Table Data for:", selectedCard, tableData); // Debugging
   
     return (
+      <div className="table-container-booktrack">
+         <h2 className="table-heading-booktrack">{tableHeading}</h2>
+      {/* //   <table className="book-table">
+      //     <thead>
+      //       <tr>
+      //         {columns[selectedCard].map((col, index) => (
+      //           <th key={index}>{col}</th>
+      //         ))}
+      //       </tr>
+      //     </thead>
+      //     <tbody>
+      //       {tableData.map((row, index) => (
+      //         <tr key={index}>
+      //           <td>{index + 1}</td>
+      //           <td>{row.bookID.name}</td>
+      //           <td>{row.bookID.author}</td>
+      //           {row.issueDate && <td>{new Date(row.issueDate).toLocaleDateString()}</td>}
+      //           {row.returnDate && <td>{new Date(row.returnDate).toLocaleDateString()}</td>}
+      //         </tr>
+      //       ))}
+      //     </tbody>
+      //   </table>
+      // </div> */}
       <table className="book-table">
         <thead>
           <tr>
@@ -129,6 +165,7 @@ const BookTracker = () => {
           ))}
         </tbody>
       </table>
+      </div>
     );
   };
   
@@ -150,7 +187,7 @@ const BookTracker = () => {
           />
         ))}
       </div>
-      {loading ? <p>Loading...</p> : renderTable()}
+      {loading ? <p style={{color:"white"}}>Loading...</p> : renderTable()}
     </div>
   );
 };

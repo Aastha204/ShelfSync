@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../styles/bestfictionalbooks.css'; // For styling
 import { MdSentimentDissatisfied } from 'react-icons/md';
 import {FaArrowLeft} from 'react-icons/fa';
+import { FaSearch, FaHome, FaInfoCircle } from "react-icons/fa";
 
 const bestFictionalBooks = [
   { name: "1984", author: "George Orwell" },
@@ -262,7 +263,13 @@ const BestFictionalBooks = () => {
                     />
                   </div>
                   <div className="book-card-content-wide">
-                    <h3 className="book-title-wide">{book.name}</h3>
+                    <h3 className="book-title-wide"><span>{book.name}</span>
+                <FaInfoCircle
+                  className="info-icon"
+                  size={20}
+                  title="Click for more info"
+                  onClick={() => alert(`More info about ${book.name}`)}
+                /></h3>
                     <p className="book-author-wide">{book.author}</p>
                     <p className="book-genre-wide">
                       <b>{book.genre}</b>

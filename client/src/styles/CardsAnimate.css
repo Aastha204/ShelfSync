@@ -63,8 +63,8 @@
     margin: 5px 0;
   }
   
-  div.item .issue-button {
-    background-color: white;
+   /* .issue-button {
+    background-color: rgb(200, 165, 165);
     color: black;
     border: 3px solid #056eaf;
     border-radius: 5px;
@@ -72,14 +72,16 @@
     cursor: pointer;
     font-size: 14px;
     transition: all 0.3s ease;
+    margin-right: 110rem;
+    
   }
   
-  div.item .issue-button:hover {
+   .issue-button:hover {
     background-color: #0c6975;
     color: white;
     border: 2px solid white;
     box-shadow: 0 0 10px white;
-  }
+  } */
   
   .arrow {
     font-size: 50px;

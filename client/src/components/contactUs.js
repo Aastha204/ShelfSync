@@ -3,8 +3,10 @@ import React, { useState , useEffect} from 'react';
 import { FaWhatsapp, FaPhoneAlt, FaEnvelope, FaMapMarkedAlt, FaHome, FaArrowAltCircleUp } from 'react-icons/fa';
 import { handleError, handleSuccess } from './utils'
 import {ToastContainer} from 'react-toastify'
+import { FaQuestionCircle } from 'react-icons/fa';
 
 const ContactPage = () => {
+    
     const [scrollDirection, setScrollDirection] = useState("down"); // Initial arrow points down
     const [lastScrollY, setLastScrollY] = useState(0); // Track last scroll position
   
@@ -39,6 +41,15 @@ const ContactPage = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 }
+
+      
+      const scrollToFAQ = () => {
+        const faqSection = document.querySelector('.faq-section');
+        if (faqSection) {
+            faqSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+     
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -111,7 +122,13 @@ const ContactPage = () => {
     return (
         <>
             <div className="contact-page">
-                {/* Home Icon */}
+                {/* Home Icon */}<div 
+                    className="faq-icon" 
+                    onClick={scrollToFAQ}
+                    title="Go to FAQ Section"
+                >
+                    <FaQuestionCircle />
+                </div>
                 <div className="home-icon-contact">
                     <a href="/"><FaHome /></a>
                 </div>
@@ -229,44 +246,7 @@ const ContactPage = () => {
                     </div>
                     <p><b>© ShelfSync All Rights Reserved</b></p>
                 </div>
-                <div
-  className="scroll-button"
-  style={{
-    position: "fixed",
-    bottom: "20px",
-    right: "20px",
-  }}
->
-  <button
-    onClick={handleScrollClick}
-    title={scrollDirection === "down" ? "Scroll to Bottom" : "Scroll to Top"}
-    style={{
-      background: "#fff",
-      border: "3px solid #ccc",
-      borderRadius: "50%",
-      padding: "15px",
-      fontSize: "0", // Hide text-based arrow
-      cursor: "pointer",
-      width: "70px",
-      height: "70px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-    }}
-  >
-    <div
-      style={{
-        width: "20px",
-        height: "20px",
-        border: "solid brown",
-        borderWidth: "0 5px 5px 0",
-        transform: scrollDirection === "down" ? "rotate(45deg)" : "rotate(-135deg)",
-        display: "inline-block",
-      }}
-    ></div>
-  </button>
-</div>
+ 
 
             </div> {/* Closing the colorized section div */}
             <ToastContainer/>

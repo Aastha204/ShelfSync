@@ -44,10 +44,11 @@ const Login = () => {
       const { success, message, jwtToken, name, error } = result;
       if (success) {
         handleSuccess(message);
-        localStorage.setItem('token', jwtToken);
-        localStorage.setItem('loggedInAdminName', name);
-        localStorage.setItem('loggedInAdminEmail', email);
-        setTimeout(() => {
+        localStorage.setItem('token',jwtToken);
+        localStorage.setItem('userType', 'admin');
+        localStorage.setItem('loggedInAdminName',name);
+        localStorage.setItem('loggedInAdminEmail',email);
+        setTimeout(()=>{
           navigate('/admin');
         }, 1000);
       } else if (error) {

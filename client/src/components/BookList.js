@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";  // Importing useNavigate hook
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { debounce } from "lodash";
 import { FaSearch } from "react-icons/fa"; // Import the search icon from react-icons
+import { DotLottieReact } from '@lottiefiles/dotlottie-react'; // Import the Lottie component
 import "react-toastify/dist/ReactToastify.css";
+import { MdSentimentDissatisfied } from 'react-icons/md';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 const BookList = () => {
+  const navigate = useNavigate();  // Initialize the useNavigate hook
   const [books, setBooks] = useState([]);
   const [bookName, setBookName] = useState("");
   const [authorName, setAuthorName] = useState("");
@@ -37,15 +43,21 @@ const BookList = () => {
 
   const handleRestockUpdate = async () => {
     const count = parseInt(availableBooks, 10);
-
+  
     if (isNaN(count) || count <= 0) {
       toast.error("Please enter a valid number");
       return;
     }
-
+  
     try {
       const response = await axios.put(`http://localhost:3001/api/books/restock/${currentBookId}`, { available: count });
       toast.success("Books restocked successfully");
+      
+      // Reload the page after the toast notification
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000); // Wait for 2 seconds to ensure the toast is visible before reloading
+  
       setBooks((prevBooks) =>
         prevBooks.map((book) =>
           book._id === currentBookId ? { ...book, available: response.data.available } : book
@@ -58,6 +70,7 @@ const BookList = () => {
       toast.error("Error restocking books");
     }
   };
+  
 
   const debouncedSearch = debounce(async (name, author) => {
     if (!name.trim() && !author.trim()) {
@@ -107,33 +120,40 @@ const BookList = () => {
 
   return (
     <div className="bg-[#2b1700] min-h-screen p-8">
-      <h1 className="text-3xl font-bold mb-6 text-[#fafafa] border-b-4 border-[#fafafa] pb-2">
-        All Books 📚
+      <h1 className="text-3xl font-bold mb-6 text-[#fafafa] border-b-4 border-[#fafafa] pb-2 flex items-center">
+        Books Stock
+        <DotLottieReact
+          src="https://lottie.host/1014b4f5-7e8c-4de5-b81a-7c8af1f40b46/YcnePcLMA5.lottie" // Lottie file URL
+          loop
+          autoplay
+          style={{ width: "60px", height: "60px", marginRight: "10px" }} // Adjust size as needed
+        />
       </h1>
+
+      {/* Admin Button at Top Right */}
+      <button
+  onClick={() => navigate("/admin")}
+  className="absolute top-8 right-8 bg-[#D8CBC4] text-[#2b1700] px-4 py-2 p-4 rounded-lg shadow-lg hover:bg-[#bfa58d] hover:text-[#3c2c1f] transition duration-300"
+>
+  <FontAwesomeIcon icon={faUser} /> Profile
+</button>
+
 
       <div className="filter-bar mb-4 flex items-center">
         <button
-          className={`px-4 py-2 mr-2 rounded ${
-            filter === "all" ? "bg-[#D8CBC4]" : "bg-[#4B2E2C] text-[#fafafa]"
-          }`}
+          className={`px-4 py-2 mr-2 rounded ${filter === "all" ? "bg-[#D8CBC4]" : "bg-[#4B2E2C] text-[#fafafa]"}`}
           onClick={() => handleFilterChange("all")}
         >
           All
         </button>
         <button
-          className={`px-4 py-2 mr-2 rounded ${
-            filter === "available" ? "bg-[#D8CBC4]" : "bg-[#4B2E2C] text-[#fafafa]"
-          }`}
+          className={`px-4 py-2 mr-2 rounded ${filter === "available" ? "bg-[#D8CBC4]" : "bg-[#4B2E2C] text-[#fafafa]"}`}
           onClick={() => handleFilterChange("available")}
         >
           Available
         </button>
         <button
-          className={`px-4 py-2 rounded ${
-            filter === "notAvailable"
-              ? "bg-[#D8CBC4]"
-              : "bg-[#4B2E2C] text-[#fafafa]"
-          }`}
+          className={`px-4 py-2 rounded ${filter === "notAvailable" ? "bg-[#D8CBC4]" : "bg-[#4B2E2C] text-[#fafafa]"}`}
           onClick={() => handleFilterChange("notAvailable")}
         >
           Not Available
@@ -159,10 +179,7 @@ const BookList = () => {
           onClick={() => debouncedSearch(bookName, authorName)}
           className="search-icon"
         >
-          <FaSearch
-            className="text-[white] transform -translate-y-1"
-            size={32}
-          />
+          <FaSearch className="text-[white] transform -translate-y-1" size={32} />
         </button>
       </div>
 
@@ -201,35 +218,8 @@ const BookList = () => {
                 </div>
               </div>
             ))
-          : !message && <p>No results found</p>}
+          : <div className="flex justify-center items-center w-full text-2xl text-gray-600"><MdSentimentDissatisfied size={50} className="mr-4"/> No Books Found</div>}
       </div>
-
-      {isModalOpen && (
-        <div className="fixed p-60 inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-3xl text-black font-semibold mb-4">Update Available Books</h2>
-            <input
-              type="text"
-              value={availableBooks}
-              onChange={(e) => setAvailableBooks(e.target.value)}
-              placeholder="Enter number of books"
-              className="border p-2 rounded w-full mb-4"
-            />
-            <button
-              onClick={handleRestockUpdate}
-              className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 mr-2"
-            >
-              Update
-            </button>
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
 
       <ToastContainer />
     </div>

@@ -21,7 +21,8 @@
   .content {
     flex-grow: 1;
     padding: 20px;
-    margin-left: 250px; /* Same width as the sidebar */
+    /* margin-left: 200px; Same width as the sidebar */
+    max-height: 100%;
   }
   
   /* Logo */
@@ -57,16 +58,6 @@
   .nav-list li:hover, .nav-list li.active {
     background-color: #d15123;
   }
-  
-
-  
-  .section-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #4a3f35;
-    margin-bottom: 20px;
-  }
- 
   
   .profile-content {
     display: flex;
@@ -117,7 +108,7 @@
   
   .dashboard-card {
     flex: 1;
-    background-color: #a1887f;
+    background-color: #3c1b0f;
     color: white;
     padding: 20px;
     text-align: center;
@@ -128,7 +119,7 @@
   
   .dashboard-card:hover {
     transform: scale(1.05);
-    background-color: #8d6e63;
+    background-color: #402921;
   }
   
   /* Chart Container */
@@ -141,36 +132,7 @@
     margin-top: 20px;
   }
   
-  .dashboard-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .dashboard-table th,
-  .dashboard-table td {
-    padding: 10px;
-    border: 1px solid #4a3f35;
-    text-align: center;
-  }
-  
-  .dashboard-table thead th {
-    background-color: #4a3f35;
-    color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .dashboard-table tbody tr:nth-child(even) {
-    background-color: #f5f5f5;
-  }
-  
-  .dashboard-table tbody tr:nth-child(odd) {
-    background-color: #ffffff;
-  }
-  
-  .dashboard-table tbody tr:hover {
-    background-color: #e0e0e0;
-  }
-  
+ 
   /* Book Management Section */
   .book-management-section {
     padding: 20px;
@@ -189,16 +151,23 @@
   /* Issue & Return Section */
   .issue-return-section {
     padding: 20px;
-    background-color: #d7ccc8;
+    background-color: #c7a598;
     border-radius: 8px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   }
   
-  .issue-return-section .section-title {
+  .section-title-issuereturn {
+    color:#251a10;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 24px;
     font-weight: bold;
-    color: #4a3f35;
+    /* color: #e8d8c9; */
     margin-bottom: 20px;
+    padding: 10px;
+    border: 2px solid #d7ccc2;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(72, 11, 11, 0.546);
+    transition: box-shadow 0.3s ease-in-out;
   }
   
   /* Settings Section */
@@ -319,7 +288,7 @@
   
   /* Profile Section */
   .profile-section {
-    background-color: #402c24d7;
+    background-color: #311f18fc;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -331,7 +300,7 @@
   .section-title {
     font-size: 24px;
     font-weight: bold;
-    color: #35291e;
+    /* color: #e8d8c9; */
     margin-bottom: 20px;
     padding: 10px;
     border: 2px solid #d7ccc2;
@@ -396,22 +365,10 @@
     flex-wrap: wrap;
   }
   
-  .dashboard-card {
-    flex: 1;
-    /* min-width: 200px; */
-    background-color: #3e2a22;
-    color: white;
-    /* padding: 20px; */
-    text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    font-size: 30px;
-  }
   
   .dashboard-card:hover {
     transform: scale(1.05);
-    background-color: #8d6e63;
+    background-color: #52362c;
   }
   
   .chart-container {
@@ -420,6 +377,7 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    
   }
   
   .table-container {
@@ -435,12 +393,12 @@
   .dashboard-table th,
   .dashboard-table td {
     padding: 10px;
-    border: 1px solid #4a3f35;
+    border: 1px solid #251a10;
     text-align: center;
   }
   
   .dashboard-table thead th {
-    background-color: #4a3f35;
+    background-color: #2b1d0f;
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
@@ -613,7 +571,7 @@
  {
     font-size: 24px;
     font-weight: bold;
-    color: #ffffff;
+    color: #280b0b;
     margin-bottom: 20px;
   }
   
@@ -758,7 +716,7 @@
     opacity: 1;
     transition: none;
   }
-  /* delete box css */
+ 
   /* Delete Confirmation Modal */
   .delete-confirm-modal {
     position: fixed;
@@ -889,16 +847,21 @@
       width: 0%;
     }
   }
-  
-  .user-queries-section {
-    padding: 20px;
-  }
-  
-  .section-title {
+  .section-title-userquery{
+    color:#251a10;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 24px;
     font-weight: bold;
-    color: #6d4c41; /* Dark brown color */
+    /* color: #e8d8c9; */
     margin-bottom: 20px;
+    padding: 10px;
+    border: 2px solid #d7ccc2;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(92, 25, 25, 0.645);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  .user-queries-section {
+    padding: 20px;
   }
   
   .queries-table {
@@ -941,11 +904,7 @@
   background-color: #f9f9f9;
 }
 
-.section-title {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #333;
-}
+
 
 .filter-buttons {
   margin-bottom: 20px;

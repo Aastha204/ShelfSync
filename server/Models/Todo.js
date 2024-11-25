@@ -1,13 +1,9 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const TodoSchema = new mongoose.Schema({
-  task: String,
-  done: {
-    type: Boolean,
-    default: false,
-  },
+  task: { type: String, required: true },
+  description: { type: String, required: true }, // Added description field
+  done: { type: Boolean, default: false },      // For marking tasks as complete
 });
 
-const TodoModel = mongoose.model("todos", TodoSchema);
-
-module.exports = TodoModel;
+module.exports = mongoose.model('Todo', TodoSchema);

@@ -3,6 +3,8 @@ import "../styles/UserProfile.css";
 import { Link, useNavigate } from "react-router-dom";
 import { handleSuccess } from "./utils";
 import { ToastContainer } from "react-toastify";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 const MemberProfile = () => {
   const [userDetails, setUserDetails] = useState({
@@ -75,10 +77,10 @@ const MemberProfile = () => {
         <ul>
           <a href="/">Home</a>
           <a href="/changeUserProfile">Edit Profile</a>
-          <a ><button onClick={handleAll}>All Books</button></a>
+          <a href="/books">All Books</a>
           <a href="/issue">Issued Books</a>
           <a href="/return">Returned Books</a>
-          <a><button onClick={handleLogout}>Log out</button></a>
+          <a><button onClick={handleLogout}> <FontAwesomeIcon icon={faSignOutAlt} /> Log out</button></a>
         </ul>
       </aside>
       <main className="userprofile-profile-main">
