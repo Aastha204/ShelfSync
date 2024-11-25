@@ -105,6 +105,8 @@ const BookTracker = () => {
       ? 'Total Issued Books Till Now'
       : selectedCard === 'totalReturn'
       ? 'Total Returned Books'
+      : selectedCard==='duebooks'
+      ? 'Total Due Books'
       : 'Currently Issued Books';
 
   
