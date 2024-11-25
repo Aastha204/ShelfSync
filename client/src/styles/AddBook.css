@@ -331,3 +331,18 @@
   .custom-book-genre-addbook{
     color:black;
   }
+  .cancel-button {
+    background-color: #f44336; /* Red color for cancel */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cancel-button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+  }
+  

@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import '../styles/bestfictionalbooks.css'; // For styling
-import { MdSentimentDissatisfied } from 'react-icons/md';
-import {FaArrowLeft} from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../styles/bestfictionalbooks.css"; // For styling
+import { MdSentimentDissatisfied } from "react-icons/md";
+import { FaArrowLeft } from "react-icons/fa";
 import { FaSearch, FaHome, FaInfoCircle } from "react-icons/fa";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const bestFictionalBooks = [
   { name: "1984", author: "George Orwell" },
@@ -34,6 +36,10 @@ const BestFictionalBooks = () => {
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // New state for modal visibility and content
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
 
   // Filter states
   const [selectedLanguage, setSelectedLanguage] = useState("");
@@ -85,7 +91,9 @@ const BestFictionalBooks = () => {
     }
 
     if (selectedRating) {
-      updatedBooks = updatedBooks.filter((book) => book.star === selectedRating);
+      updatedBooks = updatedBooks.filter(
+        (book) => book.star === selectedRating
+      );
     }
 
     if (priceRange === 0) {
@@ -131,13 +139,32 @@ const BestFictionalBooks = () => {
       toast.success(response.data.message);
     } catch (error) {
       console.error(error);
-      if (error.response && error.response.data && error.response.data.error === 'Book already issued by you and not yet returned') {
-        toast.info('Book already issued by you and not yet returned');
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.error ===
+          "Book already issued by you and not yet returned"
+      ) {
+        toast.info("Book already issued by you and not yet returned");
       } else {
-        toast.error('Failed to issue book');
+        toast.error("Failed to issue book");
       }
     }
   };
+
+  // Function to open the modal with book info
+  const openModal = (book) => {
+    setModalContent(book);
+    setModalVisible(true);
+  };
+
+  // Close the modal
+  const closeModal = () => {
+    setModalVisible(false);
+    setModalContent(null);
+  };
+
+
 
   if (loading) {
     return (
@@ -148,108 +175,121 @@ const BestFictionalBooks = () => {
     );
   }
   const resetFilters = () => {
-    setSelectedLanguage('');
+    setSelectedLanguage("");
     setPriceRange(1000);
-    setSelectedRating('');
-    setSelectedAvailability('');
+    setSelectedRating("");
+    setSelectedAvailability("");
     setFilteredBooks(books); // Reset the filtered books to all books
   };
-  
-    return (
 
-      <div className="parent-container">
-        <div className="container">
-          {/* Sidebar Filter */}
-          
-          <div className="sidebar-filter" style={{ marginRight: '0px', height: '100vh' }}>
-  <h2>Filter</h2>
-  <div className="arrow-icon">
-                    <a href="/books"><FaArrowLeft /></a>
-                </div>
-            <div className="filter-section">
-              <h3>Language</h3>
-              <select value={selectedLanguage} onChange={(e) => setSelectedLanguage(e.target.value)}>
-                <option value="">All</option>
-                <option value="English">English</option>
-                <option value="Hindi">Hindi</option>
-              </select>
-            </div>
-    
-            <div className="filter-section">
-  <h3>Price</h3>
-  <div className="price-container">
-    {/* Price Slider */}
-    <input
-      type="range"
-      min="0"
-      max="1000"
-      value={priceRange}
-      onChange={(e) => {
-        const value = parseInt(e.target.value, 10); // Ensure it's a number
-        setPriceRange(value); // Update price range from slider
-        applyFilters(); // Apply filters based on the new price
-      }}
-    />
-    <span>₹{priceRange}</span>
-  </div>
+  return (
+    <div className="parent-container">
+      <div className="container">
+        {/* Sidebar Filter */}
 
-  {/* Price Input Box */}
-  <div className="price-input">
-    <label htmlFor="priceInput" className="sr-only">Price</label>
-    <input
-      id="priceInput"
-      type="text" // Allow string input (e.g., with commas)
-      value={priceRange === 0 ? "" : priceRange.toString()} // Convert price to string for display
-      onChange={(e) => {
-        let value = e.target.value;
-
-        // Remove non-numeric characters (including commas)
-        value = value.replace(/[^0-9]/g, "");
-
-        // Update price range based on cleaned string input
-        setPriceRange(value ? parseInt(value, 10) : 0); // Default to 0 if empty
-        applyFilters(); // Apply filters based on new value
-      }}
-      onBlur={() => {
-        // Optional: Apply any behavior when focus is lost (e.g., validate or format the number)
-        applyFilters(); // Apply filters after focus out
-      }}
-      placeholder="Enter Price"
-      className="price-textbox"
-    />
-  </div>
-</div>
-
-    
-            <div className="filter-section">
-              <h3>Rating</h3>
-              <select value={selectedRating || ''} onChange={(e) => setSelectedRating(Number(e.target.value))}>
-                <option value="">All Ratings</option>
-                <option value="1">1 Star</option>
-                <option value="2">2 Stars</option>
-                <option value="3">3 Stars</option>
-                <option value="4">4 Stars</option>
-                <option value="5">5 Stars</option>
-              </select>
-            </div>
-    
-            <div className="filter-section">
-              <h3>Availability</h3>
-              <select value={selectedAvailability} onChange={(e) => setSelectedAvailability(e.target.value)}>
-                <option value="">All</option>
-                <option value="available">Available</option>
-                <option value="not-available">Not Available</option>
-              </select>
-
-            </div>
-            <button onClick={resetFilters} className="reset-filters-btn">
-  Reset Filters
-</button>
+        <div
+          className="sidebar-filter"
+          style={{ marginRight: "0px", height: "100vh" }}
+        >
+          <h2>Filter</h2>
+          <div className="arrow-icon">
+            <a href="/books">
+              <FaArrowLeft />
+            </a>
           </div>
-    
-          {/* Best Fictional Books */}
-          
-          <div className="best-books-container">
+          <div className="filter-section">
+            <h3>Language</h3>
+            <select
+              value={selectedLanguage}
+              onChange={(e) => setSelectedLanguage(e.target.value)}
+            >
+              <option value="">All</option>
+              <option value="English">English</option>
+              <option value="Hindi">Hindi</option>
+            </select>
+          </div>
+
+          <div className="filter-section">
+            <h3>Price</h3>
+            <div className="price-container">
+              {/* Price Slider */}
+              <input
+                type="range"
+                min="0"
+                max="1000"
+                value={priceRange}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value, 10); // Ensure it's a number
+                  setPriceRange(value); // Update price range from slider
+                  applyFilters(); // Apply filters based on the new price
+                }}
+              />
+              <span>₹{priceRange}</span>
+            </div>
+
+            {/* Price Input Box */}
+            <div className="price-input">
+              <label htmlFor="priceInput" className="sr-only">
+                Price
+              </label>
+              <input
+                id="priceInput"
+                type="text" // Allow string input (e.g., with commas)
+                value={priceRange === 0 ? "" : priceRange.toString()} // Convert price to string for display
+                onChange={(e) => {
+                  let value = e.target.value;
+
+                  // Remove non-numeric characters (including commas)
+                  value = value.replace(/[^0-9]/g, "");
+
+                  // Update price range based on cleaned string input
+                  setPriceRange(value ? parseInt(value, 10) : 0); // Default to 0 if empty
+                  applyFilters(); // Apply filters based on new value
+                }}
+                onBlur={() => {
+                  // Optional: Apply any behavior when focus is lost (e.g., validate or format the number)
+                  applyFilters(); // Apply filters after focus out
+                }}
+                placeholder="Enter Price"
+                className="price-textbox"
+              />
+            </div>
+          </div>
+
+          <div className="filter-section">
+            <h3>Rating</h3>
+            <select
+              value={selectedRating || ""}
+              onChange={(e) => setSelectedRating(Number(e.target.value))}
+            >
+              <option value="">All Ratings</option>
+              <option value="1">1 Star</option>
+              <option value="2">2 Stars</option>
+              <option value="3">3 Stars</option>
+              <option value="4">4 Stars</option>
+              <option value="5">5 Stars</option>
+            </select>
+          </div>
+
+          <div className="filter-section">
+            <h3>Availability</h3>
+            <select
+              value={selectedAvailability}
+              onChange={(e) => setSelectedAvailability(e.target.value)}
+            >
+              <option value="">All</option>
+              <option value="available">Available</option>
+              <option value="not-available">Not Available</option>
+            </select>
+          </div>
+          <button onClick={resetFilters} className="reset-filters-btn">
+            Reset Filters
+          </button>
+        </div>
+
+        {/* Best Fictional Books */}
+
+        <div className="best-books-container">
           <h2 className="section-heading">Best Fictional Books</h2>
           <div className="best-main-books-container">
             {filteredBooks.length > 0 ? (
@@ -263,13 +303,15 @@ const BestFictionalBooks = () => {
                     />
                   </div>
                   <div className="book-card-content-wide">
-                    <h3 className="book-title-wide"><span>{book.name}</span>
-                <FaInfoCircle
-                  className="info-icon"
-                  size={20}
-                  title="Click for more info"
-                  onClick={() => alert(`More info about ${book.name}`)}
-                /></h3>
+                    <h3 className="book-title-wide">
+                      <span>{book.name}</span>
+                      <FaInfoCircle
+                        className="info-icon"
+                        size={20}
+                        title="Click for more info"
+                        onClick={() => openModal(book)} // Open modal with book details
+                      />
+                    </h3>
                     <p className="book-author-wide">{book.author}</p>
                     <p className="book-genre-wide">
                       <b>{book.genre}</b>
@@ -298,13 +340,45 @@ const BestFictionalBooks = () => {
               ))
             ) : (
               <div className="no-books-container">
-    <MdSentimentDissatisfied size={50} color="white" />
-    <p className="no-books-message">Uh-Oh! No matching books found.</p>
-  </div>
+                <MdSentimentDissatisfied size={50} color="white" />
+                <p className="no-books-message">
+                  Uh-Oh! No matching books found.
+                </p>
+              </div>
             )}
           </div>
         </div>
       </div>
+      {/* Modal for Book Info */}
+      {modalVisible && (
+        <div className="modal">
+          
+            <div className="modal-left">
+              <img
+                src={modalContent.bookCoverImageUrl || 'placeholder.jpg'}
+                alt={modalContent.name}
+                className="modal-book-image"
+              />
+            </div>
+            <div className="modal-right">
+              <h1>{modalContent.name}</h1>
+              <h3>{modalContent.author}</h3>
+              <h5>{modalContent.genre}</h5>
+              <p>{modalContent.description}</p>
+              <p>₹{modalContent.ratePerMonth}</p>
+              <p> {Array(modalContent.star).fill('⭐').map((star, index) => (
+                <span key={index}>{star}</span>
+              ))}</p>
+              <button onClick={() => handleIssueBook(modalContent._id)} className="issue-btn">
+                Issue Book
+              </button>
+            </div>
+            <button onClick={closeModal} className="close-modal-btn">
+            <FontAwesomeIcon icon={faTimes} />
+            </button>
+          </div>
+        
+      )}
       <ToastContainer />
     </div>
   );

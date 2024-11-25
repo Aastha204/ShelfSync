@@ -6,6 +6,8 @@ import '../styles/bestfictionalbooks.css'; // For styling
 import { MdSentimentDissatisfied } from 'react-icons/md';
 import { FaArrowLeft } from 'react-icons/fa';
 import { FaSearch, FaHome, FaInfoCircle } from "react-icons/fa";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const bestAuthors = [
   "William Shakespeare",
@@ -24,6 +26,10 @@ const BestAuthorBooks = () => {
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // New state for modal visibility and content
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
 
   // Filter states
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -122,6 +128,19 @@ const BestAuthorBooks = () => {
     setSelectedAvailability('');
     setFilteredBooks(books);
   };
+
+  // Function to open the modal with book info
+  const openModal = (book) => {
+    setModalContent(book);
+    setModalVisible(true);
+  };
+
+  // Close the modal
+  const closeModal = () => {
+    setModalVisible(false);
+    setModalContent(null);
+  };
+
 
   if (loading) {
     return <p>Loading books...</p>;
@@ -238,9 +257,9 @@ const BestAuthorBooks = () => {
                     <h3 className="book-title-wide"><span>{book.name}</span>
                 <FaInfoCircle
                   className="info-icon"
-                  size={20}
-                  title="Click for more info"
-                  onClick={() => alert(`More info about ${book.name}`)}
+                        size={20}
+                        title="Click for more info"
+                        onClick={() => openModal(book)} // Open modal with book details
                 /></h3>
                     <p className="book-author-wide">{book.author}</p>
                     <p className="book-genre-wide"><b>{book.genre}</b></p>
@@ -271,6 +290,36 @@ const BestAuthorBooks = () => {
           </div>
         </div>
       </div>
+      {/* Modal for Book Info */}
+      {modalVisible && (
+        <div className="modal">
+          
+            <div className="modal-left">
+              <img
+                src={modalContent.bookCoverImageUrl || 'placeholder.jpg'}
+                alt={modalContent.name}
+                className="modal-book-image"
+              />
+            </div>
+            <div className="modal-right">
+              <h1>{modalContent.name}</h1>
+              <h3>{modalContent.author}</h3>
+              <h5>{modalContent.genre}</h5>
+              <p>{modalContent.description}</p>
+              <p>₹{modalContent.ratePerMonth}</p>
+              <p> {Array(modalContent.star).fill('⭐').map((star, index) => (
+                <span key={index}>{star}</span>
+              ))}</p>
+              <button onClick={() => handleIssueBook(modalContent._id)} className="issue-btn">
+                Issue Book
+              </button>
+            </div>
+            <button onClick={closeModal} className="close-modal-btn">
+            <FontAwesomeIcon icon={faTimes} />
+            </button>
+          </div>
+        
+      )}
     </div>
   );
 };
