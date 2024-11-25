@@ -1,9 +1,23 @@
 import React from 'react';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import termsofuse from "./termsofuse";
+
 
 
 const Footer = () => {
+  const navigate = useNavigate();
+
+  const handleNavigation = () => {
+    navigate("/terms");
+  };
+  const handleNavigationabout = () => {
+    navigate("/about");
+  };
+  const handleNavigationcontact = () => {
+    navigate("/contact");
+  };
   return (
     <footer className="bg-[#2E1D0F] w-full p-12 text-white flex flex-col md:flex-row justify-between items-start space-y-6 md:space-y-0 md:space-x-12">
       {/* Contact Section */}
@@ -12,12 +26,22 @@ const Footer = () => {
         <Link to="/account" className="block mb-2 hover:text-yellow-300 cursor-pointer">ShelfSync@gmail.com</Link>
         {/* <Link to="/issue" className="block hover:text-yellow-300 cursor-pointer">Your Books</Link> */}
       </div>
+      <div className="flex-1">
+        <h2 className="font-bold mb-4 text-lg text-yellow-400">ABOUT</h2>
+        <p className="mb-2 hover:text-yellow-300 cursor-pointer"onClick={handleNavigationabout}>About Us</p>
+        <p className="mb-2 hover:text-yellow-300 cursor-pointer"onClick={handleNavigationcontact}>Contact Us</p>
+      </div>
 
       {/* Contact Information */}
       <div className="flex-1">
         <h2 className="font-bold mb-4 text-lg text-yellow-400">Contact Us</h2>
         <p className="mb-2 hover:text-yellow-300 cursor-pointer">+91 1234567890</p>
         <p className="hover:text-yellow-300 cursor-pointer">+91 9876543210</p>
+      </div>
+      <div className="flex-1">
+        <h2 className="font-bold mb-4 text-lg text-yellow-400">CONSUMER POLICY</h2>
+        <p className="mb-2 hover:text-yellow-300 cursor-pointer" onClick={handleNavigation}>Terms of Use</p>
+        <p className="hover:text-yellow-300 cursor-pointer">Privacy Policy</p>
       </div>
 
       {/* Address Section */}

@@ -39,6 +39,7 @@ import BestFictionalBooks from './components/BestFictionBook';
 import BestSellerBooks from './components/bestSeller';
 import BookIssueReceipt from './components/BookIssueReceipt'
 import OptionCards from './components/OptionCards';
+import TermsOfUse from './components/termsofuse';
 
 
 
@@ -95,6 +96,9 @@ function App() {
         <Route path='/bestauthor' element={<BestAuthorBooks/>}/>
         <Route path='/bestseller' element={<BestSellerBooks/>}/>
         <Route path='/receipt' element={<BookIssueReceipt/>}/>
+        <Route path='/terms' element={<TermsOfUse />} />
+
+
 
       </Routes>
     

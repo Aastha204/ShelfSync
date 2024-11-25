@@ -254,8 +254,8 @@ footer {
     white-space: nowrap;
     width: 100%;
     background: #2E1D0F; /* Dark Brown Background to match theme */
-    color: #e5a0a0b2; /* Gold Text Color */
-    font-size: 24px; /* Adjust font size to fit your design */
+    color: #eabbbbb2; /* Gold Text Color */
+    font-size: 24rem; /* Adjust font size to fit your design */
     margin: 0; /* Remove any default margin */
     padding: 0; /* Remove any default padding */
     position: relative;
@@ -278,12 +278,18 @@ transform: translateX(-100%); /* Move to outside the left edge */
 }
 }
 
-
+.social-icons{
+    margin-left: 420px;
+    align-items: center;
+}
 .social-icons a {
     margin: 0 10px;
     color: #ffffff;
     text-decoration: none;
-    font-size: 1.5em;
+    font-size: 2rem;
+    margin-left: 150px;
+    margin-bottom: 20px;
+    
 }
 
 @media (max-width: 768px) {
@@ -484,6 +490,7 @@ transform: translateX(-100%); /* Move to outside the left edge */
 .faq-icon {
     position: fixed;
     top: 710px;
+    
     right: 20px;
     font-size: 24px;
     color: brown; /* Adjust color as needed */
