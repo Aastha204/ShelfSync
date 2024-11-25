@@ -6,10 +6,9 @@ import "../styles/AdminProfile.css";
 import { ToastContainer } from "react-toastify";
 import { handleSuccess } from "./utils";
 import Create from "./Create";
-import {
-  BsFillCheckCircleFill,
-  BsFillTrashFill,
-} from "react-icons/bs";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { BsFillCheckCircleFill, BsFillTrashFill } from "react-icons/bs";
 import "../styles/create.css";
 import { toast } from "react-toastify";
 
@@ -54,15 +53,10 @@ const AdminProfilePage = () => {
   }, []);
 
   const handleEdit = (id) => {
-
     axios
       .put(`http://localhost:3001/todos/update/${id}`)
       .then((response) => {
-        setTodos(
-          todos.map((t) =>
-            t._id === id ? { ...t, done: true } : t
-          )
-        );
+        setTodos(todos.map((t) => (t._id === id ? { ...t, done: true } : t)));
       })
       .catch((err) => console.error("Update error:", err));
   };
@@ -86,7 +80,6 @@ const AdminProfilePage = () => {
       })
       .catch((err) => console.log(err));
   };
-  
 
   const undoDeletetask = () => {
     axios
@@ -100,7 +93,6 @@ const AdminProfilePage = () => {
   const addTodo = (newTodo) => {
     setTodos([...todos, newTodo]);
   };
-
 
   useEffect(() => {
     // Fetch the dashboard data when the component mounts
@@ -342,6 +334,9 @@ const AdminProfilePage = () => {
             alt="Logo"
             className="userprofile-logo"
           />
+          <li>
+          <a href="/">Home</a>
+          </li>
           <li
             onClick={() => handleSectionClick("profile")}
             className={activeSection === "profile" ? "active" : ""}
@@ -376,8 +371,10 @@ const AdminProfilePage = () => {
             User Queries
           </li>
           <li>
-            <button onClick={handleLogout}>Logout</button>
-          </li>
+      <button onClick={handleLogout}>
+        <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+      </button>
+    </li>
         </ul>
       </div>
 
@@ -396,16 +393,18 @@ const AdminProfilePage = () => {
               <div className="profile-details">
                 <h3>Name: {loggedInAdminName}</h3>
                 <p>Email: {loggedInAdminEmail}</p>
-                <p>Age: 20</p>
+                {/* <p>Age: 20</p>
                 <p>Contact: +1234567890</p>
                 <p>Address: 123 Library Lane, City, Country</p>
-                <h4>Date of Birth: 01/01/1989</h4>
+                <h4>Date of Birth: 01/01/1989</h4> */}
               </div>
             </div>
 
             {/* To-Do List Section */}
             <div className="home1">
-            <p className="text-white text-4xl font-bold typewriter">Forgot a task? Write it down before it slips away!</p>
+              <p className="text-white text-4xl font-bold typewriter">
+                Forgot a task? Write it down before it slips away!
+              </p>
               <Create onTaskAdded={addTodo} />
               {todos.map((todo) => (
                 <div className="todo-card" key={todo._id}>
@@ -430,255 +429,267 @@ const AdminProfilePage = () => {
                   </div>
                 </div>
               ))}
-             
-               <div>
-        
- 
-  {/* Delete Confirmation Modal */}
-  {showDeleteConfirm && (
-  <div className="delete-modal">
-    <div className="modal-content">
-      <p>Are you sure you want to delete this task?</p>
-      <div className="modal-buttons">
-        <button className="btn-yes" onClick={confirmDeletetask}>Yes</button>
-        <button className="btn-no" onClick={() => setShowDeleteConfirm(false)}>No</button>
-      </div>
-    </div>
-  </div>
-)}
-</div>
-              
+
+              <div>
+                {/* Delete Confirmation Modal */}
+                {showDeleteConfirm && (
+                  <div className="delete-modal">
+                    <div className="modal-content">
+                      <p>Are you sure you want to delete this task?</p>
+                      <div className="modal-buttons">
+                        <button className="btn-yes" onClick={confirmDeletetask}>
+                          Yes
+                        </button>
+                        <button
+                          className="btn-no"
+                          onClick={() => setShowDeleteConfirm(false)}
+                        >
+                          No
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
-      
 
-      {activeSection === "dashboard" && (
-        <div className="dashboard-section">
-          <h2 className="section-title">Dashboard</h2>
-          <div className="card-container">
-            <div className="dashboard-card">
-              Total Books: {dashboardData.totalBooks}
+        {activeSection === "dashboard" && (
+          <div className="dashboard-section">
+            <h2 className="section-title">Dashboard</h2>
+            <div className="card-container">
+              <div className="dashboard-card">
+                Total Books: {dashboardData.totalBooks}
+              </div>
+              <div className="dashboard-card">
+                Books Issued: {dashboardData.booksIssued}
+              </div>
+              <div className="dashboard-card">
+                Books Returned: {dashboardData.booksReturned}
+              </div>
+              <div className="dashboard-card">
+                Books Left: {dashboardData.booksLeft}
+              </div>
             </div>
-            <div className="dashboard-card">
-              Books Issued: {dashboardData.booksIssued}
-            </div>
-            <div className="dashboard-card">
-              Books Returned: {dashboardData.booksReturned}
-            </div>
-            <div className="dashboard-card">
-              Books Left: {dashboardData.booksLeft}
+            <div className="chart-container">
+              <canvas id="dashboardChart"></canvas>
             </div>
           </div>
-          <div className="chart-container">
-            <canvas id="dashboardChart"></canvas>
-          </div>
-        </div>
-      )}
+        )}
 
-      {activeSection === "bookManagement" && (
-        <div className="book-management-section">
-          <div className="book-management-header">
-            <h2 className="section-title">Manage Books</h2>
-            <button onClick={handleAddBookClick}>Add Book</button>
+        {activeSection === "bookManagement" && (
+          <div className="book-management-section">
+            <div className="book-management-header">
+              <h2 className="section-title">Manage Books</h2>
+              <button onClick={handleAddBookClick}>Add Book</button>
+            </div>
+            {showAddBookForm && (
+              <div className="book-form">
+                <input
+                  name="name"
+                  placeholder="Name"
+                  value={bookForm.name}
+                  onChange={handleInputChange}
+                />
+                <input
+                  name="author"
+                  placeholder="Author"
+                  value={bookForm.author}
+                  onChange={handleInputChange}
+                />
+                <input
+                  name="genre"
+                  placeholder="Genre"
+                  value={bookForm.genre}
+                  onChange={handleInputChange}
+                />
+                <input
+                  name="isbn"
+                  placeholder="ISBN"
+                  value={bookForm.isbn}
+                  onChange={handleInputChange}
+                />
+                <input
+                  name="yearPublished"
+                  placeholder="Year Published"
+                  value={bookForm.yearPublished}
+                  onChange={handleInputChange}
+                />
+                <input type="file" onChange={handleFileChange} />
+                <button onClick={handleAddBook}>
+                  {editingIndex !== null ? "Update Book" : "Add Book"}
+                </button>
+              </div>
+            )}
+            <input
+              type="text"
+              placeholder="Search Books..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <ul>
+              {filteredBooks.map((book, index) => (
+                <li key={index}>
+                  <img src={URL.createObjectURL(book.image)} alt={book.name} />
+                  <h3>{book.name}</h3>
+                  <p>{book.author}</p>
+                  <p>{book.genre}</p>
+                  <button onClick={() => handleEditBook(index)}>Edit</button>
+                  <button onClick={() => handleDeleteBook(index)}>
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+            {showDeleteConfirm && (
+              <div className="delete-confirm">
+                <p>Are you sure you want to delete this book?</p>
+                <button onClick={confirmDelete}>Yes</button>
+                <button onClick={() => setShowDeleteConfirm(false)}>No</button>
+              </div>
+            )}
+            {recentlyDeleted && (
+              <div className="undo-delete">
+                <p>Book deleted.</p>
+                <button onClick={undoDelete}>Undo</button>
+              </div>
+            )}
           </div>
-          {showAddBookForm && (
-            <div className="book-form">
-              <input
-                name="name"
-                placeholder="Name"
-                value={bookForm.name}
-                onChange={handleInputChange}
-              />
-              <input
-                name="author"
-                placeholder="Author"
-                value={bookForm.author}
-                onChange={handleInputChange}
-              />
-              <input
-                name="genre"
-                placeholder="Genre"
-                value={bookForm.genre}
-                onChange={handleInputChange}
-              />
-              <input
-                name="isbn"
-                placeholder="ISBN"
-                value={bookForm.isbn}
-                onChange={handleInputChange}
-              />
-              <input
-                name="yearPublished"
-                placeholder="Year Published"
-                value={bookForm.yearPublished}
-                onChange={handleInputChange}
-              />
-              <input type="file" onChange={handleFileChange} />
-              <button onClick={handleAddBook}>
-                {editingIndex !== null ? "Update Book" : "Add Book"}
+        )}
+
+        {activeSection === "issueReturn" && (
+          <div>
+            <h2 className="section-title-issuereturn">
+              Issue & Return Management
+            </h2>
+
+            {/* Filter buttons */}
+            <div className="filter-buttons">
+              <button
+                onClick={() => {
+                  setIssueFilterStatus("issued"); // Set filter status to 'issued'
+                }}
+                className={issueFilterStatus === "issued" ? "active" : ""}
+              >
+                Issued Books
+              </button>
+              <button
+                onClick={() => {
+                  setIssueFilterStatus("returned"); // Set filter status to 'issued'
+                }}
+                className={issueFilterStatus === "returned" ? "active" : ""}
+              >
+                Returned Books
               </button>
             </div>
-          )}
-          <input
-            type="text"
-            placeholder="Search Books..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <ul>
-            {filteredBooks.map((book, index) => (
-              <li key={index}>
-                <img src={URL.createObjectURL(book.image)} alt={book.name} />
-                <h3>{book.name}</h3>
-                <p>{book.author}</p>
-                <p>{book.genre}</p>
-                <button onClick={() => handleEditBook(index)}>Edit</button>
-                <button onClick={() => handleDeleteBook(index)}>Delete</button>
-              </li>
-            ))}
-          </ul>
-          {showDeleteConfirm && (
-            <div className="delete-confirm">
-              <p>Are you sure you want to delete this book?</p>
-              <button onClick={confirmDelete}>Yes</button>
-              <button onClick={() => setShowDeleteConfirm(false)}>No</button>
-            </div>
-          )}
-          {recentlyDeleted && (
-            <div className="undo-delete">
-              <p>Book deleted.</p>
-              <button onClick={undoDelete}>Undo</button>
-            </div>
-          )}
-        </div>
-      )}
 
-      {activeSection === "issueReturn" && (
-        <div>
-          <h2 className="section-title-issuereturn">
-            Issue & Return Management
-          </h2>
-
-          {/* Filter buttons */}
-          <div className="filter-buttons">
-            <button
-              onClick={() => {
-                setIssueFilterStatus("issued"); // Set filter status to 'issued'
-              }}
-              className={issueFilterStatus === "issued" ? "active" : ""}
-            >
-              Issued Books
-            </button>
-            <button
-              onClick={() => {
-                setIssueFilterStatus("returned"); // Set filter status to 'issued'
-              }}
-              className={issueFilterStatus === "returned" ? "active" : ""}
-            >
-              Returned Books
-            </button>
-          </div>
-
-          <table className="queries-table">
-            <thead className="">
-              <tr>
-                <th className="p-4 text-left">S.No.</th>
-                <th className="p-4 text-left">User Name</th>
-                <th className="p-4 text-left">User Email</th>
-                <th className="p-4 text-left">Book Name</th>
-                <th className="p-4 text-left">Author</th>
-                <th className="p-4 text-left">
-                  {issueFilterStatus === "issued"
-                    ? "Issue Date"
-                    : "Return Date"}
-                </th>
-              </tr>
-            </thead>
-            <tbody className="">
-              {issueReturnData.map((issue, index) => (
-                <tr key={issue._id}>
-                  <td className="p-4 text-left">{index + 1}</td>
-                  <td className="p-4 text-left">{issue.userID.name}</td>
-                  <td className="p-4 text-left">{issue.userID.email}</td>
-                  <td className="p-4 text-left">{issue.bookID.name}</td>
-                  <td className="p-4 text-left">{issue.bookID.author}</td>
-                  <td className="p-4 text-left">
-                    {" "}
+            <table className="queries-table">
+              <thead className="">
+                <tr>
+                  <th className="p-4 text-left">S.No.</th>
+                  <th className="p-4 text-left">User Name</th>
+                  <th className="p-4 text-left">User Email</th>
+                  <th className="p-4 text-left">Book Name</th>
+                  <th className="p-4 text-left">Author</th>
+                  <th className="p-4 text-left">
                     {issueFilterStatus === "issued"
-                      ? new Date(issue.issueDate).toLocaleDateString()
-                      : issue.returnDate
-                      ? new Date(issue.returnDate).toLocaleDateString()
-                      : "N/A"}
-                  </td>
+                      ? "Issue Date"
+                      : "Return Date"}
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {activeSection === "UserQueries" && (
-        <div className="user-queries-section">
-          <h2 className="section-title-userquery">User Queries</h2>
-
-          {/* Filter buttons */}
-          <div className="filter-buttons">
-            <button
-              onClick={() => handleFilterChange("All")}
-              className={filterStatus === "All" ? "active" : ""}
-            >
-              All
-            </button>
-            <button
-              onClick={() => handleFilterChange("Responded")}
-              className={filterStatus === "Responded" ? "active" : ""}
-            >
-              Responded
-            </button>
-            <button
-              onClick={() => handleFilterChange("Unresponded")}
-              className={filterStatus === "Unresponded" ? "active" : ""}
-            >
-              Unresponded
-            </button>
+              </thead>
+              <tbody className="">
+                {issueReturnData.map((issue, index) => (
+                  <tr key={issue._id}>
+                    <td className="p-4 text-left">{index + 1}</td>
+                    <td className="p-4 text-left">
+                      {issue.userID ? issue.userID.name : "N/A"}
+                    </td>
+                    <td className="p-4 text-left">
+                      {issue.userID ? issue.userID.email : "N/A"}
+                    </td>
+                    <td className="p-4 text-left">
+                      {issue.bookID ? issue.bookID.name : "N/A"}
+                    </td>
+                    <td className="p-4 text-left">
+                      {issue.bookID ? issue.bookID.author : "N/A"}
+                    </td>
+                    <td className="p-4 text-left">
+                      {issueFilterStatus === "issued"
+                        ? new Date(issue.issueDate).toLocaleDateString()
+                        : issue.returnDate
+                        ? new Date(issue.returnDate).toLocaleDateString()
+                        : "N/A"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
+        )}
 
-          <table className="queries-table">
-            <thead>
-              <tr>
-                <th>Sender Name</th>
-                <th>Sender Email</th>
-                <th>Message</th>
-                <th>Date Received</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredContactMessages.map((message, index) => (
-                <tr key={index}>
-                  <td>{message.sender_name}</td>
-                  <td>{message.sender_email}</td>
-                  <td>{message.message}</td>
-                  <td>{new Date(message.created_at).toLocaleDateString()}</td>
-                  <td>
-                    {message.status === "Responded" ? (
-                      "Responded"
-                    ) : (
-                      <button onClick={() => handleRespond(message)}>
-                        Respond
-                      </button>
-                    )}
-                  </td>
+        {activeSection === "UserQueries" && (
+          <div className="user-queries-section">
+            <h2 className="section-title-userquery">User Queries</h2>
+
+            {/* Filter buttons */}
+            <div className="filter-buttons">
+              <button
+                onClick={() => handleFilterChange("All")}
+                className={filterStatus === "All" ? "active" : ""}
+              >
+                All
+              </button>
+              <button
+                onClick={() => handleFilterChange("Responded")}
+                className={filterStatus === "Responded" ? "active" : ""}
+              >
+                Responded
+              </button>
+              <button
+                onClick={() => handleFilterChange("Unresponded")}
+                className={filterStatus === "Unresponded" ? "active" : ""}
+              >
+                Unresponded
+              </button>
+            </div>
+
+            <table className="queries-table">
+              <thead>
+                <tr>
+                  <th>Sender Name</th>
+                  <th>Sender Email</th>
+                  <th>Message</th>
+                  <th>Date Received</th>
+                  <th>Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+              <tbody>
+                {filteredContactMessages.map((message, index) => (
+                  <tr key={index}>
+                    <td>{message.sender_name}</td>
+                    <td>{message.sender_email}</td>
+                    <td>{message.message}</td>
+                    <td>{new Date(message.created_at).toLocaleDateString()}</td>
+                    <td>
+                      {message.status === "Responded" ? (
+                        "Responded"
+                      ) : (
+                        <button onClick={() => handleRespond(message)}>
+                          Respond
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
-      <ToastContainer />
-    </div>
+        <ToastContainer />
+      </div>
     </div>
   );
 };

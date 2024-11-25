@@ -46,6 +46,7 @@ const handleLogin= async (e)=>{
        if(success){
         handleSuccess(message);
         localStorage.setItem('token',jwtToken);
+        localStorage.setItem('userType', 'admin');
         localStorage.setItem('loggedInAdminName',name);
         localStorage.setItem('loggedInAdminEmail',email);
         setTimeout(()=>{

@@ -5,17 +5,23 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../styles/bestfictionalbooks.css';
 import { MdSentimentDissatisfied } from 'react-icons/md';
 import { FaArrowLeft } from 'react-icons/fa';
+import { FaInfoCircle } from "react-icons/fa";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const BestSellerBooks = () => {
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const [priceRange, setPriceRange] = useState(1000);
   const [selectedRating, setSelectedRating] = useState('');
   const [selectedAvailability, setSelectedAvailability] = useState('');
+
+  // New state for modal visibility and content
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
 
   useEffect(() => {
     const fetchBestSellers = async () => {
@@ -103,6 +109,18 @@ const BestSellerBooks = () => {
     }
   };
 
+  // Function to open the modal with book info
+  const openModal = (book) => {
+    setModalContent(book);
+    setModalVisible(true);
+  };
+
+  // Close the modal
+  const closeModal = () => {
+    setModalVisible(false);
+    setModalContent(null);
+  };
+
   if (loading) {
     return <p>Loading books...</p>;
   }
@@ -182,7 +200,15 @@ const BestSellerBooks = () => {
                     />
                   </div>
                   <div className="book-card-content-wide">
-                    <h3 className="book-title-wide">{book.name}</h3>
+                    <h3 className="book-title-wide">
+                      <span>{book.name}</span>
+                      <FaInfoCircle
+                        className="info-icon"
+                        size={20}
+                        title="Click for more info"
+                        onClick={() => openModal(book)} // Open modal with book details
+                      />
+                    </h3>
                     <p className="book-author-wide">{book.author}</p>
                     <p className="book-genre-wide"><b>{book.genre}</b></p>
                     <div className="book-card-footer-wide">
@@ -204,14 +230,45 @@ const BestSellerBooks = () => {
                 </div>
               ))
             ) : (
-              <div className="no-books-container">
-                <MdSentimentDissatisfied size={50} color="white" />
-                <p className="no-books-message">Uh-Oh! No matching books found.</p>
+              <div className="no-books-found">
+                <MdSentimentDissatisfied />
+                <p>No books found for this category!</p>
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Modal for Book Info */}
+      {modalVisible && (
+        <div className="modal">
+          
+            <div className="modal-left">
+              <img
+                src={modalContent.bookCoverImageUrl || 'placeholder.jpg'}
+                alt={modalContent.name}
+                className="modal-book-image"
+              />
+            </div>
+            <div className="modal-right">
+              <h1>{modalContent.name}</h1>
+              <h3>{modalContent.author}</h3>
+              <h5>{modalContent.genre}</h5>
+              <p>{modalContent.description}</p>
+              <p>₹{modalContent.ratePerMonth}</p>
+              <p> {Array(modalContent.star).fill('⭐').map((star, index) => (
+                <span key={index}>{star}</span>
+              ))}</p>
+              <button onClick={() => handleIssueBook(modalContent._id)} className="issue-btn">
+                Issue Book
+              </button>
+            </div>
+            <button onClick={closeModal} className="close-modal-btn">
+            <FontAwesomeIcon icon={faTimes} />
+            </button>
+          </div>
+        
+      )}
     </div>
   );
 };
