@@ -42,6 +42,8 @@ import OptionCards from './components/OptionCards';
 import Dashboard from './components/Dashboard';
 import ReceiptView from './components/ReceiptView';
 import DueBooks from './components/DueBooks';
+import TermsOfUse from './components/termsofuse';
+
 
 
 
@@ -99,6 +101,9 @@ function App() {
         <Route path='/receipt' element={<BookIssueReceipt/>}/>
         <Route path="/receipt/:receiptNo" element={<ReceiptView />} />
         <Route path="/due" element={<DueBooks/>}/>
+        <Route path='/terms' element={<TermsOfUse />} />
+
+
 
       </Routes>
     
