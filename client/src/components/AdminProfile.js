@@ -5,11 +5,12 @@ import { useNavigate } from "react-router-dom";
 import "../styles/AdminProfile.css";
 import { ToastContainer } from "react-toastify";
 import { handleSuccess } from "./utils";
-import Create from "./Create";
+import Create from './Create';
+import { BsCircleFill, BsFillCheckCircleFill, BsFillTrashFill } from 'react-icons/bs';
+import '../styles/create.css'; 
+import Dashboard from './Dashboard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { BsFillCheckCircleFill, BsFillTrashFill } from "react-icons/bs";
-import "../styles/create.css";
 import { toast } from "react-toastify";
 
 const AdminProfilePage = () => {
@@ -245,44 +246,44 @@ const AdminProfilePage = () => {
       book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  useEffect(() => {
-    if (activeSection === "dashboard") {
-      const ctx = document.getElementById("dashboardChart").getContext("2d");
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: [
-            "Total Books",
-            "Books Issued",
-            "Books Returned",
-            "Books Left",
-          ],
-          datasets: [
-            {
-              label: "Library Analytics",
-              data: [
-                dashboardData.totalBooks,
-                dashboardData.booksIssued,
-                dashboardData.booksReturned,
-                dashboardData.booksLeft,
-              ],
-              backgroundColor: ["#8d6e63", "#a1887f", "#bcaaa4", "#d7ccc8"],
-              borderColor: "#4a3f35",
-              borderWidth: 2,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: "top",
-            },
-          },
-        },
-      });
-    }
-  }, [activeSection]);
+  // useEffect(() => {
+  //   if (activeSection === "dashboard") {
+  //     const ctx = document.getElementById("dashboardChart").getContext("2d");
+  //     new Chart(ctx, {
+  //       type: "bar",
+  //       data: {
+  //         labels: [
+  //           "Total Books",
+  //           "Books Issued",
+  //           "Books Returned",
+  //           "Books Left",
+  //         ],
+  //         datasets: [
+  //           {
+  //             label: "Library Analytics",
+  //             data: [
+  //               dashboardData.totalBooks,
+  //               dashboardData.booksIssued,
+  //               dashboardData.booksReturned,
+  //               dashboardData.booksLeft,
+  //             ],
+  //             backgroundColor: ["#8d6e63", "#a1887f", "#bcaaa4", "#d7ccc8"],
+  //             borderColor: "#4a3f35",
+  //             borderWidth: 2,
+  //           },
+  //         ],
+  //       },
+  //       options: {
+  //         responsive: true,
+  //         plugins: {
+  //           legend: {
+  //             position: "top",
+  //           },
+  //         },
+  //       },
+  //     });
+  //   }
+  // }, [activeSection]);
 
   const handleAddBookClick = () => {
     setShowAddBookForm(true);
@@ -299,7 +300,9 @@ const AdminProfilePage = () => {
     }
   }, [activeSection]);
 
-  const [issueFilterStatus, setIssueFilterStatus] = useState("issued");
+
+  const [issueFilterStatus,setIssueFilterStatus]=useState('issued');
+  
   const fetchBooks = (status) => {
     let url = "";
     if (activeSection === "issueReturn") {
@@ -457,24 +460,8 @@ const AdminProfilePage = () => {
 
         {activeSection === "dashboard" && (
           <div className="dashboard-section">
-            <h2 className="section-title">Dashboard</h2>
-            <div className="card-container">
-              <div className="dashboard-card">
-                Total Books: {dashboardData.totalBooks}
-              </div>
-              <div className="dashboard-card">
-                Books Issued: {dashboardData.booksIssued}
-              </div>
-              <div className="dashboard-card">
-                Books Returned: {dashboardData.booksReturned}
-              </div>
-              <div className="dashboard-card">
-                Books Left: {dashboardData.booksLeft}
-              </div>
-            </div>
-            <div className="chart-container">
-              <canvas id="dashboardChart"></canvas>
-            </div>
+            <Dashboard/>
+            
           </div>
         )}
 

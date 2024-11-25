@@ -39,6 +39,9 @@ import BestFictionalBooks from './components/BestFictionBook';
 import BestSellerBooks from './components/bestSeller';
 import BookIssueReceipt from './components/BookIssueReceipt'
 import OptionCards from './components/OptionCards';
+import Dashboard from './components/Dashboard';
+import ReceiptView from './components/ReceiptView';
+import DueBooks from './components/DueBooks';
 import TermsOfUse from './components/termsofuse';
 
 
@@ -84,7 +87,7 @@ function App() {
         <Route path="/admin" element={<AdminProfilePage/>}/>
         <Route path='/add' element={<AddBook/>}/>
         <Route path='/optioncards' element={<OptionCards/>}/>
-       
+       <Route path='/dashboard' element={<Dashboard/>}/>
         <Route path="/books" element={<AllBooks/>}/>
         <Route path="/changeUserProfile" element={<ChangeUserProfile/>}/>
         <Route path="/custom" element={<CustomCards/>}/>
@@ -96,6 +99,8 @@ function App() {
         <Route path='/bestauthor' element={<BestAuthorBooks/>}/>
         <Route path='/bestseller' element={<BestSellerBooks/>}/>
         <Route path='/receipt' element={<BookIssueReceipt/>}/>
+        <Route path="/receipt/:receiptNo" element={<ReceiptView />} />
+        <Route path="/due" element={<DueBooks/>}/>
         <Route path='/terms' element={<TermsOfUse />} />
 
 

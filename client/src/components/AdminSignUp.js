@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { useState } from 'react';
 import { handleError, handleSuccess } from './utils';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const validateName = (name) => {
   if (!name) return "Name is required.";
@@ -38,6 +38,7 @@ const Signup = () => {
     password: '',
   });
 
+  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -130,13 +131,22 @@ const Signup = () => {
                   />
 
                   <label className="block text-sm font-medium text-gray-700 mt-4">Password</label>
-                  <input
-                    type="password"
-                    value={signupInfo.password}
-                    onChange={handleChange}
-                    name="password"
-                    className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-brown-500"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"} // Toggle between "text" and "password"
+                      value={signupInfo.password}
+                      onChange={handleChange}
+                      name="password"
+                      className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-brown-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-3 flex items-center text-gray-600 focus:outline-none"
+                    >
+                      {showPassword ? <FaEye /> : <FaEyeSlash />}
+                    </button>
+                  </div>
 
                   <button
                     type="submit"

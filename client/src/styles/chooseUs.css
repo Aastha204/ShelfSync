@@ -27,6 +27,7 @@
     margin-bottom: 50px;
     transform: scale(1.2); /* Scales the animation by 1.2 (you can adjust this value as needed) */
     transform-origin:right; /* Ensures scaling starts from the left */
+    background-color: transparent;
   }
   
   .ChooseUscontent {

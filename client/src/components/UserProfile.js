@@ -113,17 +113,19 @@ const MemberProfile = () => {
         </div>
 
         <div className="userprofile-card-container">
-      <a href="/receipt" className="userprofile-clickable-card">
-        <img src="/images/image.png" alt="Card 1" />
-        <div className="userprofile-overlay-text">Manage Your Receipt</div>
-      </a>
-      <a href="/booktrack" className="userprofile-clickable-card">
-        <img src="/images/managereceipt.jpg" alt="Card 2" />
-        <div className="userprofile-overlay-text">Track Your Books</div>
-      </a>
-      
-    </div>
-        
+          <div className="userprofile-clickable-card">
+            <img src="/images/1.png" alt="Card 1" />
+            <div className="userprofile-overlay-text">
+              <a href="receipt1">Manage Your Receipt</a>
+            </div>
+          </div>
+          <div className="userprofile-clickable-card">
+            <img src="/images/2.png" alt="Card 2" />
+            <div className="userprofile-overlay-text">
+              <a href="/booktrack">Track Your Books</a>
+            </div>
+          </div>
+        </div>
         <a href="/contact" className="userprofile-contact-link">
           Have any query? Contact us
         </a>

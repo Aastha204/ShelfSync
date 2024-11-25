@@ -13,8 +13,15 @@ const dashboard=require('./Routes/DashBoard')
 const returnRoutes = require('./Routes/ReturnRoutes');
 const bookTrackerRoutes = require('./Routes/bookTrackerRoutes');
 const todoRoutes = require("./Routes/todoRoutes");
+const cron = require('node-cron');
+const { updateStatistics } = require('./Controllers/statisticsController');
+const statisticsRoute=require('./Routes/statisticsRoute');
+const receiptRoutes=require('./Routes/ReceiptRoutes')
 
 require('dotenv').config();
+cron.schedule('0 0 * * *', async () => {
+  await updateStatistics();
+});
 
 const app = express();
 app.use(cors());
@@ -37,6 +44,9 @@ app.use('/api/dashboard', dashboard);
 app.use('/api/return', returnRoutes);
 app.use('/api/bookTracker', bookTrackerRoutes);
 app.use("/todos", todoRoutes);
+app.use('/api/statistics',statisticsRoute);
+app.use('/api/receipts', receiptRoutes);
+
 
 // Error handling middleware
 app.use(errorMiddleware);

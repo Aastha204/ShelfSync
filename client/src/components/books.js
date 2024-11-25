@@ -104,11 +104,16 @@ const Filter = () => {
       );
     }
 
-    if (selectedRating) {
-      updatedBooks = updatedBooks.filter(
-        (book) => book.star === selectedRating
-      );
-    }
+  if (selectedRating) {
+    updatedBooks = updatedBooks.filter((book) => book.star === selectedRating);
+  }
+
+  if (priceRange === 0) {
+    // Prevent all books or show an empty list
+    // Example:
+    setFilteredBooks([]);
+    return;
+  }
 
     if (priceRange) {
       updatedBooks = updatedBooks.filter(
@@ -145,32 +150,7 @@ const Filter = () => {
 
       // First toast: Success notification for book issuance
       toast.success(response.data.message);
-
-      // Second toast: Prompt to review the book slip
-      setTimeout(() => {
-        toast.info(
-          <div>
-            <p>You can now review the issued book slip!</p>
-            <button
-              onClick={() => (window.location.href = "/review-slip")}
-              style={{
-                backgroundColor: "#4CAF50",
-                color: "white",
-                border: "none",
-                padding: "5px 10px",
-                cursor: "pointer",
-                borderRadius: "5px",
-                marginTop: "10px",
-              }}
-            >
-              Review Slip
-            </button>
-          </div>,
-          {
-            autoClose: false, // Keeps it open until user dismisses or clicks
-          }
-        );
-      }, 3000); // Delay of 3 seconds before showing the second toast
+      localStorage.setItem('currentReceipt', JSON.stringify(response.data.receipt));
     } catch (error) {
       console.error(error);
       if (
@@ -240,16 +220,54 @@ const Filter = () => {
         </div>
 
         <div className="filter-section">
-          <h3>Price</h3>
-          <input
-            type="range"
-            min="10"
-            max="1000"
-            value={priceRange}
-            onChange={(e) => setPriceRange(e.target.value)}
-          />
-          <span>Up to ₹{priceRange}</span>
-        </div>
+  <h3>Price</h3>
+  <div className="price-container">
+    {/* Price Slider */}
+    <input
+      type="range"
+      min="0"
+      max="1000"
+      value={priceRange}
+      onChange={(e) => {
+        const value = parseInt(e.target.value, 10); // Ensure it's a number
+        setPriceRange(value); // Update price range from slider
+        applyFilters(); // Apply filters based on the new price
+      }}
+    />
+    <span>₹{priceRange}</span>
+  </div>
+
+  {/* Price Input Box */}
+  <div className="price-input">
+    <label htmlFor="priceInput" className="sr-only">Price</label>
+    <input
+      id="priceInput"
+      type="text" // Allow string input (e.g., with commas)
+      value={priceRange === 0 ? "" : priceRange.toString()} // Convert price to string for display
+      onChange={(e) => {
+        let value = e.target.value;
+
+        // Remove non-numeric characters (including commas)
+        value = value.replace(/[^0-9]/g, "");
+
+        // Update price range based on cleaned string input
+        setPriceRange(value ? parseInt(value, 10) : 0); // Default to 0 if empty
+        applyFilters(); // Apply filters based on new value
+      }}
+      onBlur={() => {
+        // Optional: Apply any behavior when focus is lost (e.g., validate or format the number)
+        applyFilters(); // Apply filters after focus out
+      }}
+      placeholder="Enter Price"
+      className="price-textbox"
+    />
+  </div>
+</div>
+
+
+
+
+
 
         {/* Rating Filter */}
         <div className="filter-section">

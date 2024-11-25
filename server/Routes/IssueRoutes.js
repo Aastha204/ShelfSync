@@ -13,5 +13,7 @@ router.put('/return/:issueId', issueController.returnBook);
 
 router.get('/bestsellers', issueController.getBestSellers);
 
+router.get('/due-books',issueController.getDueBooks);
+
 
 module.exports = router;

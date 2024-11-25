@@ -50,6 +50,13 @@ const BookTracker = () => {
       description: 'Currently Issued Books by you',
       bookNumber: 0 // Placeholder value to be updated on data fetch
     },
+    { 
+      id: 'duebooks', 
+      image: '/images/book4.jpeg', 
+      title: 'Currently Due Book', 
+      description: 'Currently Due Books by you',
+      bookNumber: 0 // Placeholder value to be updated on data fetch
+    },
   ]);
 
   const fetchBooks = async (endpoint) => {
@@ -80,12 +87,14 @@ const BookTracker = () => {
     fetchBooks('totalIssued');
     fetchBooks('totalReturn');
     fetchBooks('currentIssued');
+    fetchBooks('duebooks')
   }, []);
 
   const columns = {
     totalIssued: ['S.No', 'Book Name', 'Author Name', 'Issue Date'],
     totalReturn: ['S.No', 'Book Name', 'Author Name', 'Return Date'],
     currentIssued: ['S.No', 'Book Name', 'Author Name', 'Issue Date'],
+    duebooks: ['S.No','Book Name', 'Author Name','Due Date','Overdue Days','Fine']
   };
 
   const renderTable = () => {
@@ -96,34 +105,72 @@ const BookTracker = () => {
       ? 'Total Issued Books Till Now'
       : selectedCard === 'totalReturn'
       ? 'Total Returned Books'
+      : selectedCard==='duebooks'
+      ? 'Total Due Books'
       : 'Currently Issued Books';
 
+  
+    console.log("Table Data for:", selectedCard, tableData); // Debugging
+  
     return (
       <div className="table-container-booktrack">
-        <h2 className="table-heading-booktrack">{tableHeading}</h2>
-        <table className="book-table">
-          <thead>
-            <tr>
-              {columns[selectedCard].map((col, index) => (
-                <th key={index}>{col}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.map((row, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{row.bookID.name}</td>
-                <td>{row.bookID.author}</td>
-                {row.issueDate && <td>{new Date(row.issueDate).toLocaleDateString()}</td>}
-                {row.returnDate && <td>{new Date(row.returnDate).toLocaleDateString()}</td>}
-              </tr>
+         <h2 className="table-heading-booktrack">{tableHeading}</h2>
+      {/* //   <table className="book-table">
+      //     <thead>
+      //       <tr>
+      //         {columns[selectedCard].map((col, index) => (
+      //           <th key={index}>{col}</th>
+      //         ))}
+      //       </tr>
+      //     </thead>
+      //     <tbody>
+      //       {tableData.map((row, index) => (
+      //         <tr key={index}>
+      //           <td>{index + 1}</td>
+      //           <td>{row.bookID.name}</td>
+      //           <td>{row.bookID.author}</td>
+      //           {row.issueDate && <td>{new Date(row.issueDate).toLocaleDateString()}</td>}
+      //           {row.returnDate && <td>{new Date(row.returnDate).toLocaleDateString()}</td>}
+      //         </tr>
+      //       ))}
+      //     </tbody>
+      //   </table>
+      // </div> */}
+      <table className="book-table">
+        <thead>
+          <tr>
+            {columns[selectedCard].map((col, index) => (
+              <th key={index}>{col}</th>
             ))}
-          </tbody>
-        </table>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData.map((row, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{row.name || row.bookID.name || "N/A"}</td>
+              <td>{row.author || row.bookID.author || "N/A"}</td>
+              {selectedCard === 'duebooks' && row.dueDate && (
+                <>
+                  <td>{new Date(row.dueDate).toLocaleDateString()}</td>
+                  <td>{row.overdueDays || "N/A"}</td>
+                  <td>{row.fine ? `₹${row.fine}` : "₹0"}</td>
+                </>
+              )}
+              {selectedCard !== 'duebooks' && row.issueDate && (
+                <td>{new Date(row.issueDate).toLocaleDateString()}</td>
+              )}
+              {selectedCard === 'totalReturn' && row.returnDate && (
+                <td>{new Date(row.returnDate).toLocaleDateString()}</td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
       </div>
     );
   };
+  
 
   return (
     <div className="full-page-background">
