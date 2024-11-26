@@ -1,9 +1,5 @@
-.manage-receipt-container {
-    padding: 20px;
-    background-color: #f4efe7; /* Light beige for the background */
-    min-height: 100vh;
-    font-family: 'Arial', sans-serif;
-  }
+
+  
   
   .receipt-grid {
     display: grid;
@@ -12,32 +8,6 @@
     margin-top: 20px;
   }
   
-  .receipt-card {
-    background-color: #d7ccc8; /* Light brown for cards */
-    border: 2px solid #a0522d; /* SaddleBrown for the border */
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  
-  .receipt-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  }
-  
-  .receipt-card h3 {
-    color: #6d4c41; /* Medium brown for headers */
-    margin-bottom: 15px;
-    font-size: 1.5rem;
-    text-align: center;
-  }
-  
-  .receipt-card p {
-    color: #4e342e; /* Darker brown for text */
-    margin: 5px 0;
-    font-size: 1rem;
-  }
   
   .receipt-actions {
     display: flex;

@@ -3,12 +3,25 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/book.css";
-import { FaSearch, FaHome, FaInfoCircle } from "react-icons/fa";
+import { FaSearch, FaHome, FaInfoCircle,FaUserCircle } from "react-icons/fa";
 import BookCards from "./cards";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from "react-router-dom";
 
 const Filter = () => {
+  const navigate = useNavigate();
+  const handleProfileNavigation = () => {
+    const userEmail = localStorage.getItem("loggedInUserEmail");
+    if (userEmail) {
+      // Navigate to the user profile page if the user is logged in
+      navigate("/userprofile");
+    } else {
+      // Show a Toastify message if the user is not logged in
+      toast.error("Please log in to access your profile");
+    }
+  };
+   
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [editing, setEditing] = useState(null);
@@ -155,7 +168,21 @@ const Filter = () => {
       );
 
       // First toast: Success notification for book issuance
-      toast.success(response.data.message);
+      
+      toast.success(
+        <div>
+          {response.data.message}{" "}
+          <span
+            style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
+            onClick={() => navigate("/issue")} // Redirect to the issued books section
+          >
+            View all issued books
+          </span>
+        </div>,
+        {
+          autoClose: 5000, // Optional: Toast will close after 5 seconds
+        }
+      );
       localStorage.setItem('currentReceipt', JSON.stringify(response.data.receipt));
     } catch (error) {
       console.error(error);
@@ -202,6 +229,14 @@ const Filter = () => {
           <a href="/">
             <FaHome />
           </a>
+        </div>
+        <div className="profile-icon">
+          <FaUserCircle
+            size={28}
+            title="Go to Profile"
+            onClick={handleProfileNavigation}
+            className="profile-icon-btn"
+          />
         </div>
         <div className="filter-section">
           <h3>By Category</h3>

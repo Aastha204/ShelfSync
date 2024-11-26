@@ -75,6 +75,7 @@ const UserIssues = () => {
     <div
       className="min-h-screen bg-cover bg-center p-8"
       style={{ backgroundImage: "url('./images/issuebg.jpg')" }}
+      
     >
       {/* Back Button */}
       <button
