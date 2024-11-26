@@ -15,6 +15,9 @@ const Footer = () => {
   const handleNavigationabout = () => {
     navigate("/about");
   };
+  const handleNavigationPrivacy = () => {
+    navigate("/privacyPolicy");
+  };
   const handleNavigationcontact = () => {
     navigate("/contact");
   };
@@ -41,7 +44,7 @@ const Footer = () => {
       <div className="flex-1">
         <h2 className="font-bold mb-4 text-lg text-yellow-400">CONSUMER POLICY</h2>
         <p className="mb-2 hover:text-yellow-300 cursor-pointer" onClick={handleNavigation}>Terms of Use</p>
-        <p className="hover:text-yellow-300 cursor-pointer">Privacy Policy</p>
+        <p className="hover:text-yellow-300 cursor-pointer"  onClick={() =>  navigate("/privacyPolicy")}>Privacy Policy</p>
       </div>
 
       {/* Address Section */}

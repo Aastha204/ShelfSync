@@ -75,6 +75,7 @@ const UserIssues = () => {
     <div
       className="min-h-screen bg-cover bg-center p-8"
       style={{ backgroundImage: "url('./images/issuebg.jpg')" }}
+      
     >
       <button
         onClick={() => navigate("/userProfile")}
@@ -136,7 +137,7 @@ const UserIssues = () => {
                 <td className="p-4 text-left">
                   <button
                     onClick={() => handleViewReceipt(issue._id)}
-                    className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-700"
+                    className="px-4 py-2 rounded text-black bg-yellow-400 hover:bg-yellow-200"
                   >
                     View Receipt
                   </button>

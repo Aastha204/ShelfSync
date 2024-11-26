@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaEye } from "react-icons/fa";
 import "../styles/bookTrack.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import for FontAwesomeIcon
+import { faUser } from '@fortawesome/free-solid-svg-icons'; // Import for faUser icon
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const ImageCard = ({ image, title, description, bookNumber, onClick }) => {
   return (
@@ -22,6 +25,7 @@ const ImageCard = ({ image, title, description, bookNumber, onClick }) => {
 };
 
 const BookTracker = () => {
+  const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -44,7 +48,7 @@ const BookTracker = () => {
     {
       id: "currentIssued",
       image: "/images/book4.jpeg",
-      title: "Currently Issued Books",
+      title: "Currently Issued Book",
       description: "Currently Issued Books by you",
       bookNumber: 0,
     },
@@ -169,6 +173,7 @@ const BookTracker = () => {
             <option value="desc">Descending</option>
           </select>
         </div>
+        
 
         <table className="book-table">
           <thead>
@@ -247,6 +252,13 @@ const BookTracker = () => {
 
   return (
     <div className="full-page-background">
+    <div className="profile-button-container">
+        <button className="profile-button" onClick={() =>  navigate("/userProfile")}>
+        <FontAwesomeIcon icon={faUser} /> Profile
+        </button>
+      </div>
+      <br></br>
+      <br></br>
       <div className="image-card-container">
         {cards.map((card) => (
           <ImageCard

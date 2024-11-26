@@ -289,3 +289,16 @@ input[type="range"]::-moz-range-thumb {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+
+.profile-icon {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  cursor: pointer;
+  color: #4a1e1e;
+  transition: color 0.3s ease;
+}
+
+.profile-icon:hover {
+  color: #e0460e;
+}
