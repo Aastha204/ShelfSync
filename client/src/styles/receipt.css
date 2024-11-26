@@ -282,7 +282,7 @@ button {
   }
   
   button:hover {
-    background-color: #e63946; /* Darker red */
+   
     transform: translateY(-2px);
   }
   
