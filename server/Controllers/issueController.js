@@ -61,10 +61,13 @@ exports.addIssuedBook = async (req, res) => {
     const newIssue = new Issue({
       userID: user._id,
       bookID,
+      receiptNo: receipt._id, // Store the receiptNo in the Issue document
+      issueDate,
+      returnDate,
     });
 
     await newIssue.save();
-    res.json({ message: 'Book issued successfully' });
+    res.json({ message: 'Book issued successfully',receiptNo: receipt.receiptNo  });
   } catch (error) {
     console.error('Error issuing book:', error);
     res.status(500).json({ error: 'Failed to issue book' });
@@ -85,46 +88,55 @@ exports.addIssuedBook = async (req, res) => {
     }
   };
 
-
-  
-  // GET route to fetch all issued books (for admin)
-
-  // exports.getBookToAdmin= async (req, res) => {
-  //   try {
-  //     const adminIssues = await Issue.find().populate('userID', 'name email') // Populate user details
-  //       .populate('bookID', 'name author type available'); // Populate book details
-  //     res.json(adminIssues);
-  //   } catch (error) {
-  //     console.error('Error fetching admin issues:', error);
-  //     res.status(500).json({ error: 'Failed to fetch admin issues' });
-  //   }
-  // }
-
   exports.getBookToAdmin = async (req, res) => {
     const { status } = req.query; // Get the status query parameter
     try {
-        let adminIssues;
-
-        if (status === 'issued') {
-            // Fetch only issued books
-            adminIssues = await Issue.find({ returned: false })
-                .populate('userID', 'name email') // Populate user details
-                .populate('bookID', 'name author genre available'); // Populate book details
-        } else if (status === 'returned') {
-            // Fetch only returned books
-            adminIssues = await Return.find()
-                .populate('userID', 'name email') // Populate user details
-                .populate('bookID', 'name author genre available') // Populate book details
-                .select('userID bookID returnDate');
-        } 
-
-        res.json(adminIssues);
+      let adminIssues;
+  
+      if (status === "issued") {
+        // Fetch only issued books
+        adminIssues = await Issue.find({ returned: false })
+          .populate("userID", "name email")
+          .populate("bookID", "name author");
+      } else if (status === "returned") {
+        // Fetch only returned books
+        adminIssues = await Issue.find({ returned: true })
+          .populate("userID", "name email")
+          .populate("bookID", "name author")
+          .select("userID bookID returnDate issueDate");
+      } else if (status === "due") {
+        const today = new Date();
+        adminIssues = await Issue.find({
+          returned: false,
+          dueDate: { $lt: today },
+        })
+          .populate("userID", "name email")
+          .populate("bookID", "name author");
+  
+        // Add overdue days and fine calculation
+        adminIssues = adminIssues.map((issue) => {
+          const overdueDays = Math.ceil(
+            (today - new Date(issue.dueDate)) / (1000 * 60 * 60 * 24)
+          );
+          const finePerDay = 5; // Fine amount per overdue day
+          const fine = overdueDays * finePerDay;
+  
+          return {
+            ...issue.toObject(),
+            overdueDays,
+            fine,
+          };
+        });
+      }
+  
+      res.json(adminIssues || []);
     } catch (error) {
-        console.error('Error fetching admin issues:', error);
-        res.status(500).json({ error: 'Failed to fetch admin issues' });
+      console.error("Error fetching admin issues:", error);
+      res.status(500).json({ error: "Failed to fetch admin issues" });
     }
-};
-
+  };
+  
+  
   
 
   // exports.returnBook = async (req, res) => {
@@ -166,7 +178,7 @@ exports.addIssuedBook = async (req, res) => {
 
   //   }
   // }
-  
+
 exports.returnBook = async (req, res) => {
   try {
     const { issueId } = req.params;

@@ -44,6 +44,21 @@ const getStatistics = async (req, res) => {
           },
         },
       ]);
+
+      const monthlyDueBooks = await BookIssueModel.aggregate([
+        {
+          $match: {
+            returned: false,
+            dueDate: { $lt: new Date() }, // Due date has passed
+          },
+        },
+        {
+          $group: {
+            _id: { $month: '$dueDate' },
+            count: { $sum: 1 },
+          },
+        },
+      ]);
       
     const booksIssuedByMonth = monthlyIssuedBooks.reduce((acc, item) => {
       const monthName = getMonthName(item._id);
@@ -57,6 +72,12 @@ const getStatistics = async (req, res) => {
         return acc;
       }, {});
 
+      const booksDueByMonth = monthlyDueBooks.reduce((acc, item) => {
+        const monthName = getMonthName(item._id);
+        acc[monthName] = item.count;
+        return acc;
+      }, {});
+
     res.json({
       totalUsers,
       totalBooks: totalAvailableBooks,
@@ -64,6 +85,7 @@ const getStatistics = async (req, res) => {
       totalReturnedBooks,
       booksIssuedByMonth,
       booksReturnedByMonth,
+      booksDueByMonth,
     });
   } catch (error) {
     console.error('Error fetching statistics:', error);

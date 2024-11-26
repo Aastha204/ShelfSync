@@ -30,53 +30,52 @@ const UserIssues = () => {
 
   const handleReturnBook = async (issueId) => {
     try {
-      // Make the PUT request to return the book
       const response = await axios.put(
         `http://localhost:3001/api/issues/return/${issueId}`
       );
-      console.log("in try");
 
-      // Check if the response contains the success message
       if (
         response.status === 200 &&
         response.data.message === "Book returned successfully"
       ) {
-        toast.success("Book returned successfully"); // Display success message
+        toast.success("Book returned successfully");
 
-        // Find the returned book from the userIssues array
         const returnedBook = userIssues.find((issue) => issue._id === issueId);
 
-        // Update the returnedBooks state to add the returned book
         setReturnedBooks((prevBooks) => [...prevBooks, returnedBook]);
-
-        // Update userIssues state to remove the returned book
         setUserIssues((prevIssues) =>
           prevIssues.filter((issue) => issue._id !== issueId)
         );
       } else {
-        // Handle unexpected response (if the API doesn't return the expected success message)
         toast.error("Error: Unexpected response from server");
       }
     } catch (error) {
-      // Log the actual error for debugging purposes
       console.error("Error returning book:", error);
-
-      // Check if error response is available and show the message
       if (error.response) {
         toast.error(error.response?.data || "Error returning book");
       } else {
-        // If there's no response from the server, show a network error
         toast.error("Network error: Please try again later");
       }
     }
   };
+
+  const handleViewReceipt = (issueId) => {
+    // Find the issue with the matching issueId to get the associated receiptNo
+    const issue = userIssues.find((issue) => issue._id === issueId);
+    if (issue && issue.receiptNo) {
+      // Navigate with the correct receiptNo
+      navigate(`/invoice/${issue.receiptNo}`);
+    } else {
+      toast.error("Receipt not found for this issue");
+    }
+  };
+  
 
   return (
     <div
       className="min-h-screen bg-cover bg-center p-8"
       style={{ backgroundImage: "url('./images/issuebg.jpg')" }}
     >
-      {/* Back Button */}
       <button
         onClick={() => navigate("/userProfile")}
         className="fixed top-4 left-4 bg-brown-600 hover:bg-brown-800 text-white px-4 py-2 rounded shadow-md z-50"
@@ -99,6 +98,7 @@ const UserIssues = () => {
               <th className="p-4 text-left">Issue Date</th>
               <th className="p-4 text-left">Return Date</th>
               <th className="p-4 text-left">Action</th>
+              <th className="p-4 text-left">Receipt</th>
             </tr>
           </thead>
           <tbody className="text-white">
@@ -119,7 +119,6 @@ const UserIssues = () => {
                 <td className="p-4 text-left">
                   {issue.bookID ? issue.bookID.genre : "N/A"}
                 </td>
-
                 <td className="p-4 text-left">
                   {new Date(issue.issueDate).toLocaleDateString()}
                 </td>
@@ -132,6 +131,14 @@ const UserIssues = () => {
                     className="px-4 py-2 rounded text-white bg-red-500 hover:bg-red-700"
                   >
                     Return
+                  </button>
+                </td>
+                <td className="p-4 text-left">
+                  <button
+                    onClick={() => handleViewReceipt(issue._id)}
+                    className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-700"
+                  >
+                    View Receipt
                   </button>
                 </td>
               </tr>

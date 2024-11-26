@@ -246,45 +246,6 @@ const AdminProfilePage = () => {
       book.isbn.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // useEffect(() => {
-  //   if (activeSection === "dashboard") {
-  //     const ctx = document.getElementById("dashboardChart").getContext("2d");
-  //     new Chart(ctx, {
-  //       type: "bar",
-  //       data: {
-  //         labels: [
-  //           "Total Books",
-  //           "Books Issued",
-  //           "Books Returned",
-  //           "Books Left",
-  //         ],
-  //         datasets: [
-  //           {
-  //             label: "Library Analytics",
-  //             data: [
-  //               dashboardData.totalBooks,
-  //               dashboardData.booksIssued,
-  //               dashboardData.booksReturned,
-  //               dashboardData.booksLeft,
-  //             ],
-  //             backgroundColor: ["#8d6e63", "#a1887f", "#bcaaa4", "#d7ccc8"],
-  //             borderColor: "#4a3f35",
-  //             borderWidth: 2,
-  //           },
-  //         ],
-  //       },
-  //       options: {
-  //         responsive: true,
-  //         plugins: {
-  //           legend: {
-  //             position: "top",
-  //           },
-  //         },
-  //       },
-  //     });
-  //   }
-  // }, [activeSection]);
-
   const handleAddBookClick = () => {
     setShowAddBookForm(true);
   };
@@ -309,16 +270,21 @@ const AdminProfilePage = () => {
       // Depending on the status, adjust the URL accordingly
       url = `http://localhost:3001/api/issues/getBooks?status=${status}`;
     }
-    // Add more conditions if you have other sections for fetching data
-
-    // Fetch data only if URL is set
     if (url) {
       fetch(url)
         .then((response) => response.json())
-        .then((data) => setIssueReturnData(data))
+        .then((data) => {
+          if (status === "due") {
+            // Only set due books data
+            setIssueReturnData(data.filter((issue) => issue.overdueDays > 0)); // Ensure overdueDays are present
+          } else {
+            setIssueReturnData(data); // Set issued or returned books
+          }
+        })
         .catch((error) => console.error("Error fetching books:", error));
     }
   };
+  
 
   // UseEffect to fetch books data based on activeSection
   useEffect(() => {
@@ -352,9 +318,6 @@ const AdminProfilePage = () => {
           >
             Dashboard
           </li>
-          {/* <li onClick={() => handleSectionClick('bookManagement')} className={activeSection === 'bookManagement' ? 'active' : ''}>
-            Book Management
-          </li> */}
           <li>
             <a href="/add">Book Management</a>
           </li>
@@ -396,14 +359,8 @@ const AdminProfilePage = () => {
               <div className="profile-details">
                 <h3>Name: {loggedInAdminName}</h3>
                 <p>Email: {loggedInAdminEmail}</p>
-                {/* <p>Age: 20</p>
-                <p>Contact: +1234567890</p>
-                <p>Address: 123 Library Lane, City, Country</p>
-                <h4>Date of Birth: 01/01/1989</h4> */}
               </div>
             </div>
-
-            {/* To-Do List Section */}
             <div className="home1">
               <p className="text-white text-4xl font-bold typewriter">
                 Forgot a task? Write it down before it slips away!
@@ -420,11 +377,6 @@ const AdminProfilePage = () => {
                       className={`icon1 check ${todo.done ? "completed" : ""}`}
                       onClick={() => handleEdit(todo._id)}
                     />
-                    {/* Uncomment if edit functionality is needed */}
-                    {/* <BsPencilSquare
-                className="icon1 edit"
-                onClick={() => handleEdit(todo)}
-              /> */}
                     <BsFillTrashFill
                       className="icon1 delete"
                       onClick={() => handleDeletetask(todo._id)}
@@ -432,9 +384,7 @@ const AdminProfilePage = () => {
                   </div>
                 </div>
               ))}
-
               <div>
-                {/* Delete Confirmation Modal */}
                 {showDeleteConfirm && (
                   <div className="delete-modal">
                     <div className="modal-content">
@@ -461,7 +411,6 @@ const AdminProfilePage = () => {
         {activeSection === "dashboard" && (
           <div className="dashboard-section">
             <Dashboard/>
-            
           </div>
         )}
 
@@ -545,82 +494,102 @@ const AdminProfilePage = () => {
           </div>
         )}
 
+        
         {activeSection === "issueReturn" && (
           <div>
             <h2 className="section-title-issuereturn">
               Issue & Return Management
             </h2>
-
-            {/* Filter buttons */}
             <div className="filter-buttons">
-              <button
-                onClick={() => {
-                  setIssueFilterStatus("issued"); // Set filter status to 'issued'
-                }}
-                className={issueFilterStatus === "issued" ? "active" : ""}
-              >
-                Issued Books
-              </button>
-              <button
-                onClick={() => {
-                  setIssueFilterStatus("returned"); // Set filter status to 'issued'
-                }}
-                className={issueFilterStatus === "returned" ? "active" : ""}
-              >
-                Returned Books
-              </button>
-            </div>
+  <button
+    onClick={() => setIssueFilterStatus("issued")}
+    className={issueFilterStatus === "issued" ? "active" : ""}
+  >
+    Issued Books
+  </button>
+  <button
+    onClick={() => setIssueFilterStatus("returned")}
+    className={issueFilterStatus === "returned" ? "active" : ""}
+  >
+    Returned Books
+  </button>
+  <button
+    onClick={() => setIssueFilterStatus("due")}
+    className={issueFilterStatus === "due" ? "active" : ""}
+  >
+    Due Books
+  </button>
+</div>
 
-            <table className="queries-table">
-              <thead className="">
-                <tr>
-                  <th className="p-4 text-left">S.No.</th>
-                  <th className="p-4 text-left">User Name</th>
-                  <th className="p-4 text-left">User Email</th>
-                  <th className="p-4 text-left">Book Name</th>
-                  <th className="p-4 text-left">Author</th>
-                  <th className="p-4 text-left">
-                    {issueFilterStatus === "issued"
-                      ? "Issue Date"
-                      : "Return Date"}
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="">
-                {issueReturnData.map((issue, index) => (
-                  <tr key={issue._id}>
-                    <td className="p-4 text-left">{index + 1}</td>
-                    <td className="p-4 text-left">
-                      {issue.userID ? issue.userID.name : "N/A"}
-                    </td>
-                    <td className="p-4 text-left">
-                      {issue.userID ? issue.userID.email : "N/A"}
-                    </td>
-                    <td className="p-4 text-left">
-                      {issue.bookID ? issue.bookID.name : "N/A"}
-                    </td>
-                    <td className="p-4 text-left">
-                      {issue.bookID ? issue.bookID.author : "N/A"}
-                    </td>
-                    <td className="p-4 text-left">
-                      {issueFilterStatus === "issued"
-                        ? new Date(issue.issueDate).toLocaleDateString()
-                        : issue.returnDate
-                        ? new Date(issue.returnDate).toLocaleDateString()
-                        : "N/A"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+<table className="queries-table">
+  <thead>
+    <tr>
+      <th className="p-4 text-left">S.No.</th>
+      <th className="p-4 text-left">User Name</th>
+      <th className="p-4 text-left">User Email</th>
+      <th className="p-4 text-left">Book Name</th>
+      <th className="p-4 text-left">Author</th>
+      {issueFilterStatus === "issued" && (
+        <th className="p-4 text-left">Issue Date</th>
+      )}
+      {issueFilterStatus === "returned" && (
+        <th className="p-4 text-left">Return Date</th>
+      )}
+      {issueFilterStatus === "due" && (
+        <>
+          <th className="p-4 text-left">Due Date</th>
+          <th className="p-4 text-left">Overdue Days</th>
+          <th className="p-4 text-left">Fine</th>
+        </>
+      )}
+    </tr>
+  </thead>
+  <tbody>
+    {issueReturnData.map((issue, index) => (
+      <tr key={issue._id}>
+        <td className="p-4 text-left">{index + 1}</td>
+        <td className="p-4 text-left">
+          {issue.userID ? issue.userID.name : "N/A"}
+        </td>
+        <td className="p-4 text-left">
+          {issue.userID ? issue.userID.email : "N/A"}
+        </td>
+        <td className="p-4 text-left">
+          {issue.bookID ? issue.bookID.name : "N/A"}
+        </td>
+        <td className="p-4 text-left">
+          {issue.bookID ? issue.bookID.author : "N/A"}
+        </td>
+        {issueFilterStatus === "issued" && (
+          <td className="p-4 text-left">
+            {new Date(issue.issueDate).toLocaleDateString()}
+          </td>
         )}
+        {issueFilterStatus === "returned" && (
+          <td className="p-4 text-left">
+            {new Date(issue.returnDate).toLocaleDateString()}
+          </td>
+        )}
+        {issueFilterStatus === "due" && (
+          <>
+            <td className="p-4 text-left">
+              {new Date(issue.dueDate).toLocaleDateString()}
+            </td>
+            <td className="p-4 text-left">{issue.overdueDays}</td>
+            <td className="p-4 text-left">₹{issue.fine}</td>
+          </>
+        )}
+      </tr>
+    ))}
+  </tbody>
+</table>
 
+
+          </div>
+        )} 
         {activeSection === "UserQueries" && (
           <div className="user-queries-section">
             <h2 className="section-title-userquery">User Queries</h2>
-
-            {/* Filter buttons */}
             <div className="filter-buttons">
               <button
                 onClick={() => handleFilterChange("All")}
@@ -641,7 +610,6 @@ const AdminProfilePage = () => {
                 Unresponded
               </button>
             </div>
-
             <table className="queries-table">
               <thead>
                 <tr>
@@ -674,11 +642,9 @@ const AdminProfilePage = () => {
             </table>
           </div>
         )}
-
         <ToastContainer />
       </div>
     </div>
   );
 };
-
 export default AdminProfilePage;
