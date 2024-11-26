@@ -140,3 +140,50 @@
   margin-top: 20px;
 }
 
+.profile-button-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+}
+
+.profile-button {
+  background-color: #8b3630; /* Brown color theme */
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 7px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.profile-button:hover {
+  background-color: #66170b; /* Slightly darker brown for hover */
+  background-color:rgb(85, 14, 14);
+  box-shadow: 0 0 10px 5px rgb(204, 97, 82); /* Adds a yellow shadow */
+  font-size: 25px;
+}
+.sort-filter {
+  display: flex; /* Use flexbox for alignment */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Align vertically */
+  gap: 10px; /* Add space between the label and dropdown */
+  
+  margin-bottom: 20px;
+}
+
+.sort-filter label {
+  font-size: 18px; /* Adjust font size for better visibility */
+  color: #e4e1e1; /* Optional: Adjust label color */
+}
+
+.sort-filter select {
+  font-size: 16px; /* Match dropdown font size with label */
+  padding: 5px 10px; /* Add padding for better UI */
+  border: 1px solid #ccc; /* Optional: Add border for dropdown */
+  border-radius: 5px; /* Optional: Round the corners */
+  background-color: #fff; /* Optional: Set background color */
+  width:190px;
+}

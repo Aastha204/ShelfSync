@@ -6,6 +6,9 @@ import {ToastContainer} from 'react-toastify'
 import { FaQuestionCircle } from 'react-icons/fa';
 
 const ContactPage = () => {
+    useEffect(() => {
+        window.scrollTo(0, 0); // Scroll to the top of the page
+      }, []);
     
     const [scrollDirection, setScrollDirection] = useState("down"); // Initial arrow points down
     const [lastScrollY, setLastScrollY] = useState(0); // Track last scroll position

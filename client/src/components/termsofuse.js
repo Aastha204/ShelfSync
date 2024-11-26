@@ -1,7 +1,11 @@
 import React from "react";
 import "../styles/termsofuse.css";
+import { useEffect } from "react";
 
 const TermsOfUse = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  }, []);
   return (
     <div>
       <header className="terms-header">
