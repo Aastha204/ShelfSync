@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import LineChart from './LineChart';
+import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+// Register required components for Chart.js
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const Dashboard = () => {
   const [chartData, setChartData] = useState(null);
@@ -33,30 +45,24 @@ const Dashboard = () => {
           totalReturnedBooks,
         });
 
-        // Set data for the line chart
+        // Set data for the grouped bar chart
         setChartData({
-          labels: Object.keys(booksIssuedByMonth),
+          labels: Object.keys(booksIssuedByMonth), // Months as labels
           datasets: [
             {
               label: 'Books Issued',
               data: Object.values(booksIssuedByMonth),
-              backgroundColor: 'rgba(75, 192, 192, 0.2)',
-              borderColor: 'rgba(75, 192, 192, 1)',
-              borderWidth: 1,
+              backgroundColor: 'rgba(75, 192, 192, 0.6)',
             },
             {
               label: 'Books Returned',
               data: Object.values(booksReturnedByMonth),
-              backgroundColor: 'rgba(153, 102, 255, 0.2)',
-              borderColor: 'rgba(153, 102, 255, 1)',
-              borderWidth: 1,
+              backgroundColor: 'rgba(153, 102, 255, 0.6)',
             },
             {
               label: 'Books Due',
-              data: Object.values(booksDueByMonth), // Due books data
-              backgroundColor: 'rgba(255, 99, 132, 0.2)',
-              borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 1,
+              data: Object.values(booksDueByMonth),
+              backgroundColor: 'rgba(255, 99, 132, 0.6)',
             },
           ],
         });
@@ -79,7 +85,37 @@ const Dashboard = () => {
         <p>Total Issued Books: {statistics.totalIssuedBooks}</p>
         <p>Total Returned Books: {statistics.totalReturnedBooks}</p>
       </div>
-      <LineChart data={chartData} />
+      <Bar
+        data={chartData}
+        options={{
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Monthly Book Statistics',
+            },
+            legend: {
+              display: true,
+              position: 'top',
+            },
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Months',
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Number of Books',
+              },
+              beginAtZero: true,
+            },
+          },
+        }}
+      />
     </div>
   );
 };
