@@ -1,69 +1,19 @@
-// import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
-// import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
-
-// const AdminDashboard = () => {
-//   const [statistics, setStatistics] = useState(null);
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     const fetchStatistics = async () => {
-//       try {
-//         const response = await axios.get('http://localhost:3001/api/statistics');
-//         setStatistics(response.data);
-//       } catch (err) {
-//         setError('Failed to fetch statistics');
-//       }
-//     };
-
-//     fetchStatistics();
-//   }, []);
-
-//   if (error) {
-//     return <p>{error}</p>;
-//   }
-
-//   if (!statistics) {
-//     return <p>Loading...</p>;
-//   }
-
-//   const data = Object.keys(statistics.booksIssuedByMonth).map((month) => ({
-//     month,
-//     issued: statistics.booksIssuedByMonth[month],
-//     returned: statistics.booksReturnedByMonth?.[month] || 0,
-//   }));
-
-//   return (
-//     <div className="dashboard-container">
-//       <h1>Admin Dashboard</h1>
-//       <div className="statistics">
-//         <p>Total Users: {statistics.totalUsers}</p>
-//         <p>Total Books: {statistics.totalBooks}</p>
-//         <p>Total Issued Books: {statistics.totalIssuedBooks}</p>
-//         <p>Total Returned Books: {statistics.totalReturnedBooks}</p>
-//       </div>
-
-//       <div className="chart">
-//         <h2>Books Issued by Month</h2>
-//         <LineChart width={600} height={300} data={data}>
-//           <CartesianGrid stroke="#ccc" />
-//           <XAxis dataKey="month" />
-//           <YAxis />
-//           <Tooltip />
-//           <Line type="monotone" dataKey="issued" stroke="#8884d8" name="Issued Books"/>
-//           <Line type="monotone" dataKey="returned" stroke="#82ca9d" name="Returned Books" />
-//         </LineChart>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AdminDashboard;
-
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import LineChart from './LineChart';
+import { Bar } from 'react-chartjs-2';
+import "../styles/dashboard.css";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+// Register required components for Chart.js
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const Dashboard = () => {
   const [chartData, setChartData] = useState(null);
@@ -85,6 +35,7 @@ const Dashboard = () => {
           totalReturnedBooks,
           booksIssuedByMonth,
           booksReturnedByMonth,
+          booksDueByMonth,
         } = response.data;
 
         // Set statistics for display
@@ -95,23 +46,27 @@ const Dashboard = () => {
           totalReturnedBooks,
         });
 
-        // Set data for the line chart
+        // Set data for the grouped bar chart with shades of brown
         setChartData({
-          labels: Object.keys(booksIssuedByMonth),
+          labels: Object.keys(booksIssuedByMonth), // Months as labels
           datasets: [
             {
               label: 'Books Issued',
               data: Object.values(booksIssuedByMonth),
-              backgroundColor: 'rgba(75, 192, 192, 0.2)',
-              borderColor: 'rgba(75, 192, 192, 1)',
-              borderWidth: 1,
+              backgroundColor: '#743D2B', // Dark brown for books issued
+              barThickness: 50,  // Optional: to adjust the thickness of the bars
             },
             {
               label: 'Books Returned',
               data: Object.values(booksReturnedByMonth),
-              backgroundColor: 'rgba(153, 102, 255, 0.2)',
-              borderColor: 'rgba(153, 102, 255, 1)',
-              borderWidth: 1,
+              backgroundColor: '#B06C49', // Medium brown for books returned
+              barThickness: 50,  // Optional: to adjust the thickness of the bars
+            },
+            {
+              label: 'Books Due',
+              data: Object.values(booksDueByMonth),
+              backgroundColor: '#E0AB8B', // Lighter brown for books due
+              barThickness: 50,  // Optional: to adjust the thickness of the bars
             },
           ],
         });
@@ -126,7 +81,7 @@ const Dashboard = () => {
   if (!chartData) return <div>Loading...</div>;
 
   return (
-    <div>
+    <div className='dashboard-container'>
       <h2>Admin Dashboard</h2>
       <div className="statistics">
         <p>Total Users: {statistics.totalUsers}</p>
@@ -134,7 +89,80 @@ const Dashboard = () => {
         <p>Total Issued Books: {statistics.totalIssuedBooks}</p>
         <p>Total Returned Books: {statistics.totalReturnedBooks}</p>
       </div>
-      <LineChart data={chartData} />
+      <Bar
+        data={chartData}
+        options={{
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: 'Monthly Book Statistics',
+              font: {
+                size: 37, // Increase title font size
+              },
+              padding: {
+                top: 20,
+                bottom: 20,
+              },
+            },
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                font: {
+                  size: 16, // Increase legend font size
+                },
+              },
+            },
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Months',
+                font: {
+                  size: 18, // Increase x-axis title font size
+                },
+                padding: {
+                  top: 10,
+                  bottom: 10, // Adjust padding to provide more space
+                },
+              },
+              grid: {
+                display: false, // Hide grid lines for a cleaner look
+              },
+              stacked: false, // Important: Ensure bars are side by side, not stacked
+              ticks: {
+                font: {
+                  size: 14, // Increase x-axis tick font size
+                },
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Number of Books',
+                font: {
+                  size: 18, // Increase y-axis title font size
+                },
+                padding: {
+                  top: 10,
+                  bottom: 10, // Adjust padding to provide more space
+                },
+              },
+              beginAtZero: true,
+              grid: {
+                display: true, // Show grid lines for clarity
+              },
+              ticks: {
+                font: {
+                  size: 14, // Increase y-axis tick font size
+                },
+              },
+            },
+          },
+        }}
+      />
     </div>
   );
 };

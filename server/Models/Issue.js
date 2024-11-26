@@ -16,6 +16,7 @@ const issueSchema = new mongoose.Schema({
     required: true,
     ref: 'Book' // Reference to the book schema
   },
+  receiptNo: { type: mongoose.Schema.Types.ObjectId, ref: "Receipt" },
   issueDate: {
     type: Date,
     required: true,

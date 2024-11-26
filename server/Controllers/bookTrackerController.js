@@ -7,7 +7,7 @@ exports.getTotalIssued = async (req, res) => {
     try {
       const { userId } = req.params;
       const userIssues = await Issue.find({ userID: userId })
-        .populate('bookID', 'name author genre available').lean(); // Populate book details
+        .populate('bookID', 'name author genre available').select('issueDate bookID'); // Populate book details
   
       res.json(userIssues);
     } catch (error) {
