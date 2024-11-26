@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/receipt.css';
 
 const Receipt = () => {
   const [receipt, setReceipt] = useState(null); // State to store receipt details
   const { receiptNo } = useParams(); // Get receipt number from URL parameters
+  const navigate = useNavigate(); // Use navigate hook to navigate to another page
 
   // Fetch receipt data when component mounts or receiptNo changes
   useEffect(() => {
@@ -22,6 +23,11 @@ const Receipt = () => {
     fetchReceipt();
   }, [receiptNo]);
 
+  // Function to navigate to the issue page when close button is clicked
+  const handleClose = () => {
+    navigate('/issue'); // Navigate to the "issue" page (or replace with your route)
+  };
+
   // Show a loading message until the receipt data is loaded
   if (!receipt) {
     return (
@@ -33,7 +39,15 @@ const Receipt = () => {
 
   return (
     <div className="min-h-screen bg-brown-50 flex justify-center items-center py-10">
-      <div className="bg-white w-full max-w-4xl md:max-w-2xl sm:max-w-md border-4 border-brown-600 rounded-lg shadow-lg">
+      <div className="bg-white w-full max-w-4xl md:max-w-2xl sm:max-w-md border-4 border-brown-600 rounded-lg shadow-lg relative">
+        {/* Close Button */}
+        <button
+          onClick={handleClose}
+          className="absolute top-4 right-4 text-white bg-brown-600 rounded-full p-2 hover:bg-brown-700 transition-all text-3xl"
+        >
+          &times;
+        </button>
+
         {/* Header Section */}
         <div className="flex justify-between items-start sm:items-center flex-col sm:flex-row px-6 py-4 border-b-2 border-brown-600">
           <div>
