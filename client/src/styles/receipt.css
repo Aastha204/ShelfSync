@@ -31,7 +31,7 @@
 }
 
 .card-latest {
-    flex: 1 1 200px; /* Adjust the width based on your design */
+    flex: 1 1 200px; 
     max-width: 400px;
     max-height: 200px;
     border: 1px solid #420d0d;
@@ -75,15 +75,15 @@
 }
 
 .view-button {
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50; 
 }
 
 .delete-button {
-    background-color: #f44336; /* Red */
+    background-color: #f44336; 
 }
 
 .view-more-button {
-    background-color: #7e1e18; /* Blue */
+    background-color: #7e1e18; 
     color: white;
     border: none;
     padding: 10px 20px;

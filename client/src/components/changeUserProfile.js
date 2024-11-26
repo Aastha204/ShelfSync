@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/changeUserProfile.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,8 +11,42 @@ const FormComponent = () => {
         gender: '',
         dob: ''
     });
+    const [isLoading, setIsLoading] = useState(true);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const userEmail = localStorage.getItem('loggedInUserEmail');
+        if (!userEmail) {
+            alert('User email not found');
+            return;
+        }
+    
+        // Fetch user data on component load
+        fetch(`http://localhost:3001/api/userProfile?email=${userEmail}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Server responded with ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                const formattedDob = data.dob ? new Date(data.dob).toISOString().split('T')[0] : '';
+                setFormData({
+                    phone: data.phoneNo || '',
+                    address: data.address || '',
+                    gender: data.gender || '',
+                    dob: formattedDob // Set dob in YYYY-MM-DD format
+                });
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                console.error('Error fetching user data:', error);
+                alert('Failed to fetch user data. Please try again.');
+                setIsLoading(false);
+            });
+    }, []);
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -26,7 +60,6 @@ const FormComponent = () => {
         e.preventDefault();
 
         const userEmail = localStorage.getItem('loggedInUserEmail');
-
         if (!userEmail) {
             alert('User email not found');
             return;
@@ -39,10 +72,9 @@ const FormComponent = () => {
         const monthDifference = today.getMonth() - birthDate.getMonth();
 
         if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
-            age--; // Adjust if the birthday hasn't occurred yet this year
+            age--;
         }
 
-        // Include calculated age in the form data
         const updatedFormData = { ...formData, age, email: userEmail };
 
         fetch(`http://localhost:3001/api/userProfile`, {
@@ -53,30 +85,36 @@ const FormComponent = () => {
             },
             body: JSON.stringify(updatedFormData)
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Server responded with ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('User profile updated successfully:', data);
-            alert('Profile updated successfully!');
-            navigate('/userprofile'); // Navigate after successful form submission
-        })
-        .catch(error => {
-            console.error('Error updating profile:', error);
-            alert('Failed to update profile. Please try again.');
-        });
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Server responded with ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log('User profile updated successfully:', data);
+                alert('Profile updated successfully!');
+                navigate('/userprofile');
+            })
+            .catch((error) => {
+                console.error('Error updating profile:', error);
+                alert('Failed to update profile. Please try again.');
+            });
     };
 
     const navigateHome = () => {
         navigate('/userprofile');
     };
 
+    if (isLoading) {
+        return <div>Loading user details...</div>;
+    }
+
     return (
         <div className="background-wrapper">
-            <button className="home-button" onClick={navigateHome}><FontAwesomeIcon icon={faUser} /> Profile</button>
+            <button className="home-button" onClick={navigateHome}>
+                <FontAwesomeIcon icon={faUser} /> Profile
+            </button>
             <div className="form-container">
                 <h2>User Details Form</h2>
                 <form onSubmit={handleSubmit}>
