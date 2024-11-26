@@ -8,6 +8,7 @@ import NewReleases from "./newRelease";
 import BestAuthor from "./bestauthorbooks";
 // import BestFictional from './listofbestfictionbooks';
 // import Amazonseller from './amazonbestsellersbooks';
+import { ToastContainer, toast } from "react-toastify";
 import Children from "./children";
 import History from "./history";
 import Fiction from "./fiction";
@@ -52,6 +53,7 @@ const LibraryManagementTextOverlay = () => {
   }, []);
 
   const handleLogout = () => {
+    toast.success("Logged Out Successfully!");
     localStorage.clear();
     setIsLoggedIn(false);
     setUserType("");
@@ -176,6 +178,7 @@ const LibraryManagementTextOverlay = () => {
     Login
   </Link>
 )}
+<ToastContainer />
 
           </div>
         </nav>
@@ -254,9 +257,9 @@ const LibraryManagementTextOverlay = () => {
       <div id="chooseus">
         <ChooseUs />
       </div>
-      <div id="review">
+      {/* <div id="review">
         <ReviewCard />
-      </div>
+      </div> */}
       <div id="footer">
         <Footer />
       </div>

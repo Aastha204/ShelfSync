@@ -1,6 +1,6 @@
 .manage-receipt-container {
     padding: 20px;
-    background-color: #f4efe7; /* Light beige for the background */
+    background-color: #944947; /* Light beige for the background */
     min-height: 100vh;
     font-family: 'Arial', sans-serif;
   }
@@ -139,4 +139,33 @@
     background-color: #6d4c41; /* Medium brown */
   }
   
+  .manage-receipt-container h1 {
+    text-align: center;
+    color: #501909; /* Medium brown to match the theme */
+    margin-bottom: 20px;
+  }
+  .delete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background-color: #b22222; /* Firebrick for delete button */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+  }
   
+  .delete-button:hover {
+    background-color: #8b0000; /* Dark red for hover state */
+    transform: scale(1.05);
+  }
+  
+  .delete-button svg {
+    fill: #fff; /* Icon color */
+  }
+    

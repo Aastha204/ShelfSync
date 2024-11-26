@@ -71,37 +71,37 @@ function BookType() {
       <div className="book-types">
         <div className="icons">
           <div className="icon-container">
-            <a href="#children">
+            <a href="/books">
               <div className="icon children"></div>
               <span>Children</span>
             </a>
           </div>
           <div className="icon-container">
-            <a href="#history">
+            <a href="/books">
               <div className="icon history"></div>
               <span>History</span>
             </a>
           </div>
           <div className="icon-container">
-            <a href="#fiction">
+            <a href="/books">
               <div className="icon fiction"></div>
               <span>Fiction</span>
             </a>
           </div>
           <div className="icon-container">
-            <a href="#thriller">
+            <a href="/books">
               <div className="icon thriller"></div>
               <span>Thriller</span>
             </a>
           </div>
           <div className="icon-container">
-            <a href="#romance">
+            <a href="/books">
               <div className="icon romance"></div>
               <span>Romance</span>
             </a>
           </div>
           <div className="icon-container">
-            <a href="#comics">
+            <a href="/books">
               <div className="icon comics"></div>
               <span>Comics</span>
             </a>

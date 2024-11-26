@@ -5,6 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "../styles/book.css";
 import { FaSearch, FaHome, FaInfoCircle } from "react-icons/fa";
 import BookCards from "./cards";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const Filter = () => {
   const [books, setBooks] = useState([]);
@@ -15,6 +17,10 @@ const Filter = () => {
   const [bookName, setBookName] = useState("");
   const [authorName, setAuthorName] = useState("");
   const [message, setMessage] = useState("");
+
+  // New state for modal visibility and content
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
 
   // Filter states
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -165,6 +171,18 @@ const Filter = () => {
       }
     }
   };
+   // Function to open the modal with book info
+   const openModal = (book) => {
+    setModalContent(book);
+    setModalVisible(true);
+  };
+
+  // Close the modal
+  const closeModal = () => {
+    setModalVisible(false);
+    setModalContent(null);
+  };
+
 
   const resetFilters = () => {
     setSelectedCategory("");
@@ -355,9 +373,9 @@ const Filter = () => {
                 <span>{book.name}</span>
                 <FaInfoCircle
                   className="info-icon"
-                  size={24}
-                  title="Click for more info"
-                  onClick={() => alert(`More info about ${book.name}`)}
+                        size={20}
+                        title="Click for more info"
+                        onClick={() => openModal(book)} // Open modal with book details
                 />
               </h3>
 
@@ -385,6 +403,36 @@ const Filter = () => {
             </div>
           </div>
         ))}
+        {/* Modal for Book Info */}
+      {modalVisible && (
+        <div className="modal">
+          
+            <div className="modal-left">
+              <img
+                src={modalContent.bookCoverImageUrl || 'placeholder.jpg'}
+                alt={modalContent.name}
+                className="modal-book-image"
+              />
+            </div>
+            <div className="modal-right">
+              <h1>{modalContent.name}</h1>
+              <h3>{modalContent.author}</h3>
+              <h5>{modalContent.genre}</h5>
+              <p>{modalContent.description}</p>
+              <p>₹{modalContent.ratePerMonth}</p>
+              <p> {Array(modalContent.star).fill('⭐').map((star, index) => (
+                <span key={index}>{star}</span>
+              ))}</p>
+              <button onClick={() => handleIssueBook(modalContent._id)} className="issue-btn">
+                Issue Book
+              </button>
+            </div>
+            <button onClick={closeModal} className="close-modal-btn">
+            <FontAwesomeIcon icon={faTimes} />
+            </button>
+          </div>
+        
+      )}
         <ToastContainer />
       </div>
     </div>
