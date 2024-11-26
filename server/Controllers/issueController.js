@@ -50,6 +50,7 @@ exports.addIssuedBook = async (req, res) => {
       userEmail:user.email,
       bookName: book.name,
       authorName: book.author,
+      price: book.ratePerMonth,
       issueDate: issueDate,  // Default to current date if no existing issue
       returnDate: returnDate,  // Default to null if no existing issue
     });

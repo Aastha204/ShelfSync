@@ -38,70 +38,73 @@ const Receipt = () => {
   }
 
   return (
-    <div className="min-h-screen bg-brown-50 flex justify-center items-center py-10">
-      <div className="bg-white w-full max-w-4xl md:max-w-2xl sm:max-w-md border-4 border-brown-600 rounded-lg shadow-lg relative">
-        {/* Close Button */}
+    <div className="min-h-screen flex flex-col justify-center items-center py-5 bg-custom">
+      {/* Receipt Box */}
+      <div className="absolute top-4 right-4">
         <button
-          onClick={handleClose}
-          className="absolute top-4 right-4 text-white bg-brown-600 rounded-full p-2 hover:bg-brown-700 transition-all text-3xl"
+          onClick={() => navigate(-1)}
+          className="px-8 py-3 bg-brown-800 text-white rounded-lg shadow-md text-lg hover:bg-red-700"
         >
-          &times;
+          Close
         </button>
-
-        {/* Header Section */}
-        <div className="flex justify-between items-start sm:items-center flex-col sm:flex-row px-6 py-4 border-b-2 border-brown-600">
+      </div>
+      <div className="bg-white w-full max-w-4xl md:max-w-3xl sm:max-w-lg border-4 border-brown-600 rounded-lg shadow-lg p-3">
+        {/* Header */}
+        <div className="flex justify-between items-start sm:items-center flex-col sm:flex-row border-b-2 border-brown-600 pb-4">
+          
           <div>
-            <h2 className="text-2xl font-bold text-brown-700">Receipt</h2>
-            <p className="text-sm text-gray-500">Issued by:</p>
-            <p className="text-sm text-gray-700">ShelfSync Library Management System</p>
+            <h2 className="text-3xl font-extrabold text-brown-700">Receipt <br></br> from ShelfSync</h2>
+           
           </div>
-          <div className="text-right mt-4 sm:mt-0">
-            <p className="text-sm text-gray-500">Receipt No.</p>
-            <p className="text-sm text-gray-700 font-bold">{receipt.receiptNo}</p>
-            <p className="text-sm text-gray-500 mt-2">Borrower Name</p>
-            <p className="text-sm text-gray-700">{receipt.userName}</p>
+          <div className="text-right mt-6 sm:mt-0">
+            <p className="text-base text-gray-500">Receipt No.</p>
+            <p className="text-lg font-semibold text-gray-700">{receipt.receiptNo}</p>
+            <p className="text-base text-gray-500 mt-4">Borrower's Name</p>
+            <p className="text-lg font-semibold text-gray-700">{receipt.userName}</p>
           </div>
         </div>
 
-        {/* Receipt Details */}
-        <div className="px-6 py-4">
-          <div className="mb-4">
-            <label className="block text-sm text-gray-500">Book Name</label>
-            <p className="border-b border-brown-400 w-full mt-2 text-gray-700">{receipt.bookName}</p>
+        {/* Body */}
+        <div className="py-6">
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-600">Book Name</label>
+            <p className="text-lg text-gray-800 border-b border-brown-400 w-full mt-2">{receipt.bookName}</p>
           </div>
-          <div className="mb-4">
-            <label className="block text-sm text-gray-500">Author Name</label>
-            <p className="border-b border-brown-400 w-full mt-2 text-gray-700">{receipt.authorName}</p>
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-600">Book Author Name</label>
+            <p className="text-lg text-gray-800 border-b border-brown-400 w-full mt-2">{receipt.authorName || 'Unknown Author'}</p>
+          </div>
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-600">Price of Book</label>
+            <p className="text-lg text-gray-800 border-b border-brown-400 w-full mt-2">{receipt.price || 'Not Available'}</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm text-gray-500">Issue Date</label>
-              <p className="border-b border-brown-400 w-full mt-2 text-gray-700">
+              <label className="block text-lg font-medium text-gray-600">Issue Date</label>
+              <p className="text-lg text-gray-800 border-b border-brown-400 w-full mt-2">
                 {new Date(receipt.issueDate).toLocaleDateString()}
               </p>
             </div>
             <div>
-              <label className="block text-sm text-gray-500">Return Date</label>
-              <p className="border-b border-brown-400 w-full mt-2 text-gray-700">
-                {receipt.returnDate
-                  ? new Date(receipt.returnDate).toLocaleDateString()
-                  : 'Not Returned'}
+              <label className="block text-lg font-medium text-gray-600">Return Date</label>
+              <p className="text-lg text-gray-800 border-b border-brown-400 w-full mt-2">
+                {receipt.returnDate ? new Date(receipt.returnDate).toLocaleDateString() : 'Not Returned'}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Footer Section */}
-        <div className="px-6 py-4 border-t-2 border-brown-600 flex flex-col sm:flex-row justify-between items-start sm:items-center">
-          <div className="text-sm text-gray-600">
-            <p>Email: <a href="mailto:ShelfSync@gmail.com" className="text-brown-600">ShelfSync@gmail.com</a></p>
-            <p>Phone: +91 1234567890</p>
-            <p>Address: Chitkara University, Rajpura, Punjab</p>
+        {/* Footer */}
+        <div className="pt-6 border-t-2 border-brown-600 flex flex-col sm:flex-row justify-between items-start sm:items-center">
+          <div className="text-base text-gray-600">
+            <p>ShelfSync@gmail.com</p>
+            <p>+91 1234567890</p>
+            <p>Chitkara University, Rajpura, Punjab</p>
           </div>
-          <div className="text-right mt-4 sm:mt-0">
-            <p className="font-semibold text-gray-600">Need Assistance?</p>
-            <p className="text-sm text-brown-600">shelfSync.support@gmail.com</p>
+          <div className="text-right mt-6 sm:mt-0">
+            <p className="font-bold text-lg text-gray-700">Librarian Signature</p>
+            <p className="border-b border-brown-400 w-48 mt-4"></p>
           </div>
         </div>
       </div>
