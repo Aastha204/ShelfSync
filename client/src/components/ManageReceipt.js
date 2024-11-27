@@ -27,106 +27,111 @@ const ManageReceipt = () => {
   }, []);
 
   const downloadReceipt = (receipt) => {
-    // Updated HTML content for the receipt with improved styling
     const receiptHTML = `
       <div style="
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh; /* Full viewport height */
-        background-color: #fff; /* White background for PDF */
+        font-family: 'Roboto', Arial, sans-serif;
+        max-width: 520px;
+        margin: 50px auto;
+        padding: 25px 30px;
+        border-radius: 16px;
+        background-color: #f5f5dc; /* Beige background */
+        color: #3e2723; /* Dark brown text for contrast */
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
       ">
+        <!-- Header Section -->
         <div style="
-          font-family: 'Roboto', Arial, sans-serif;
-          max-width: 600px;
-          padding: 30px;
-          border: 2px solid #8b4513;
-          border-radius: 10px;
-          background-color: #fffaf0; /* Light beige background */
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          text-align: center;
+          padding: 20px 0;
+          border-bottom: 2px solid #8b5e3c;
+          margin-bottom: 20px;
         ">
           <h2 style="
-            text-align: center;
-            color: #8b4513;
             font-size: 28px;
-            margin-bottom: 20px;
-          ">
-            📜 Receipt
-          </h2>
-  
-          <!-- From and Borrower's Name Section -->
-          <div style="
-            margin-bottom: 20px;
-            font-size: 16px;
-            color: #333;
-          ">
-            <p><strong>From:</strong> ShelfSync Library</p>
-            <p><strong>Borrower's Name:</strong> ${receipt.userName}</p>
-            <p><strong>Receipt No:</strong> ${receipt.receiptNo}</p>
-          </div>
-  
-          <!-- Book Information Section -->
-          <div style="
-            margin-bottom: 20px;
-            font-size: 16px;
-            color: #333;
-          ">
-            <p><strong>Book Name:</strong> ${receipt.bookName}</p>
-            <p><strong>Book Author:</strong> ${receipt.authorName || 'Unknown Author'}</p>
-          </div>
-  
-          <!-- Dates Section -->
-          <div style="
-            display: flex;
-            justify-content: space-between;
-            font-size: 16px;
-            color: #333;
-          ">
-            <div>
-              <p><strong>Issue Date:</strong> ${new Date(receipt.issueDate).toLocaleDateString()}</p>
-            </div>
-            <div>
-              <p><strong>Return Date:</strong> ${
-                receipt.returnDate ? new Date(receipt.returnDate).toLocaleDateString() : 'Not Returned'
-              }</p>
-            </div>
-          </div>
-  
-          <hr style="
-            margin: 20px 0;
-            border-top: 2px solid #8b4513;
-          " />
-  
-          <!-- Footer Section with Contact Info -->
-          <div style="
-            text-align: center;
+            color: #8b5e3c; /* Brown for the header */
+            font-weight: bold;
+            letter-spacing: 1px;
+          ">📜 Library Receipt</h2>
+          <p style="
             font-size: 14px;
-            color: #555;
-          ">
-            <p>ShelfSync@gmail.com</p>
-            <p>+91 1234567890</p>
-            <p>Chitkara University, Rajpura, Punjab</p>
-          </div>
+            color: #6d4c41;
+          ">Your trusted library partner</p>
+        </div>
+  
+        <!-- Issued Information -->
+        <div style="
+          background: #faf3e0; /* Light beige for sections */
+          border-radius: 12px;
+          padding: 15px;
+          margin-bottom: 20px;
+          border: 1px solid #8b5e3c;
+        ">
+          <p style="margin: 5px 0;">
+            <strong>Issued By:</strong> ShelfSync Library
+          </p>
+          <p style="margin: 5px 0;">
+            <strong>Borrower's Name:</strong> ${receipt.userName}
+          </p>
+          <p style="margin: 5px 0;">
+            <strong>Receipt No:</strong> ${receipt.receiptNo}
+          </p>
+        </div>
+  
+        <!-- Book Details -->
+        <div style="
+          background: #fdf8f0; /* Subtle beige contrast */
+          border-radius: 12px;
+          padding: 15px;
+          margin-bottom: 20px;
+          border: 1px solid #8b5e3c;
+          box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        ">
+          <p style="margin: 8px 0;">
+            📚 <strong>Book Name:</strong> ${receipt.bookName}
+          </p>
+          <p style="margin: 8px 0;">
+            ✍️ <strong>Author:</strong> ${receipt.authorName || 'Unknown Author'}
+          </p>
+          <p style="margin: 8px 0;">
+            🗓️ <strong>Issue Date:</strong> ${new Date(receipt.issueDate).toLocaleDateString()}
+          </p>
+          <p style="margin: 8px 0;">
+            🗓️ <strong>Return Date:</strong> ${receipt.returnDate ? new Date(receipt.returnDate).toLocaleDateString() : 'Not Returned'}
+          </p>
+          <p style="margin: 8px 0;">
+            💰 <strong>Price:</strong> ₹${receipt.price ? parseFloat(receipt.price).toFixed(2) : 'N/A'}
+          </p>
+        </div>
+  
+        <!-- Footer Section -->
+        <div style="
+          text-align: center; 
+          border-top: 2px solid #8b5e3c; 
+          padding-top: 15px;
+        ">
+          <p style="margin: 5px 0; font-size: 16px; color: #8b5e3c; font-weight: bold;">
+            📍 Contact Us
+          </p>
+          <p style="margin: 5px 0; font-size: 14px;">Email: <strong>ShelfSync@gmail.com</strong> | Phone: <strong>+91 1234567890</strong></p>
+          <p style="margin: 5px 0; font-size: 14px;">Chitkara University, Rajpura, Punjab</p>
         </div>
       </div>
     `;
   
-    // Generate PDF with html2pdf settings
     const options = {
       filename: `receipt_${receipt.receiptNo}.pdf`,
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' },
-      margin: [20, 20, 20, 20], // Add margin to the page
     };
   
-    html2pdf()
-      .set(options)
-      .from(receiptHTML)
-      .save();
+    html2pdf().set(options).from(receiptHTML).save();
   };
+  
+  
+  
+  
   const navigateHome = () => {
     navigate('/userprofile');
-};
+};  
 
   return (
     <div className="manage-receipt-container">

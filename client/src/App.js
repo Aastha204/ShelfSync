@@ -45,6 +45,7 @@ import DueBooks from './components/DueBooks';
 import TermsOfUse from './components/termsofuse';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import  Receipt from './components/Receipt';
+import ProtectedRoute from "./components/protectedroute";
 
 
 
@@ -54,7 +55,8 @@ import  Receipt from './components/Receipt';
 // };
 
 function App() {
-   
+  const isAuthenticated = localStorage.getItem("isLoggedIn") === "true";
+  const userRole = localStorage.getItem("userRole"); // Example: "admin" or "user"
   return (
     <div className="App">
       
@@ -85,7 +87,20 @@ function App() {
         <Route path="/thriller" element={<Thriller/>}/>
         <Route path="/romance" element={<Romance/>}/>
         <Route path="/comics" element={<Comics/>}/>
+        <Route path="/protected" element={<ProtectedRoute/>}/>
         <Route path="/admin" element={<AdminProfilePage/>}/>
+        
+        {/* <Route
+          path="/admin"
+          element={
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              userRole={userRole}
+            >
+              <AdminProfilePage />
+            </ProtectedRoute>
+             }
+             /> */}
         <Route path='/add' element={<AddBook/>}/>
         <Route path='/optioncards' element={<OptionCards/>}/>
        <Route path='/dashboard' element={<Dashboard/>}/>

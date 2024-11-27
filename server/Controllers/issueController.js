@@ -50,6 +50,7 @@ exports.addIssuedBook = async (req, res) => {
       userEmail:user.email,
       bookName: book.name,
       authorName: book.author,
+      price: book.ratePerMonth,
       issueDate: issueDate,  // Default to current date if no existing issue
       returnDate: returnDate,  // Default to null if no existing issue
     });
@@ -98,12 +99,13 @@ exports.addIssuedBook = async (req, res) => {
         adminIssues = await Issue.find({ returned: false })
           .populate("userID", "name email")
           .populate("bookID", "name author");
-      } else if (status === "returned") {
-        // Fetch only returned books
-        adminIssues = await Issue.find({ returned: true })
-          .populate("userID", "name email")
-          .populate("bookID", "name author")
-          .select("userID bookID returnDate issueDate");
+      }else if (status === "returned") {
+        // Fetch only returned books using the Return model
+        adminIssues = await Return.find({})
+          .populate("userID", "name email") // Populate user details
+          .populate("bookID", "name author") // Populate book details
+          .select("userID bookID returnDate"); // Select only relevant fields
+        console.log("Fetched Returned Books:", adminIssues);
       } else if (status === "due") {
         const today = new Date();
         adminIssues = await Issue.find({

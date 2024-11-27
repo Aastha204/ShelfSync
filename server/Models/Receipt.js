@@ -6,6 +6,7 @@ const receiptSchema = new mongoose.Schema({
   userEmail:{type:String,required:true},
   bookName: { type: String, required: true },
   authorName: { type: String, required: true },
+  price:{type: Number,required:true},
   receiptNo: { 
     type: Number, 
     unique: true 

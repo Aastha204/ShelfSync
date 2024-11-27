@@ -89,8 +89,8 @@ const BookManager = () => {
       return;
     }
 
-    if (bookData.available < 0) {
-      toast.error("Number of books available cannot be negative");
+    if (bookData.available <= 0) {
+      toast.error("Number of books available cannot be negative or zero");
       return;
     }
 
