@@ -7,9 +7,10 @@ const User = require('../Models/User');
 const Return = require('../Models/Return');
 const Receipt = require('../Models/Receipt');
 const issue=require('../Models/Issue')
+const nodemailer = require('nodemailer');
 
 
-// POST route to issue a book
+
 exports.addIssuedBook = async (req, res) => {
   const { userEmail, bookID } = req.body;
 
@@ -46,13 +47,13 @@ exports.addIssuedBook = async (req, res) => {
     returnDate.setMonth(issueDate.getMonth() + 1);
 
     const receipt = new Receipt({
-      userName: user.name,  // Assuming userName is same as userEmail for now, you may want to pull it from a user model
-      userEmail:user.email,
+      userName: user.name,
+      userEmail: user.email,
       bookName: book.name,
       authorName: book.author,
       price: book.ratePerMonth,
-      issueDate: issueDate,  // Default to current date if no existing issue
-      returnDate: returnDate,  // Default to null if no existing issue
+      issueDate: issueDate,
+      returnDate: returnDate,
     });
 
     // Save receipt
@@ -68,12 +69,104 @@ exports.addIssuedBook = async (req, res) => {
     });
 
     await newIssue.save();
-    res.json({ message: 'Book issued successfully',receiptNo: receipt.receiptNo  });
+
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail', // Use your email service
+      auth: {
+        user: process.env.EMAIL_USER, // Environment variable for sender email
+        pass: process.env.EMAIL_PASS, // Environment variable for sender email password
+      },
+    });
+
+    // Send confirmation email to user
+    const mailOptions = {
+      from: '"ShelfSync" <' + process.env.EMAIL_USER + '>',
+      to: user.email,
+      subject: 'Book Issued Successfully',
+      text: `Dear ${user.name},\n\nYou have successfully issued the book "${book.name}" by ${book.author}.\n\nIssue Date: ${issueDate.toLocaleDateString()}\nReturn Date: ${returnDate.toLocaleDateString()}\nSee Your Receipt <a href="http://localhost:3000/issue">here</a>\n\nThank you for using <h2>ShelfSync</h2>`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log('Error sending email:', error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
+    res.json({ message: 'Book issued successfully', receiptNo: receipt.receiptNo });
   } catch (error) {
     console.error('Error issuing book:', error);
     res.status(500).json({ error: 'Failed to issue book' });
   }
 };
+
+
+// // POST route to issue a book
+// exports.addIssuedBook = async (req, res) => {
+//   const { userEmail, bookID } = req.body;
+
+//   try {
+//     // Find the user's ObjectId by their email
+//     const user = await User.findOne({ email: userEmail });
+//     if (!user) {
+//       return res.status(404).json({ error: 'User not found' });
+//     }
+
+//     // Check if the book is already issued by this user
+//     const existingIssue = await Issue.findOne({ userID: user._id, bookID, returned: false });
+//     if (existingIssue) {
+//       return res.status(400).json({ error: 'Book already issued by you and not yet returned' });
+//     }
+
+//     // Decrease the available count by 1 if the book is available
+//     const book = await Book.findById(bookID);
+//     if (!book || book.available <= 0) {
+//       return res.status(400).json({ error: 'Book is not available for issue' });
+//     }
+
+//     book.available -= 1; // Reduce available count
+//     book.issuedTo = {
+//       name: user.name,
+//       email: user.email,
+//     };
+//     await book.save(); // Save the updated book
+
+//     const issueDate = existingIssue ? existingIssue.issueDate : new Date(); // Default to current date if no existing issue
+
+//     // Calculate the returnDate (one month after the issueDate)
+//     const returnDate = new Date(issueDate); // Create a copy of the issueDate
+//     returnDate.setMonth(issueDate.getMonth() + 1);
+
+//     const receipt = new Receipt({
+//       userName: user.name,  // Assuming userName is same as userEmail for now, you may want to pull it from a user model
+//       userEmail:user.email,
+//       bookName: book.name,
+//       authorName: book.author,
+//       price: book.ratePerMonth,
+//       issueDate: issueDate,  // Default to current date if no existing issue
+//       returnDate: returnDate,  // Default to null if no existing issue
+//     });
+
+//     // Save receipt
+//     await receipt.save();
+
+//     // Create the issue if no previous record exists
+//     const newIssue = new Issue({
+//       userID: user._id,
+//       bookID,
+//       receiptNo: receipt._id, // Store the receiptNo in the Issue document
+//       issueDate,
+//       returnDate,
+//     });
+
+//     await newIssue.save();
+//     res.json({ message: 'Book issued successfully',receiptNo: receipt.receiptNo  });
+//   } catch (error) {
+//     console.error('Error issuing book:', error);
+//     res.status(500).json({ error: 'Failed to issue book' });
+//   }
+// };
 
 
   exports.getBookToUser = async (req, res) => {
@@ -212,12 +305,39 @@ exports.returnBook = async (req, res) => {
       await book.save();
     }
 
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail', // Use your email service
+      auth: {
+        user: process.env.EMAIL_USER, // Environment variable for sender email
+        pass: process.env.EMAIL_PASS, // Environment variable for sender email password
+      },
+    });
+
+
+    // Send confirmation email to user
+    const mailOptions = {
+      from: '"ShelfSync" <' + process.env.EMAIL_USER + '>',
+      to: issue.userID.email,
+      subject: 'Book Returned Successfully',
+      text: `Dear ${issue.userID.name},\n\nYou have successfully returned the book "${book.name}" by ${book.author}.\n\nReturn Date: ${new Date().toLocaleDateString()}\n\nThank you for using ShelfSync`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log('Error sending email:', error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
     // Construct optional receipt data
     const receiptData = {
       userName: issue.userID.name || 'Unknown User',
       bookName: issue.bookID.name || 'Unknown Book',
       returnDate: new Date().toLocaleDateString(),
     };
+
+    
 
     res.json({ message: 'Book returned successfully', returnedBook, receiptData });
   } catch (error) {

@@ -67,9 +67,7 @@ const MemberProfile = () => {
     }, 1000);
   };
 
-  const handleAll = () => {
-    navigate("/books");
-  };
+  
 
   return (
     <div className="userprofile-profile-page">
@@ -116,8 +114,8 @@ const MemberProfile = () => {
               </p>
             </div>
             <div>
-              <p>Address</p>
-              <p>{userDetails.address || "Address not provided"}</p>
+              <p>Profession</p>
+              <p>{userDetails.address || "Profession not provided"}</p>
             </div>
           </div>
           <div className="userprofile-lottie-container">

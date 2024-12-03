@@ -145,8 +145,15 @@ const BookTracker = () => {
       "Due Date",
       "Overdue Days",
       "Fine",
+      "Action",
     ],
   };
+  const handlePayFine = (bookId) => {
+    // Implement the logic to process the payment for the fine
+    console.log(`Pay fine for book with ID: ${bookId}`);
+    // You can trigger an API call or navigate to a payment page here
+  };
+
 
   const renderTable = () => {
     if (!selectedCard) return null;
@@ -206,6 +213,7 @@ const BookTracker = () => {
                     </>
                   )}
 
+                  
                   {selectedCard === "duebooks" && (
                     <>
                       <td>
@@ -215,6 +223,17 @@ const BookTracker = () => {
                       </td>
                       <td>{row.overdueDays || "N/A"}</td>
                       <td>{row.fine ? `₹${row.fine}` : "₹0"}</td>
+                      <td>
+                        {/* Add "Pay Fine" button if there's a fine */}
+                        {row.fine > 0 && (
+                          <button
+                            className="pay-fine-button-booktrack"
+                            onClick={() => handlePayFine(row._id)} // Pass the book ID to handle payment
+                          >
+                            Pay Fine
+                          </button>
+                        )}
+                      </td>
                     </>
                   )}
 

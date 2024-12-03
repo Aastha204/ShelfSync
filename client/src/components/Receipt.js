@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/receipt.css';
+import { FaDownload, FaEye, FaTrashAlt } from "react-icons/fa";
+import html2pdf from "html2pdf.js";
 
 const Receipt = () => {
   const [receipt, setReceipt] = useState(null); // State to store receipt details
@@ -36,11 +38,64 @@ const Receipt = () => {
       </div>
     );
   }
+  const downloadReceipt = (receipt) => {
+    const receiptHTML = `
+      <div style="font-family: 'Roboto', Arial, sans-serif; max-width: 520px; margin: 50px auto; padding: 25px 30px; border-radius: 16px; background-color: #f5f5dc; color: #3e2723; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);">
+        <!-- Header Section -->
+        <div style="text-align: center; padding: 20px 0; border-bottom: 2px solid #8b5e3c; margin-bottom: 20px;">
+          <h2 style="font-size: 28px; color: #8b5e3c; font-weight: bold; letter-spacing: 1px;">📜 Library Receipt</h2>
+          <p style="font-size: 14px; color: #6d4c41;">Your trusted library partner</p>
+        </div>
+
+        <!-- Issued Information -->
+        <div style="background: #faf3e0; border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid #8b5e3c;">
+          <p style="margin: 5px 0;"><strong>Issued By:</strong> ShelfSync Library</p>
+          <p style="margin: 5px 0;"><strong>Borrower's Name:</strong> ${receipt.userName}</p>
+          <p style="margin: 5px 0;"><strong>Receipt No:</strong> ${receipt.receiptNo}</p>
+        </div>
+
+        <!-- Book Details -->
+        <div style="background: #fdf8f0; border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid #8b5e3c; box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);">
+          <p style="margin: 8px 0;">📚 <strong>Book Name:</strong> ${receipt.bookName}</p>
+          <p style="margin: 8px 0;">✍️ <strong>Author:</strong> ${receipt.authorName || "Unknown Author"}</p>
+          <p style="margin: 8px 0;">🗓️ <strong>Issue Date:</strong> ${new Date(receipt.issueDate).toLocaleDateString()}</p>
+          <p style="margin: 8px 0;">🗓️ <strong>Return Date:</strong> ${receipt.returnDate ? new Date(receipt.returnDate).toLocaleDateString() : "Not Returned"}</p>
+          <p style="margin: 8px 0;">💰 <strong>Price:</strong> ₹${receipt.price ? parseFloat(receipt.price).toFixed(2) : "N/A"}</p>
+        </div>
+
+        <!-- Footer Section -->
+        <div style="text-align: center; border-top: 2px solid #8b5e3c; padding-top: 15px;">
+          <p style="margin: 5px 0; font-size: 16px; color: #8b5e3c; font-weight: bold;">📍 Contact Us</p>
+          <p style="margin: 5px 0; font-size: 14px;">Email: <strong>ShelfSync@gmail.com</strong> | Phone: <strong>+91 1234567890</strong></p>
+          <p style="margin: 5px 0; font-size: 14px;">Chitkara University, Rajpura, Punjab</p>
+        </div>
+      </div>
+    `;
+
+    const options = {
+      filename: `receipt_${receipt.receiptNo}.pdf`,
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "pt", format: "a4", orientation: "portrait" },
+    };
+
+    html2pdf().set(options).from(receiptHTML).save();
+  };
+
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center py-5 bg-custom">
       {/* Receipt Box */}
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-4 right-4 flex gap-4 justify-end w-full">
+        {/* Download Button */}
+        <button
+          onClick={() => downloadReceipt(receipt)}
+          className="px-8 py-3 bg-brown-800 text-white rounded-lg shadow-md text-lg hover:bg-green-700 flex items-center gap-2"
+        >
+          <span>Download</span>
+          <FaDownload size={20} />
+        </button>
+
+        {/* Close Button */}
         <button
           onClick={() => navigate(-1)}
           className="px-8 py-3 bg-brown-800 text-white rounded-lg shadow-md text-lg hover:bg-red-700"
@@ -48,6 +103,7 @@ const Receipt = () => {
           Close
         </button>
       </div>
+
       <div className="bg-white w-full max-w-4xl md:max-w-3xl sm:max-w-lg border-4 border-brown-600 rounded-lg shadow-lg p-3">
         {/* Header */}
         <div className="flex justify-between items-start sm:items-center flex-col sm:flex-row border-b-2 border-brown-600 pb-4">

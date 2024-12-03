@@ -187,3 +187,18 @@
   background-color: #fff; /* Optional: Set background color */
   width:190px;
 }
+
+.pay-fine-button-booktrack {
+  background-color: #5c1306; 
+  color: white;
+  font-size: 22px;
+  border: none;
+  padding: 2px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pay-fine-button-booktrack:hover {
+  background-color: #e28e49;
+  color:black;
+}

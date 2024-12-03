@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 const UserIssues = () => {
   const [userIssues, setUserIssues] = useState([]);
-  const [returnedBooks, setReturnedBooks] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,6 +27,35 @@ const UserIssues = () => {
     }
   }, []);
 
+  const calculateFine = (dueDate) => {
+    const due = new Date(dueDate);
+    const today = new Date();
+    const diffTime = today - due;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays * 5 : 0;
+  };
+
+  const handlePayFine = async (issueId) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/api/issues/payFine/${issueId}`
+      );
+
+      if (response.status === 200) {
+        toast.success("Fine paid successfully");
+        const updatedIssues = userIssues.map((issue) =>
+          issue._id === issueId ? { ...issue, finePaid: true } : issue
+        );
+        setUserIssues(updatedIssues);
+      } else {
+        toast.error("Error: Unexpected response from server");
+      }
+    } catch (error) {
+      console.error("Error paying fine:", error);
+      toast.error("Error paying fine");
+    }
+  };
+
   const handleReturnBook = async (issueId) => {
     try {
       const response = await axios.put(
@@ -39,10 +67,6 @@ const UserIssues = () => {
         response.data.message === "Book returned successfully"
       ) {
         toast.success("Book returned successfully");
-
-        const returnedBook = userIssues.find((issue) => issue._id === issueId);
-
-        setReturnedBooks((prevBooks) => [...prevBooks, returnedBook]);
         setUserIssues((prevIssues) =>
           prevIssues.filter((issue) => issue._id !== issueId)
         );
@@ -51,36 +75,27 @@ const UserIssues = () => {
       }
     } catch (error) {
       console.error("Error returning book:", error);
-      if (error.response) {
-        toast.error(error.response?.data || "Error returning book");
-      } else {
-        toast.error("Network error: Please try again later");
-      }
+      toast.error("Error returning book");
     }
   };
 
   const handleViewReceipt = (issueId) => {
-    // Find the issue with the matching issueId to get the associated receiptNo
     const issue = userIssues.find((issue) => issue._id === issueId);
     if (issue && issue.receiptNo) {
-      // Navigate with the correct receiptNo
       navigate(`/invoice/${issue.receiptNo}`);
     } else {
       toast.error("Receipt not found for this issue");
     }
   };
-  
 
   return (
     <div
       className="min-h-screen bg-cover bg-center p-8"
       style={{ backgroundImage: "url('./images/issuebg.jpg')" }}
-      
     >
       <button
         onClick={() => navigate("/userProfile")}
         className="fixed top-4 left-4 bg-brown-600 hover:bg-brown-800 text-white px-4 py-2 rounded shadow-md z-50"
-        style={{ zIndex: 50 }}
       >
         Back to Profile
       </button>
@@ -98,56 +113,68 @@ const UserIssues = () => {
               <th className="p-4 text-left">Book Type</th>
               <th className="p-4 text-left">Issue Date</th>
               <th className="p-4 text-left">Return Date</th>
+              <th className="p-4 text-left">Fine</th>
               <th className="p-4 text-left">Action</th>
               <th className="p-4 text-left">Receipt</th>
             </tr>
           </thead>
           <tbody className="text-white">
-            {userIssues.map((issue, index) => (
-              <tr
-                key={issue._id}
-                className={`bg-brown-600 ${
-                  index % 2 === 0 ? "bg-brown-500" : "bg-brown-600"
-                } hover:bg-brown-700`}
-              >
-                <td className="p-4 text-left">{index + 1}</td>
-                <td className="p-4 text-left">
-                  {issue.bookID ? issue.bookID.name : "N/A"}
-                </td>
-                <td className="p-4 text-left">
-                  {issue.bookID ? issue.bookID.author : "N/A"}
-                </td>
-                <td className="p-4 text-left">
-                  {issue.bookID ? issue.bookID.genre : "N/A"}
-                </td>
-                <td className="p-4 text-left">
-                  {new Date(issue.issueDate).toLocaleDateString()}
-                </td>
-                <td className="p-4 text-left">
-                  {new Date(issue.dueDate).toLocaleDateString()}
-                </td>
-                <td className="p-4 text-left">
-                  <button
-                    onClick={() => handleReturnBook(issue._id)}
-                    className="px-4 py-2 rounded text-white bg-red-500 hover:bg-red-700"
-                  >
-                    Return
-                  </button>
-                </td>
-                <td className="p-4 text-left">
-                  <button
-                    onClick={() => handleViewReceipt(issue._id)}
-                    className="px-4 py-2 rounded text-black bg-yellow-400 hover:bg-yellow-200"
-                  >
-                    View Receipt
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {userIssues.map((issue, index) => {
+              const fine = calculateFine(issue.dueDate);
+              return (
+                <tr
+                  key={issue._id}
+                  className={`${
+                    index % 2 === 0 ? "bg-brown-500" : "bg-brown-600"
+                  } hover:bg-brown-700`}
+                >
+                  <td className="p-4">{index + 1}</td>
+                  <td className="p-4">{issue.bookID?.name || "N/A"}</td>
+                  <td className="p-4">{issue.bookID?.author || "N/A"}</td>
+                  <td className="p-4">{issue.bookID?.genre || "N/A"}</td>
+                  <td className="p-4">
+                    {new Date(issue.issueDate).toLocaleDateString()}
+                  </td>
+                  <td className="p-4">
+                    {new Date(issue.dueDate).toLocaleDateString()}
+                  </td>
+                  <td className="p-4">{fine > 0 ? `₹${fine}` : "No fine"}</td>
+                  <td className="p-4">
+                    {fine > 0 && !issue.finePaid ? (
+                      <button
+                        onClick={() => handlePayFine(issue._id)}
+                        className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-700"
+                      >
+                        Pay Fine
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleReturnBook(issue._id)}
+                        disabled={fine > 0 && !issue.finePaid}
+                        className={`px-4 py-2 rounded text-white ${
+                          fine > 0 && !issue.finePaid
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-red-500 hover:bg-red-700"
+                        }`}
+                      >
+                        Return
+                      </button>
+                    )}
+                  </td>
+                  <td className="p-4">
+                    <button
+                      onClick={() => handleViewReceipt(issue._id)}
+                      className="px-4 py-2 rounded text-black bg-yellow-400 hover:bg-yellow-200"
+                    >
+                      View Receipt
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
-
       <ToastContainer />
     </div>
   );
