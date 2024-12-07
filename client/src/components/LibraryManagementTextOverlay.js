@@ -257,9 +257,9 @@ const LibraryManagementTextOverlay = () => {
       <div id="chooseus">
         <ChooseUs />
       </div>
-      {/* <div id="review">
+      <div id="review">
         <ReviewCard />
-      </div> */}
+      </div>
       <div id="footer">
         <Footer />
       </div>

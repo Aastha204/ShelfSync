@@ -46,6 +46,8 @@ import TermsOfUse from './components/termsofuse';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import  Receipt from './components/Receipt';
 import ProtectedRoute from "./components/protectedroute";
+import AllReview from './components/AllReview';
+import NotFound from './components/NotFound';
 
 
 
@@ -89,6 +91,7 @@ function App() {
         <Route path="/comics" element={<Comics/>}/>
         <Route path="/protected" element={<ProtectedRoute/>}/>
         <Route path="/admin" element={<AdminProfilePage/>}/>
+        <Route path='/review' element={<AllReview/>}/>
         
         {/* <Route
           path="/admin"
@@ -121,6 +124,7 @@ function App() {
         <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
 
         <Route path="/invoice/:receiptNo" element={<Receipt/>} />
+        <Route path="*" element={<NotFound />} />
 
       </Routes>
     

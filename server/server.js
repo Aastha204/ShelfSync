@@ -17,6 +17,7 @@ const cron = require('node-cron');
 const { updateStatistics } = require('./Controllers/statisticsController');
 const statisticsRoute=require('./Routes/statisticsRoute');
 const receiptRoutes=require('./Routes/ReceiptRoutes')
+const reviewRoutes = require("./Routes/ReviewRoutes");
 
 require('dotenv').config();
 cron.schedule('0 0 * * *', async () => {
@@ -46,6 +47,7 @@ app.use('/api/bookTracker', bookTrackerRoutes);
 app.use("/todos", todoRoutes);
 app.use('/api/statistics',statisticsRoute);
 app.use('/api/receipts', receiptRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 
 // Error handling middleware
