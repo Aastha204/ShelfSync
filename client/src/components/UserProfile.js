@@ -79,6 +79,9 @@ const MemberProfile = () => {
           <a href="/books">All Books</a>
           <a href="/issue">Issued Books</a>
           <a href="/return">Returned Books</a>
+          <a href="/changepassword">Change PassWord</a>
+          <a href="/review">Give FeedBack</a>
+
           <a>
             <button onClick={handleLogout}>
               {" "}

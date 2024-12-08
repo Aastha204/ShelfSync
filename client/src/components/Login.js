@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { FaUserAlt, FaLock, FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
-import '../App.css'; // Adjust the path based on your project structure
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { handleError, handleSuccess } from './utils';
-import { ToastContainer } from 'react-toastify';
+import "../App.css"; // Adjust the path based on your project structure
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { handleError, handleSuccess } from "./utils";
+import { ToastContainer } from "react-toastify";
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
@@ -23,7 +23,7 @@ const Login = () => {
     setLoginInfo(copyLoginInfo);
   };
 
-  console.log('loginInfo -> ', loginInfo);
+  console.log("loginInfo -> ", loginInfo);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -36,22 +36,22 @@ const Login = () => {
       const response = await fetch(url, {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(loginInfo)
+        body: JSON.stringify(loginInfo),
       });
       const result = await response.json();
       const { success, message, jwtToken, name, userId, error } = result;
       if (success) {
         handleSuccess(message);
-       
-        localStorage.setItem('token',jwtToken);
-        localStorage.setItem('userType', 'user');
-        localStorage.setItem('loggedInUserName',name);
-        localStorage.setItem('loggedInUserEmail',email);
-        localStorage.setItem('loggedInUserId', userId);
+
+        localStorage.setItem("token", jwtToken);
+        localStorage.setItem("userType", "user");
+        localStorage.setItem("loggedInUserName", name);
+        localStorage.setItem("loggedInUserEmail", email);
+        localStorage.setItem("loggedInUserId", userId);
         setTimeout(() => {
-          navigate('/userprofile');
+          navigate("/userprofile");
         }, 1000);
       } else if (error) {
         const details = error?.details[0].message;
@@ -79,13 +79,19 @@ const Login = () => {
       </video>
       <div className="container mx-auto px-4 py-8 bg-transparent-800 bg-opacity-40 rounded-lg relative max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
         <div className="w-full mx-auto relative overflow-hidden">
-          <div className="flex w-full relative" style={{ minHeight: '460px' }}>
+          <div className="flex w-full relative" style={{ minHeight: "460px" }}>
             {/* Login Form */}
-            <div className={`absolute w-full transition-transform duration-700 ease-in-out transform `}>
+            <div
+              className={`absolute w-full transition-transform duration-700 ease-in-out transform `}
+            >
               <div className="p-8 bg-white rounded-lg shadow-lg">
-                <h2 className="text-5xl font-bold text-brown-700 text-center">Login</h2>
+                <h2 className="text-5xl font-bold text-brown-700 text-center">
+                  Login
+                </h2>
                 <form className="mt-4" onSubmit={handleLogin}>
-                  <label className="block text-sm font-medium text-gray-700">Email</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
                   <input
                     type="email"
                     name="email"
@@ -94,7 +100,9 @@ const Login = () => {
                     className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-brown-500"
                   />
 
-                  <label className="block text-sm font-medium text-gray-700 mt-4">Password</label>
+                  <label className="block text-sm font-medium text-gray-700 mt-4">
+                    Password
+                  </label>
                   <div className="relative">
                     <input
                       type={showPassword ? "text" : "password"} // Toggle between "password" and "text"
@@ -111,7 +119,6 @@ const Login = () => {
                       {showPassword ? (
                         <FaEye className="text-gray-600" />
                       ) : (
-                        
                         <FaEyeSlash className="text-gray-600" />
                       )}
                     </span>
@@ -125,9 +132,20 @@ const Login = () => {
                   </button>
                 </form>
 
-                <Link to="/signup" className="text-sm text-center mt-4">
-                  Don't have an account? <span className="text-brown-600 hover:text-brown-700 cursor-pointer" >Sign up</span>
-                </Link>
+                <div className="flex justify-between items-center mt-4">
+                  <Link
+                    to="/signup"
+                    className="font-semibold text-base text-brown-800 hover:text-brown-700"
+                  >
+                    Don't have an account?
+                  </Link>
+                  <Link
+                    to="/loginviaotp"
+                    className="font-semibold text-base text-brown-800 hover:text-brown-700"
+                  >
+                    Login Via OTP
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

@@ -78,8 +78,11 @@ const Signup = () => {
 
       if (success) {
         handleSuccess(message);
+        localStorage.setItem('userType', 'user');
+        localStorage.setItem('loggedInUserName',name);
+        localStorage.setItem('loggedInUserEmail',email);
         setTimeout(() => {
-          navigate('/login');
+          navigate('/verification');
         }, 1000);
       } else if (error) {
         const details = error?.details[0]?.message || "Signup failed.";

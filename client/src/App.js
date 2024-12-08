@@ -48,8 +48,10 @@ import  Receipt from './components/Receipt';
 import ProtectedRoute from "./components/protectedroute";
 import AllReview from './components/AllReview';
 import NotFound from './components/NotFound';
-
-
+import Review from './components/ReviewCard';
+import OTP from './components/OTP';
+import LoginViaOTP from './components/LoginViaOTP';
+import UpdatePassword from './components/changePassword';
 
 // const ProtectedRoute = ({ children }) => {
 //   const token = localStorage.getItem('token');
@@ -91,7 +93,11 @@ function App() {
         <Route path="/comics" element={<Comics/>}/>
         <Route path="/protected" element={<ProtectedRoute/>}/>
         <Route path="/admin" element={<AdminProfilePage/>}/>
-        <Route path='/review' element={<AllReview/>}/>
+        <Route path='/allreview' element={<AllReview/>}/>
+        <Route path='/review' element={<Review/>}/>
+        <Route path='/verification' element={<OTP/>}/>
+        <Route path='/loginviaotp' element={<LoginViaOTP/>}/>
+        <Route path='/changepassword' element={<UpdatePassword/>}/>
         
         {/* <Route
           path="/admin"
@@ -124,6 +130,7 @@ function App() {
         <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
 
         <Route path="/invoice/:receiptNo" element={<Receipt/>} />
+       
         <Route path="*" element={<NotFound />} />
 
       </Routes>

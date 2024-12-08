@@ -1,0 +1,32 @@
+.not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    background-color: white; /* Optional: Set a light background color */
+  }
+  
+  .not-found img {
+    max-width: 100%;
+    height: 90vh;
+    margin-bottom: 10px;
+  }
+  
+  .notfound-home-link {
+    font-size: 18px;
+    color: #8b4513; /* Brown theme */
+    text-decoration: none;
+    border: 2px solid #8b4513;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .notfound-home-link:hover {
+    background-color: #8b4513;
+    color: #fff;
+  }
+  

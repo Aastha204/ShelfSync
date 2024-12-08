@@ -128,59 +128,74 @@ const LibraryManagementTextOverlay = () => {
 
           {/* Desktop Menu */}
           <div className="hidden sm:flex space-x-8 text-white items-center">
-            <a
-              href="/"
-              className="hover:text-white-400 hover:underline text-lg"
-            >
-              Home
-            </a>
-            <a
-              href="#about"
-              className="hover:text-white-400 hover:underline text-lg"
-            >
-              About
-            </a>
-            {/* <a href="/issue" className="hover:text-white-400 hover:underline text-lg">MyBooks</a> */}
-            <a
-              href="/books"
-              className="hover:text-white-400 hover:underline text-lg"
-            >
-              Browse
-            </a>
-            <a
-              href="/contact"
-              className="hover:text-white-400 hover:underline text-lg"
-            >
-              Contact
-            </a>
-            {isLoggedIn ? (
-  <div className="flex items-center space-x-2">
-    {/* Conditionally render Profile link */}
-    {userType === 'admin' ? (
-      <Link to="/admin" className="flex items-center text-white text-lg hover:underline">
-        <FaUserAlt className="mr-2" /> Admin Profile
-      </Link>
-    ) : (
-      <Link to="/userprofile" className="flex items-center text-white text-lg hover:underline">
-        <FaUserAlt className="mr-2" /> User Profile
-      </Link>
-    )}
-    <button
-      onClick={handleLogout} // **Logout functionality**
+  <a
+    href="/"
+    className="relative text-lg hover:text-2xl"
+  >
+    Home
+    <span className="absolute bottom-0 left-0 block w-0 h-0.5 bg-red-500 transition-all duration-300 hover:w-full"></span>
+  </a>
+  <a
+    href="#about"
+    className="relative text-lg hover:text-2xl"
+  >
+    About
+    <span className="absolute bottom-0 left-0 block w-0 h-0.5 bg-red-500 transition-all duration-300 hover:w-full"></span>
+  </a>
+  {/* <a href="/issue" className="relative text-lg hover:text-white">MyBooks</a> */}
+  <a
+    href="/books"
+    className="relative text-lg hover:text-2xl"
+  >
+    Browse
+    <span className="absolute bottom-0 left-0 block w-0 h-0.5 bg-red-500 transition-all duration-300 hover:w-full"></span>
+  </a>
+  <a
+    href="/contact"
+    className="relative text-lg hover:text-2xl"
+  >
+    Contact
+    <span className="absolute bottom-0 left-0 block w-0 h-0.5 bg-red-500 transition-all duration-300 hover:w-full"></span>
+  </a>
+  {isLoggedIn ? (
+    <div className="flex items-center space-x-2">
+      {/* Conditionally render Profile link */}
+      {userType === "admin" ? (
+        <Link
+          to="/admin"
+          className="relative flex items-center text-white text-lg hover:text-2xl"
+        >
+          <FaUserAlt className="mr-2" />Profile
+          <span className="absolute bottom-0 left-0 block w-0 h-0.5 bg-red-500 transition-all duration-300 hover:w-full"></span>
+        </Link>
+      ) : (
+        <Link
+          to="/userprofile"
+          className="relative flex items-center text-white text-lg hover:text-2xl"
+        >
+          <FaUserAlt className="mr-2" />Profile
+          <span className="absolute bottom-0 left-0 block w-0 h-0.5 bg-red-500 transition-all duration-300 hover:w-full"></span>
+        </Link>
+      )}
+      <button
+        onClick={handleLogout} // **Logout functionality**
+        className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg"
+      >
+        Logout
+      </button>
+    </div>
+  ) : (
+    // **Show Login button if not logged in**
+    <Link
+      to="/custom"
       className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg"
     >
-      Logout
-    </button>
-  </div>
-) : (
-  // **Show Login button if not logged in**
-  <Link to="/custom" className="block px-4 py-1 bg-red-800 hover:bg-red-900 text-white rounded-lg font-semibold text-lg">
-    Login
-  </Link>
-)}
-<ToastContainer />
+      Login
+    </Link>
+  )}
+  <ToastContainer />
+</div>
 
-          </div>
         </nav>
 
         {/* Mobile Menu */}
@@ -257,9 +272,7 @@ const LibraryManagementTextOverlay = () => {
       <div id="chooseus">
         <ChooseUs />
       </div>
-      <div id="review">
-        <ReviewCard />
-      </div>
+      
       <div id="footer">
         <Footer />
       </div>
