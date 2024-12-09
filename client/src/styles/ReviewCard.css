@@ -178,10 +178,10 @@
 }
 
 .review-page-review {
-  /* background: url('../../public/images/review.jpg') no-repeat center center; */
+  background: url('../../public/images/review3.jpg') no-repeat center center;
   background-size: cover;
-  padding:0  50px;
-  padding-top: 30px;
+  padding:0  30px;
+  padding-top: 50px;
   text-align: center;
   font-family: "Playfair Display", serif;
   min-height: 100vh;

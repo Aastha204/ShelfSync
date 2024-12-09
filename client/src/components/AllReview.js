@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
 import "../styles/AllReview.css"; // CSS for styling the review cards
 
 function ReviewList() {
   const [reviews, setReviews] = useState([]);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -18,9 +20,16 @@ function ReviewList() {
     fetchReviews();
   }, []);
 
+  const goBack = () => {
+    navigate(-1); // Go back to the previous page
+  };
+
   return (
     <div className="review-list">
-      <h2>Reviews</h2>
+      <button className="back-button" onClick={goBack}>
+        &#8592; Back
+      </button>
+      <h2>All Reviews</h2>
       <div className="review-cards">
         {reviews.length > 0 ? (
           reviews.map((review) => (

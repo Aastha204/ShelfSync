@@ -3,6 +3,7 @@ import "../styles/ReviewCard.css";
 import { FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
 import Confetti from "react-confetti";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -12,6 +13,7 @@ function ReviewCard() {
   const [hover, setHover] = useState(0);
   const [comment, setComment] = useState("");
   const [showConfetti, setShowConfetti] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const userEmail = localStorage.getItem("loggedInUserEmail");
   const userName = localStorage.getItem("loggedInUserName");
@@ -55,6 +57,10 @@ function ReviewCard() {
       toast.error("Error submitting review");
     }
   };
+  const handleBackClick = () => {
+    navigate("/userProfile"); // Navigate to /userProfile
+  };
+ 
 
   return (
     <div className="review-page-review">
@@ -63,6 +69,9 @@ function ReviewCard() {
 
       {/* Toast Container */}
       <ToastContainer />
+      <button className="back-button" onClick={handleBackClick}>
+        &#8592; Back
+      </button>
 
       <h1 className="main-heading">Give feedback and let us know your experience</h1>
       <h3 className="sub-heading">Because your review matters</h3>
@@ -129,10 +138,10 @@ function ReviewCard() {
       
       {/* Footer */}
       <footer className="review-footer">
-        <a href="/faqs" className="footer-link">
+        <a href="/contact" className="footer-link">
           FAQs
         </a>
-        <a href="/contact-librarian" className="footer-link">
+        <a href="/contact" className="footer-link">
           Contact Librarian
         </a>
       </footer>

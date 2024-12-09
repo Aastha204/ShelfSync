@@ -1,45 +1,141 @@
 .review-list {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .review-cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-  }
-  
+  max-width: 100%;
+  height: 100vh;
+  margin: auto;
+  padding: 30px;
+  text-align: center;
+  background: url('../../public/images/review2.jpg') no-repeat center center fixed;
+  background-size: cover;
+  border-radius: 15px;
+  color: white;
+  overflow: auto; /* Ensure the content inside scrolls, not the background */
+}
+
+
+.review-list h2 {
+  color: #4e342e; /* Dark brown color for heading */
+  font-size: 3em;
+  margin-bottom: 20px;
+
+  font-family: 'Bookman Old Style';
+  font-weight: bold; /* Made the text bold */
+  text-transform: uppercase; /* Uppercased the text */
+  letter-spacing: 2px; /* Increased letter spacing */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Added a subtle text shadow */
+}
+
+.review-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 0 10px; /* To ensure cards don’t touch the edges */
+}
+
+.review-card {
+  border: 1px solid #c39e71; /* Light brown border */
+  border-radius: 15px;
+  padding: 20px;
+  /* width: calc(33% - 20px); Set width to 33% of the container minus the gap */
+  width:auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.review-name {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #6d4c41; /* Dark brown color for the name */
+  margin-bottom: 10px;
+  text-transform: capitalize;
+}
+
+.review-rating {
+  color: #ffc107; /* Yellow for stars */
+  font-size: 1.4em;
+  margin-bottom: 10px;
+}
+
+.review-comment {
+  font-style: italic;
+  margin: 15px 0;
+  color: #5d4037; /* Slightly lighter brown for the comment */
+  line-height: 1.6;
+}
+
+.review-date {
+  font-size: 1em;
+  color: #8d6e63; /* Brownish-gray for the date */
+  text-align: right;
+  font-weight: bold;
+}
+
+.review-card p {
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
   .review-card {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    max-width: 300px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+    width: calc(50% - 20px); /* For medium screens, use 50% width */
   }
-  
-  .review-name {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #333;
+}
+
+@media (max-width: 480px) {
+  .review-card {
+    width: 100%; /* For small screens, make the card take full width */
   }
-  
-  .review-rating {
-    color: #ffc107; /* Yellow for stars */
-    font-size: 1.1em;
-  }
-  
-  .review-comment {
-    font-style: italic;
-    margin: 10px 0;
-    color: #555;
-  }
-  
-  .review-date {
-    font-size: 0.8em;
-    color: #999;
-  }
-  
+}
+
+
+.back-button {
+  position: absolute; /* Absolute position relative to the review-list container */
+  top: 20px; /* Distance from the top */
+  left: 20px; /* Distance from the left */
+  background-color: #6d4c41; /* Dark brown color */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 1.2em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #4e342e; /* Darker brown on hover */
+}
+
+.review-card {
+  border: 1px solid #c39e71; /* Light brown border */
+  border-radius: 15px;
+  padding: 10px; /* Reduced padding to accommodate smaller width */
+  width: 500px; /* Fixed width */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden; /* Prevent content from overflowing the card */
+  text-align: center; /* Center-align text for better aesthetics */
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.review-comment {
+  font-style: italic;
+  margin: 10px 0;
+  color: #5d4037; /* Slightly lighter brown for the comment */
+  line-height: 1.4;
+  word-wrap: break-word; /* Break long words to fit within the card */
+  overflow-wrap: break-word; /* Ensure text wrapping */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+  max-height: 50px; /* Limit height to prevent excessive text overflow */
+  overflow: hidden; /* Hide overflowing content */
+}
