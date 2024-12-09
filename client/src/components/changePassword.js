@@ -1,28 +1,40 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";  // Import the arrow icon from react-icons
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { FaArrowLeft } from "react-icons/fa";
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
-
-  // Retrieve the user's email from local storage
   const userEmail = localStorage.getItem("loggedInUserEmail");
+
+  const validatePassword = (password) => {
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
-      setError("Passwords do not match");
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    if (!validatePassword(newPassword)) {
+      toast.error(
+        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character."
+      );
       return;
     }
 
@@ -36,15 +48,14 @@ const ChangePassword = () => {
         }
       );
 
-      setSuccessMessage(response.data.message);
-      setError("");
+      toast.success(response.data.message);
 
-      // Delay the navigation by 3000 milliseconds (3 seconds)
       setTimeout(() => {
         navigate("/userProfile");
       }, 3000);
     } catch (err) {
-      setError("Failed to update password. Please try again.");
+      console.error("Axios Error:", err);
+      toast.error("Failed to update password. Please try again.");
     }
   };
 
@@ -55,7 +66,6 @@ const ChangePassword = () => {
         backgroundImage: "url('/images/changePassword.png')",
       }}
     >
-      {/* Backward arrow placed outside the box */}
       <button
         onClick={() => navigate("/userProfile")}
         className="absolute top-4 left-4 text-2xl text-white focus:outline-none p-2 bg-transparent hover:bg-brown-600 rounded-full"
@@ -131,13 +141,6 @@ const ChangePassword = () => {
             </div>
           </div>
 
-          {error && <p className="text-red-500 text-center font-bold">{error}</p>}
-          {successMessage && (
-            <p className="text-green-500 text-center font-bold">
-              {successMessage}
-            </p>
-          )}
-
           <button
             type="submit"
             className="w-full py-2 mt-4 bg-brown-800 text-white font-semibold rounded-md hover:bg-brown-700 focus:outline-none focus:ring-2 focus:ring-brown-500"
@@ -145,6 +148,7 @@ const ChangePassword = () => {
             Update Password
           </button>
         </form>
+        <ToastContainer />
       </div>
     </div>
   );
