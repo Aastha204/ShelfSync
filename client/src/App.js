@@ -45,13 +45,15 @@ import DueBooks from './components/DueBooks';
 import TermsOfUse from './components/termsofuse';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import  Receipt from './components/Receipt';
-import ProtectedRoute from "./components/protectedroute";
 import AllReview from './components/AllReview';
 import NotFound from './components/NotFound';
 import Review from './components/ReviewCard';
 import OTP from './components/OTP';
 import LoginViaOTP from './components/LoginViaOTP';
 import UpdatePassword from './components/changePassword';
+import ProtectedRoute from './components/Protected';
+import ProtectedForUser from './components/ProtectedForUser';
+import PublicRoute from './components/PublicRoute';
 
 // const ProtectedRoute = ({ children }) => {
 //   const token = localStorage.getItem('token');
@@ -75,9 +77,31 @@ function App() {
         <Route path="/booktrack" element={<BookTrack/>}/>
         <Route path="/receipt1" element={<ReceiptManager/>}/>
         <Route path="/footer" element={<Footer/>}/>
-        <Route path="/login" element={<Login/>}/>
-        <Route path='/signup' element={<Signup/>}/>
-        <Route path='/userprofile' element={<UserProfile/>}/>
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <PublicRoute>
+              <Signup />
+            </PublicRoute>
+          }
+        />
+        {/* <Route path='/signup' element={<Signup/>}/> */}
+        <Route
+          path="/userprofile"
+          element={
+            <ProtectedForUser>
+              <UserProfile />
+            </ProtectedForUser>
+          }
+        />
         <Route path="/issue" element={<Issue/>}/>
         <Route path="/return" element={<Return/>}/>
         <Route path="/invoice" element={<Invoice/>}/>
@@ -91,8 +115,15 @@ function App() {
         <Route path="/thriller" element={<Thriller/>}/>
         <Route path="/romance" element={<Romance/>}/>
         <Route path="/comics" element={<Comics/>}/>
-        <Route path="/protected" element={<ProtectedRoute/>}/>
-        <Route path="/admin" element={<AdminProfilePage/>}/>
+        {/* <Route path="/protected" element={<ProtectedRoute/>}/> */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminProfilePage />
+            </ProtectedRoute>
+          }
+        />
         <Route path='/allreview' element={<AllReview/>}/>
         <Route path='/review' element={<Review/>}/>
         <Route path='/verification' element={<OTP/>}/>
@@ -116,8 +147,23 @@ function App() {
         <Route path="/books" element={<AllBooks/>}/>
         <Route path="/changeUserProfile" element={<ChangeUserProfile/>}/>
         <Route path="/custom" element={<CustomCards/>}/>
-        <Route path="/adminlogin" element={<AdminLogin/>}/>
-        <Route path="/adminsignup" element={<AdminSignup/>}/>
+        <Route
+          path="/adminlogin"
+          element={
+            <PublicRoute>
+              <AdminLogin />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/adminsignup"
+          element={
+            <PublicRoute>
+              <AdminSignup />
+            </PublicRoute>
+          }
+        />
+        {/* <Route path="/adminsignup" element={<AdminSignup/>}/> */}
         <Route path='/booklist' element={<BookList/>}/>
         <Route path='/CardsAnimate' element={<CardsAnimate/>}/>
         <Route path='/bestfiction' element={<BestFictionalBooks/>}/>
