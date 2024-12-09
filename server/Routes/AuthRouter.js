@@ -12,14 +12,7 @@ router.post('/verify-otp', verifyOtp);
 router.post('/resend-otp', resendOtp);
 
 // Route to send OTP for login or signup
-router.post('/send-otp', (req, res) => {
-    const { email, name } = req.body;
-    const isLogin=true;
-    console.log(email);
-    sendOtp(email, name,isLogin);
-
-    res.status(200).json({ success: true, message: 'OTP sent successfully.' });
-});
+router.post('/send-otp', sendOtp);
 
 router.post('/update-password',updatePassword);
 

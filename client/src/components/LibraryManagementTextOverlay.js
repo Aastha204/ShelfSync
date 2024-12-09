@@ -36,17 +36,20 @@ const LibraryManagementTextOverlay = () => {
   const [visible, setVisible] = useState(true);
   const [isOpen, setIsOpen] = useState(false); // For hamburger menu toggle
   const [isLoading, setIsLoading] = useState(true); // For preloader
+  const [userName, setUserName] = useState(""); // Added state for userName
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userType, setUserType] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     // Check if the user is logged in by checking localStorage
+    const storedUserName = localStorage.getItem("loggedInUserName");
     const token = localStorage.getItem("token");
     const userType = localStorage.getItem("userType"); // Assuming you save the user type in localStorage
     if (token && userType) {
       setIsLoggedIn(true);
       setUserType(userType); // Set the user type from localStorage
+      setUserName(storedUserName || "Guest");
     } else {
       setIsLoggedIn(false);
     }
@@ -62,6 +65,7 @@ const LibraryManagementTextOverlay = () => {
 
   useEffect(() => {
     // Text animation
+    
     const interval = setInterval(() => {
       setVisible(false);
       setTimeout(() => {
@@ -130,14 +134,14 @@ const LibraryManagementTextOverlay = () => {
           <div className="hidden sm:flex space-x-8 text-white items-center">
   <a
     href="/"
-    className="relative text-lg hover:text-2xl"
+    className="relative text-lg hover:text-white"
   >
     Home
     <span className="absolute bottom-0 left-0 block w-0 h-0.5 bg-red-500 transition-all duration-300 hover:w-full"></span>
   </a>
   <a
     href="#about"
-    className="relative text-lg hover:text-2xl"
+    className="relative text-lg hover:text-white"
   >
     About
     <span className="absolute bottom-0 left-0 block w-0 h-0.5 bg-red-500 transition-all duration-300 hover:w-full"></span>
@@ -145,14 +149,14 @@ const LibraryManagementTextOverlay = () => {
   {/* <a href="/issue" className="relative text-lg hover:text-white">MyBooks</a> */}
   <a
     href="/books"
-    className="relative text-lg hover:text-2xl"
+    className="relative text-lg hover:text-white"
   >
     Browse
     <span className="absolute bottom-0 left-0 block w-0 h-0.5 bg-red-500 transition-all duration-300 hover:w-full"></span>
   </a>
   <a
     href="/contact"
-    className="relative text-lg hover:text-2xl"
+    className="relative text-lg hover:text-white"
   >
     Contact
     <span className="absolute bottom-0 left-0 block w-0 h-0.5 bg-red-500 transition-all duration-300 hover:w-full"></span>
@@ -163,17 +167,17 @@ const LibraryManagementTextOverlay = () => {
       {userType === "admin" ? (
         <Link
           to="/admin"
-          className="relative flex items-center text-white text-lg hover:text-2xl"
+          className="relative flex items-center text-white text-lg hover:text-white"
         >
-          <FaUserAlt className="mr-2" />Profile
+          <FaUserAlt className="mr-2" />
           <span className="absolute bottom-0 left-0 block w-0 h-0.5 bg-red-500 transition-all duration-300 hover:w-full"></span>
         </Link>
       ) : (
         <Link
           to="/userprofile"
-          className="relative flex items-center text-white text-lg hover:text-2xl"
+          className="relative flex items-center text-white text-lg hover:text-white"
         >
-          <FaUserAlt className="mr-2" />Profile
+          <FaUserAlt className="mr-3" />
           <span className="absolute bottom-0 left-0 block w-0 h-0.5 bg-red-500 transition-all duration-300 hover:w-full"></span>
         </Link>
       )}
@@ -213,10 +217,10 @@ const LibraryManagementTextOverlay = () => {
           <a href="/issue" className="block hover:text-brown-400">
             MyBooks
           </a>
-          <a href="#browse" className="block hover:text-brown-400">
+          <a href="/books" className="block hover:text-brown-400">
             Browse
           </a>
-          <a href="#" className="block hover:text-brown-400">
+          <a href="/contact" className="block hover:text-brown-400">
             Contact
           </a>
           {isLoggedIn ? (

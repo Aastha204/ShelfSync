@@ -50,18 +50,24 @@ const LoginViaOTP = () => {
         body: JSON.stringify({ otp, email,name,isLogin }),
       });
       const result = await response.json();
-      if (result.success) {
-        localStorage.setItem("loggedInUserName", name);
+      const { success, message, jwtToken, username, userId, error } = result;
+      if (success) {
+        handleSuccess(message);
+
+        localStorage.setItem("token", jwtToken);
+        localStorage.setItem("userType", "user");
+        localStorage.setItem("loggedInUserName", username);
         localStorage.setItem("loggedInUserEmail", email);
-        handleSuccess("OTP verified successfully.");
+        localStorage.setItem("loggedInUserId", userId);
         setTimeout(() => {
           navigate("/userprofile");
-        }, 5000);
+        }, 1000);
         // You can redirect to login or dashboard page after successful verification
       } else {
         handleError(result.message || "Invalid OTP.");
       }
     } catch (error) {
+      console.log(error);
       handleError("An error occurred. Please try again later.");
     }
   };

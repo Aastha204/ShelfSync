@@ -4,6 +4,7 @@ const UserModel = require("../Models/User");
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
+let pendingUsers = {}; // Temporary storage for user details
 
 const signup = async(req,res)=>{
    try{
@@ -12,12 +13,19 @@ const signup = async(req,res)=>{
     if(user){
         return res.status(409).json({message:"User is already exist, you can login",success:false})
     }
-    const userModel = new UserModel({name,email,password})
-    const isLogin=false;
-    userModel.password = await bcrypt.hash(password,10)
-    await userModel.save()
-    await sendOtp(email, name,isLogin);
-    res.status(201).json({message:"Signup successflly",success:true})
+    // const userModel = new UserModel({name,email,password})
+    // const isLogin=false;
+    // userModel.password = await bcrypt.hash(password,10)
+    // await userModel.save()
+    // await sendOtp(email, name,isLogin);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    pendingUsers[email] = { name, email, password: hashedPassword };
+
+    // Send OTP to the user's email
+    await sendOtp(email, name, false);
+
+    res.status(201).json({ message: "Signup initiated. Please verify the OTP sent to your email.", success: true });
+    // res.status(201).json({message:"Signup successflly",success:true})
    }catch(err){
     res.status(500).json({message:"Internal server error",success:false})
    }
@@ -109,19 +117,28 @@ const login = async(req,res)=>{
  }
  let otps = {}; // Ensure otps object exists globally
 
- const sendOtp = async (email, name, isLogin) => {
+ const sendOtp = async (req, res) => {
+  const { email, name, isLogin } = req.body; // Extract from request body
   try {
     if (isLogin) {
       // Check if the provided email and name exist in the database
-      const user = await UserModel.findOne({ email});
+      const user = await UserModel.findOne({ email,name });
+      const useremail = await UserModel.findOne({ email });
+      const username = await UserModel.findOne({ name });
 
-      if (!user) {
+      if (!useremail) {
         console.log("User not found in database for login.");
-        return { success: false, message: "User not found. Please check your credentials." }; // Stop execution here
+        return res.json({ success: false, message: "Email not found. Please check your credentials." });
+      }
+      if (!username) {
+        console.log("User not found in database for login.");
+        return res.json({ success: false, message: "Name not found. Please check your credentials." });
       }
 
       console.log("User exists for login:", user);
     }
+
+    console.log("if not login part working");
 
     // Handle OTP sending logic (for registration verification, etc.)
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -151,16 +168,16 @@ const login = async(req,res)=>{
     await transporter.sendMail(mailOptions);
     console.log("OTP sent successfully to:", email);
 
-    return { success: true, message: "OTP sent successfully." };
+    return res.json({ success: true, message: "OTP sent successfully." }); // Ensure to return JSON response
   } catch (error) {
     console.error("Error in sendOtp function:", error);
-    return { success: false, message: "Error sending OTP." };
+    return res.json({ success: false, message: "Error sending OTP." }); // Return a proper error message
   }
 };
 
 
-const verifyOtp = (req, res) => {
-  const { otp, email, name, isLogin } = req.body;  // Added isLogin flag
+const verifyOtp = async (req, res) => {
+  const { otp, email, isLogin } = req.body;
 
   const storedOtp = otps[email];
 
@@ -176,42 +193,82 @@ const verifyOtp = (req, res) => {
   // OTP verified successfully; delete it
   delete otps[email];
 
-  // If the user is logging in via OTP, skip the confirmation email
   if (isLogin) {
-    return res.status(200).json({ success: true, message: 'OTP verified successfully for login.' });
+    try {
+      // Retrieve user from the database
+      const user = await UserModel.findOne({ email });
+
+      if (!user) {
+        return res.status(404).json({ success: false, message: "User not found. Please signup first." });
+      }
+
+      // Generate JWT token
+      const jwtToken = jwt.sign(
+        { email: user.email, _id: user._id },
+        process.env.JWT_SECRET,
+        { expiresIn: '24h' }
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: 'OTP verified successfully for login.',
+        jwtToken,
+        email,
+        name: user.name,
+        userId: user._id,
+      });
+    } catch (error) {
+      console.error('Error during login via OTP:', error);
+      return res.status(500).json({ success: false, message: 'Internal server error.' });
+    }
   }
 
-  // Otherwise, send the confirmation email for signup
-  const transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
+  const userData = pendingUsers[email];
+  if (!userData) {
+    return res.status(400).json({ success: false, message: "No pending user data found. Please signup again." });
+  }
 
-  const mailOptions = {
-    from: `"ShelfSync" <${process.env.EMAIL_USER}>`,
-    to: email,
-    subject: 'Signup Successful!',
-    html: `
-      <h1>Welcome to ShelfSync, ${name}!</h1>
-      <p>Your account has been successfully created.</p>
-    `,
-  };
+  try {
+    // Save the user to the database
+    const newUser = new UserModel(userData);
+    await newUser.save();
 
-  // Send the confirmation email after OTP verification
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error sending confirmation email:', error);
-      return res.status(500).json({ message: 'OTP verified, but failed to send confirmation email.', success: false });
-    } else {
-      console.log('Confirmation email sent:', info.response);
-      return res.status(200).json({ success: true, message: 'OTP verified and confirmation email sent successfully.' });
-    }
-  });
+    // Remove from temporary storage
+    delete pendingUsers[email];
+
+    // Send the confirmation email
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: `"ShelfSync" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: 'Signup Successful!',
+      html: `
+        <h1>Welcome to ShelfSync, ${name}!</h1>
+        <p>Your account has been successfully created.</p>
+      `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending confirmation email:', error);
+        return res.status(500).json({ message: 'OTP verified, but failed to send confirmation email.', success: false });
+      } else {
+        console.log('Confirmation email sent:', info.response);
+        return res.status(200).json({ success: true, message: 'OTP verified and confirmation email sent successfully.' });
+      }
+    });
+  } catch (error) {
+    console.error('Error saving user to database:', error);
+    return res.status(500).json({ success: false, message: 'Error saving user to database.' });
+  }
 };
-
 
 
 
