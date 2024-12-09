@@ -15,7 +15,7 @@ const MemberProfile = () => {
     age: "",
     gender: "",
     dob: "",
-    address: "",
+    profession: "",
   });
   const navigate = useNavigate();
 
@@ -118,7 +118,7 @@ const MemberProfile = () => {
             </div>
             <div>
               <p>Profession</p>
-              <p>{userDetails.address || "Profession not provided"}</p>
+              <p>{userDetails.profession || "Profession not provided"}</p>
             </div>
           </div>
           <div className="userprofile-lottie-container">
