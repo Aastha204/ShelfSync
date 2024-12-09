@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";  // Import Toastify CSS
+import { ToastContainer } from "react-toastify";
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -17,11 +18,26 @@ const ChangePassword = () => {
   // Retrieve the user's email from local storage
   const userEmail = localStorage.getItem("loggedInUserEmail");
 
+  // Password validation function
+  const validatePassword = (password) => {
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
-      setError('Passwords do not match');
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    // Validate the new password
+    if (!validatePassword(newPassword)) {
+      toast.error(
+        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character."
+      );
       return;
     }
 
@@ -41,10 +57,9 @@ const ChangePassword = () => {
         }
       );
 
-      console.log('Server response:', response.data);
+      console.log("Server response:", response.data);
 
-      setSuccessMessage(response.data.message);
-      setError('');
+      toast.success(response.data.message);
 
       // Delay the navigation by 3000 milliseconds (3 seconds)
       setTimeout(() => {
@@ -52,8 +67,8 @@ const ChangePassword = () => {
       }, 3000); // 3000ms = 3 seconds
 
     } catch (err) {
-      console.error('Axios Error:', err);
-      setError('Failed to update password. Please try again.');
+      console.error("Axios Error:", err);
+      toast.error("Failed to update password. Please try again.");
     }
   };
 
@@ -114,11 +129,6 @@ const ChangePassword = () => {
           </div>
         </div>
 
-        {error && <p className="text-red-500 text-center font-bold">{error}</p>}
-        {successMessage && (
-          <p className="text-green-500 text-center font-bold">{successMessage}</p>
-        )}
-
         <button
           type="submit"
           className="w-full py-2 mt-4 bg-brown-800 text-white font-semibold rounded-md hover:bg-brown-700 focus:outline-none focus:ring-2 focus:ring-brown-500"
@@ -126,6 +136,7 @@ const ChangePassword = () => {
           Update Password
         </button>
       </form>
+      <ToastContainer/>
     </div>
   );
 };
