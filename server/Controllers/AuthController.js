@@ -3,33 +3,85 @@ const jwt=require('jsonwebtoken')
 const UserModel = require("../Models/User");
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+
 
 let pendingUsers = {}; // Temporary storage for user details
 
-const signup = async(req,res)=>{
-   try{
-    const {name,email,password}=req.body;
-    const user = await UserModel.findOne({email})
-    if(user){
-        return res.status(409).json({message:"User is already exist, you can login",success:false})
+const signup = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    const user = await UserModel.findOne({ email });
+    if (user) {
+      return res.status(409).json({
+        message: "User already exists. Please login.",
+        success: false,
+      });
     }
-    // const userModel = new UserModel({name,email,password})
-    // const isLogin=false;
-    // userModel.password = await bcrypt.hash(password,10)
-    // await userModel.save()
-    // await sendOtp(email, name,isLogin);
+
     const hashedPassword = await bcrypt.hash(password, 10);
     pendingUsers[email] = { name, email, password: hashedPassword };
 
-    // Send OTP to the user's email
-    await sendOtp(email, name, false);
+    // Use dynamic import for fetch
+    const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
-    res.status(201).json({ message: "Signup initiated. Please verify the OTP sent to your email.", success: true });
-    // res.status(201).json({message:"Signup successflly",success:true})
-   }catch(err){
-    res.status(500).json({message:"Internal server error",success:false})
-   }
-}
+    const sendOtpResponse = await fetch("http://localhost:3001/auth/send-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, name, isLogin: false }),
+    });
+
+    const otpResult = await sendOtpResponse.json();
+
+    if (!otpResult.success) {
+      delete pendingUsers[email];
+      return res.status(500).json({
+        message: otpResult.message || "Failed to send OTP. Please try again.",
+        success: false,
+      });
+    }
+
+    res.status(201).json({
+      message: "Signup initiated. Please verify the OTP sent to your email.",
+      success: true,
+    });
+  } catch (err) {
+    console.error("Error during signup:", err);
+    res.status(500).json({
+      message: "Internal server error.",
+      success: false,
+    });
+  }
+};
+
+
+// const signup = async(req,res)=>{
+//    try{
+//     const {name,email,password}=req.body;
+//     console.log('Request body:', req.body); // Debug incoming data
+//     const user = await UserModel.findOne({email})
+//     if(user){
+//         return res.status(409).json({message:"User is already exist, you can login",success:false})
+//     }
+//     // const userModel = new UserModel({name,email,password})
+//     // const isLogin=false;
+//     // userModel.password = await bcrypt.hash(password,10)
+//     // await userModel.save()
+//     // await sendOtp(email, name,isLogin);
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     pendingUsers[email] = { name, email, password: hashedPassword };
+
+//     // Send OTP to the user's email
+//     // await sendOtp(email, name, false);
+
+//     res.status(201).json({ message: "Signup initiated. Please verify the OTP sent to your email.", success: true });
+//     // res.status(201).json({message:"Signup successflly",success:true})
+//    }catch(err){
+//     console.log(err);
+//     res.status(500).json({message:"Internal server error",success:false})
+//    }
+// }
 
 // const signup = async (req, res) => {
 //   try {
@@ -119,6 +171,7 @@ const login = async(req,res)=>{
 
  const sendOtp = async (req, res) => {
   const { email, name, isLogin } = req.body; // Extract from request body
+  console.log('Request body:', req.body); // Debug incoming data
   try {
     if (isLogin) {
       // Check if the provided email and name exist in the database
@@ -174,6 +227,46 @@ const login = async(req,res)=>{
     return res.json({ success: false, message: "Error sending OTP." }); // Return a proper error message
   }
 };
+
+// const sendOtp = async (email, name, isLogin) => {
+//   try {
+//       if (isLogin) {
+//           const user = await UserModel.findOne({ email, name });
+//           if (!user) {
+//               throw new Error("User not found for login.");
+//           }
+//       }
+
+//       const otp = Math.floor(100000 + Math.random() * 900000).toString();
+//       otps[email] = { otp, expires: Date.now() + 600000 }; // 10 minutes
+
+//       const transporter = nodemailer.createTransport({
+//           service: 'Gmail',
+//           auth: {
+//               user: process.env.EMAIL_USER,
+//               pass: process.env.EMAIL_PASS,
+//           },
+//       });
+
+//       const mailOptions = {
+//           from: `"ShelfSync" <${process.env.EMAIL_USER}>`,
+//           to: email,
+//           subject: 'Verify Your Email - OTP',
+//           html: `
+//               <h1>Welcome to ShelfSync, ${name}!</h1>
+//               <p>Your OTP is: <strong>${otp}</strong></p>
+//               <p>This OTP is valid for 10 minutes.</p>
+//           `,
+//       };
+
+//       await transporter.sendMail(mailOptions);
+//       console.log("OTP sent successfully to:", email);
+//   } catch (error) {
+//       console.error("Error in sendOtp function:", error);
+//       throw error; // Propagate error to the caller
+//   }
+// };
+
 
 
 const verifyOtp = async (req, res) => {
@@ -250,7 +343,7 @@ const verifyOtp = async (req, res) => {
       to: email,
       subject: 'Signup Successful!',
       html: `
-        <h1>Welcome to ShelfSync, ${name}!</h1>
+        <h1>Welcome to ShelfSync,!</h1>
         <p>Your account has been successfully created.</p>
       `,
     };

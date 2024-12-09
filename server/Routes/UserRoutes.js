@@ -22,7 +22,7 @@ router.get('/userProfile', async (req, res) => {
       age: user.age,
       gender: user.gender,
       dob: user.dob,
-      address: user.address,
+      profession: user.profession,
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
@@ -31,13 +31,13 @@ router.get('/userProfile', async (req, res) => {
 
 // Route to update user details
 router.put('/userProfile', async (req, res) => {
-  const { email, phone, age, address, gender, dob } = req.body;
+  const { email, phone, age, profession , gender, dob } = req.body;
 
   try {
     // Find and update user by email
     const user = await UserModel.findOneAndUpdate(
       { email },
-      { phoneNo: phone, age, address, gender, dob },
+      { phoneNo: phone, age, profession, gender, dob },
       { new: true }
     );
 

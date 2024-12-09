@@ -9,7 +9,7 @@ import "../styles/changeUserProfile.css";
 const FormComponent = () => {
   const [formData, setFormData] = useState({
     phone: "",
-    address: "",
+    profession: "",
     gender: "",
     dob: "",
   });
@@ -37,7 +37,7 @@ const FormComponent = () => {
           : "";
         setFormData({
           phone: data.phoneNo || "",
-          address: data.address || "",
+          profession: data.profession || "",
           gender: data.gender || "",
           dob: formattedDob,
         });
@@ -141,30 +141,18 @@ const FormComponent = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="address">Address</label>
-            <textarea
-              id="address"
-              name="address"
-              value={formData.address}
-              onChange={(e) => {
-                const value = e.target.value;
-                // Updated regex to allow spaces after the initial sequence
-                const addressRegex =
-                  /^(?![\s.,\-\/])[A-Za-z0-9]+(?:[\s][A-Za-z0-9]+)*(?:[.,\-\/][A-Za-z0-9]+){0,2}$/;
-                if (addressRegex.test(value) || value === "") {
-                  setFormData((prevData) => ({
-                    ...prevData,
-                    address: value,
-                  }));
-                } else {
-                  toast.error(
-                    "Invalid address format. Address cannot start with a space or special character, and only two special characters (.,-,/) are allowed."
-                  );
-                }
-              }}
+            <label htmlFor="profession">Profession</label>
+            <input
+              type="text"
+              id="profession"
+              name="profession"
+              value={formData.profession}
+              onChange={handleChange}
               required
-              maxLength={250} // Optional length limit
-            ></textarea>
+              pattern="^(?!\s*$)[a-zA-Z\s]{5,}$"
+              title="Profession should be at least 5 characters long, contain letters and spaces only, and must not be empty or consist of spaces."
+              minLength="5"
+            />
           </div>
 
           <div className="form-group">

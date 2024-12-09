@@ -28,7 +28,7 @@ const userSchema = new Schema({
         type: String,
         default: ''
     },
-    address: {
+    profession: {
         type: String,
         default: ''
     },

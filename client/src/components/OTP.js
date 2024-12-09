@@ -41,7 +41,7 @@ const OtpVerification = () => {
       const result = await response.json();
       if (result.success) {
         handleSuccess(result.message);
-        setTimeout(() => navigate('/userProfile'), 1000);
+        setTimeout(() => navigate('/login'), 1000);
       } else {
         handleError(result.message);
       }
