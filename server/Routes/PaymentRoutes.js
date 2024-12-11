@@ -1,10 +1,9 @@
 const router = require("express").Router();
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
-const Book = require("../Models/Book"); // Assuming Book is in models directory
-const Issue = require("../Models/Issue"); // Assuming Issue schema exists
+const Book = require("../Models/Book"); 
+const Issue = require("../Models/Issue"); 
 
-// Generate Razorpay Order
 router.post("/orders", async (req, res) => {
   try {
     const { bookId, userId } = req.body;
