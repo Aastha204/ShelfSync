@@ -4,7 +4,8 @@ const {
   getTotalIssued,
   getTotalReturn,
   getCurrentIssued,
-  getDueBooks
+  getDueBooks,
+  getPayFine
 } = require('../Controllers/bookTrackerController');
 
 // Route to fetch total issued books
@@ -17,5 +18,7 @@ router.get('/totalReturn/:userId', getTotalReturn);
 router.get('/currentIssued/:userId', getCurrentIssued);
 
 router.get('/duebooks/:userId', getDueBooks);
+
+router.get('/payFine/:issueId',getPayFine);
 
 module.exports = router;

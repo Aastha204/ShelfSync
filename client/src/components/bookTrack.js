@@ -5,6 +5,8 @@ import "../styles/bookTrack.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import for FontAwesomeIcon
 import { faUser } from '@fortawesome/free-solid-svg-icons'; // Import for faUser icon
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ImageCard = ({ image, title, description, bookNumber, onClick }) => {
   return (
@@ -98,6 +100,102 @@ const BookTracker = () => {
     }
   };
 
+  const calculateFine = (dueDate) => {
+    const due = new Date(dueDate);
+    const today = new Date();
+    const diffTime = today - due;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays * 5 : 0;
+  };
+  const handleReturnBook = async (issueId) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3001/api/issues/return/${issueId}`
+      );
+
+      if (
+        response.status === 200 &&
+        response.data.message === "Book returned successfully"
+      ) {
+        toast.success("Book returned successfully");
+        setTimeout(() => {
+          window.location.reload(); // Reload the page
+        }, 3000); // 3000ms = 3 seconds
+      } else {
+        toast.error("Error: Unexpected response from server");
+      }
+    } catch (error) {
+      console.error("Error returning book:", error);
+      toast.error("Error returning book");
+    }
+  };
+  
+  const handlePayFine = async (issueId) => {
+    const userId = localStorage.getItem("loggedInUserId");
+    if (!userId) {
+      toast.error("Please log in to pay fines.");
+      return;
+    }
+
+    try {
+      const response = await axios.get(`http://localhost:3001/api/issues/${issueId}`);
+    const issue = response.data;
+
+    if (!issue) {
+      console.error("Issue not found");
+      return;
+    }
+
+    // Calculate fine
+    const fine = calculateFine(issue.dueDate);
+    console.log(fine);
+
+    // Make the payment API call
+    toast.success("Payment Initiated....");
+      const { data } = await axios.post(
+        "http://localhost:3001/api/payment/payfine",
+        { IssueId: issueId, fine: fine } // Make sure fine is sent
+      );
+  
+      const options = {
+        key: process.env.KEY_ID,
+        amount: data.order.amount,
+        currency: data.order.currency,
+        name: data.book.name,
+        description: "Book Issue Fee",
+        image: data.book.bookCoverImageUrl,
+        order_id: data.order.id,
+        handler: async (response) => {
+          try {
+            const verifyUrl = "http://localhost:3001/api/payment/verifyfine";
+            const { data: verifyResponse } = await axios.post(verifyUrl, {
+              ...response,
+              IssueId: issueId,
+            });
+            toast.success(verifyResponse.message);
+            handleReturnBook(issueId); // Call the return book logic after payment success
+          } catch (error) {
+            console.error(error);
+            toast.error("Failed to verify payment");
+          }
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+  
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
+    }  catch (error) {
+      toast.error("Payment initiation failed.");
+      console.error(error);
+    }
+  };
+  
+
+  
+  
+
   const sortData = (data, key) => {
     const sortedData = [...data].sort((a, b) => {
       const dateA = new Date(a[key]);
@@ -148,13 +246,7 @@ const BookTracker = () => {
       "Action",
     ],
   };
-  const handlePayFine = (bookId) => {
-    // Implement the logic to process the payment for the fine
-    console.log(`Pay fine for book with ID: ${bookId}`);
-    // You can trigger an API call or navigate to a payment page here
-  };
-
-
+  
   const renderTable = () => {
     if (!selectedCard) return null;
 
@@ -224,15 +316,18 @@ const BookTracker = () => {
                       <td>{row.overdueDays || "N/A"}</td>
                       <td>{row.fine ? `₹${row.fine}` : "₹0"}</td>
                       <td>
-                        {/* Add "Pay Fine" button if there's a fine */}
-                        {row.fine > 0 && (
-                          <button
-                            className="pay-fine-button-booktrack"
-                            onClick={() => handlePayFine(row._id)} // Pass the book ID to handle payment
-                          >
-                            Pay Fine
-                          </button>
-                        )}
+                      {row.fine > 0 && !row.finePaid ? (
+        <button
+          className="pay-fine-button-booktrack"
+          onClick={() => handlePayFine(row.issueId)}
+        >
+          Pay Fine
+        </button>
+      ) : (
+        <button className="pay-fine-button-booktrack" disabled>
+          Fine Paid
+        </button>
+      )}
                       </td>
                     </>
                   )}
@@ -291,6 +386,7 @@ const BookTracker = () => {
         ))}
       </div>
       {loading ? <p style={{ color: "white" }}>Loading...</p> : renderTable()}
+      <ToastContainer />
     </div>
   );
 };

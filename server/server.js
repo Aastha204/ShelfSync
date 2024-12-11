@@ -18,6 +18,7 @@ const { updateStatistics } = require('./Controllers/statisticsController');
 const statisticsRoute=require('./Routes/statisticsRoute');
 const receiptRoutes=require('./Routes/ReceiptRoutes')
 const reviewRoutes = require("./Routes/ReviewRoutes");
+const PaymentRoutes = require("./Routes/PaymentRoutes");
 
 require('dotenv').config();
 cron.schedule('0 0 * * *', async () => {
@@ -48,6 +49,7 @@ app.use("/todos", todoRoutes);
 app.use('/api/statistics',statisticsRoute);
 app.use('/api/receipts', receiptRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/payment", PaymentRoutes);
 
 
 // Error handling middleware

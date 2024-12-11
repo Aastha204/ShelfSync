@@ -131,6 +131,80 @@ const BestSellerBooks = () => {
     setFilteredBooks(books);
   };
 
+  const handleNewIssueBook = async (bookID) => {
+    const userEmail = localStorage.getItem("loggedInUserEmail");
+    const userId = localStorage.getItem("loggedInUserId");
+    if (!userId) {
+      toast.error("Please log in to issue a book");
+      return;
+    }
+
+    try {
+      // Create a Razorpay order
+      const { data } = await axios.post(
+        "http://localhost:3001/api/payment/orders",
+        { bookId: bookID, userId }
+      );
+
+      const options = {
+        key: process.env.KEY_ID,
+        amount: data.order.amount,
+        currency: data.order.currency,
+        name: data.book.name,
+        description: "Book Issue Fee",
+        image: data.book.bookCoverImageUrl,
+        order_id: data.order.id,
+        handler: async (response) => {
+          try {
+            const verifyUrl = "http://localhost:3001/api/payment/verify";
+            const { data: verifyResponse } = await axios.post(verifyUrl, {
+              ...response,
+              bookId: bookID,
+              userId,
+            });
+            toast.success(verifyResponse.message);
+
+            try {
+              const response = await axios.post(
+                "http://localhost:3001/api/issues/add",
+                {
+                  userEmail,
+                  bookID, // Ensure this is the correct ID of the book
+                }
+              );
+
+              toast.success(response.data.message);
+            } catch (error) {
+              console.error(error);
+              if (
+                error.response &&
+                error.response.data &&
+                error.response.data.error ===
+                  "Book already issued by you and not yet returned"
+              ) {
+                toast.info("Book already issued by you and not yet returned");
+              } else {
+                toast.error("Failed to issue book");
+              }
+            }
+          } catch (error) {
+            console.error(error);
+            toast.error("Failed to verify payment");
+          }
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to initiate payment");
+    }
+  };
+
   const handleIssueBook = async (bookID) => {
     const userEmail = localStorage.getItem('loggedInUserEmail');
     if (!userEmail) {
@@ -139,15 +213,21 @@ const BestSellerBooks = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3001/api/issues/add', {
+      const response = await axios.post('http://localhost:3001/api/issues/alreadyIssued', {
         userEmail,
-        bookID,
+        bookID, // Ensure this is the correct ID of the book
       });
 
       toast.success(response.data.message);
+      handleNewIssueBook(bookID);
+
     } catch (error) {
       console.error(error);
-      if (error.response && error.response.data && error.response.data.error === 'Book already issued by you and not yet returned') {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.error === 'Book already issued by you and not yet returned'
+      ) {
         toast.info('Book already issued by you and not yet returned');
       } else {
         toast.error('Failed to issue book');

@@ -15,5 +15,8 @@ router.get('/bestsellers', issueController.getBestSellers);
 
 router.get('/due-books',issueController.getDueBooks);
 
+router.post('/alreadyIssued',issueController.alreadyIssued);
+
+router.get("/:id", issueController.getIssuedData);
 
 module.exports = router;

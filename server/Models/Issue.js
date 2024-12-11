@@ -34,6 +34,7 @@ const issueSchema = new mongoose.Schema({
     type: Boolean,
     default: false, // Default to false when the book is issued
   },
+  finePaid: { type: Boolean, default: false },
 });
 
 // Apply the auto-incrementing plugin to the issue schema

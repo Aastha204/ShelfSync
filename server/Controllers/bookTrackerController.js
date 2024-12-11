@@ -2,12 +2,12 @@ const express=require('express');
 const router=express.Router();
 const Issue=require('../Models/Issue');
 const Return=require('../Models/Return');
-
+const Book=require('../Models/Book');
 exports.getTotalIssued = async (req, res) => {
     try {
       const { userId } = req.params;
       const userIssues = await Issue.find({ userID: userId })
-        .populate('bookID', 'name author genre available').select('issueDate bookID'); // Populate book details
+        .populate('bookID', 'name author genre available').select('issueDate bookID _id'); // Populate book details
   
       res.json(userIssues);
     } catch (error) {
@@ -65,6 +65,7 @@ exports.getTotalIssued = async (req, res) => {
   
       // Prepare the response data
       const result = dueBooks.map((issue) => ({
+        issueId: issue._id,
         bookID: issue.bookID?._id || "N/A",
         name: issue.bookID?.name || "N/A",  // Keep 'name' as 'name'
         author: issue.bookID?.author || "N/A", // Keep 'author' as 'author'
@@ -81,3 +82,21 @@ exports.getTotalIssued = async (req, res) => {
     }
   };
   
+
+  exports.getPayFine=async (req, res) => {
+    const { issueId } = req.params;
+    try {
+      const issue = await Issue.findByIdAndUpdate(
+        issueId,
+        { finePaid: true },
+        { new: true }
+      );
+      if (!issue) {
+        return res.status(404).json({ success: false, message: "Issue record not found" });
+      }
+      res.status(200).json({ success: true, message: "Fine marked as paid", issue });
+    } catch (error) {
+      console.error("Error updating finePaid status:", error);
+      res.status(500).json({ success: false, message: "Failed to update fine status" });
+    }
+  }

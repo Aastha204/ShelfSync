@@ -13,6 +13,11 @@ const FormComponent = () => {
     gender: "",
     dob: "",
   });
+
+  const today1 = new Date();
+  const fiveYearsEarlier = new Date();
+  fiveYearsEarlier.setFullYear(today1.getFullYear() - 5);
+
   const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -179,7 +184,7 @@ const FormComponent = () => {
               value={formData.dob}
               onChange={handleChange}
               required
-              max={today}
+              max={fiveYearsEarlier.toISOString().split("T")[0]}
               min={minDob.toISOString().split("T")[0]}
             />
           </div>

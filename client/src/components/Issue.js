@@ -35,26 +35,6 @@ const UserIssues = () => {
     return diffDays > 0 ? diffDays * 5 : 0;
   };
 
-  const handlePayFine = async (issueId) => {
-    try {
-      const response = await axios.post(
-        `http://localhost:3001/api/issues/payFine/${issueId}`
-      );
-
-      if (response.status === 200) {
-        toast.success("Fine paid successfully");
-        const updatedIssues = userIssues.map((issue) =>
-          issue._id === issueId ? { ...issue, finePaid: true } : issue
-        );
-        setUserIssues(updatedIssues);
-      } else {
-        toast.error("Error: Unexpected response from server");
-      }
-    } catch (error) {
-      console.error("Error paying fine:", error);
-      toast.error("Error paying fine");
-    }
-  };
 
   const handleReturnBook = async (issueId) => {
     try {
@@ -78,6 +58,61 @@ const UserIssues = () => {
       toast.error("Error returning book");
     }
   };
+
+  const handlePayment = async (IssueID) => {
+    const userEmail = localStorage.getItem("loggedInUserEmail");
+    const userId = localStorage.getItem("loggedInUserId");
+    if (!userId) {
+      toast.error("Please log in to issue a book");
+      return;
+    }
+  
+    const issue = userIssues.find(issue => issue._id === IssueID);
+    const fine = calculateFine(issue.dueDate); // Ensure this returns the correct fine
+  
+    try {
+      // Create a Razorpay order
+      toast.success("Payment Initiated....");
+      const { data } = await axios.post(
+        "http://localhost:3001/api/payment/payfine",
+        { IssueId: IssueID, fine: fine } // Make sure fine is sent
+      );
+  
+      const options = {
+        key: process.env.KEY_ID,
+        amount: data.order.amount,
+        currency: data.order.currency,
+        name: data.book.name,
+        description: "Book Issue Fee",
+        image: data.book.bookCoverImageUrl,
+        order_id: data.order.id,
+        handler: async (response) => {
+          try {
+            const verifyUrl = "http://localhost:3001/api/payment/verifyfine";
+            const { data: verifyResponse } = await axios.post(verifyUrl, {
+              ...response,
+              IssueId: IssueID,
+            });
+            toast.success(verifyResponse.message);
+            handleReturnBook(IssueID); // Call the return book logic after payment success
+          } catch (error) {
+            console.error(error);
+            toast.error("Failed to verify payment");
+          }
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+  
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to initiate payment");
+    }
+  };
+  
 
   const handleViewReceipt = (issueId) => {
     const issue = userIssues.find((issue) => issue._id === issueId);
@@ -142,7 +177,7 @@ const UserIssues = () => {
                   <td className="p-4">
                     {fine > 0 && !issue.finePaid ? (
                       <button
-                        onClick={() => handlePayFine(issue._id)}
+                        onClick={() => handlePayment(issue._id)}
                         className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-700"
                       >
                         Pay Fine
